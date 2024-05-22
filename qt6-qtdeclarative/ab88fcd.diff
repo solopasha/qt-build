@@ -1,0 +1,23 @@
+From ab88fcd990523070f2c018f4599b9bfa023d3b95 Mon Sep 17 00:00:00 2001
+From: Nicolas Fella <nicolas.fella@kde.org>
+Date: Fri, 01 Mar 2024 22:44:05 +0100
+Subject: [PATCH] QQuickSelectionRectangle: Fix crash when target is null
+
+Pick-to: 6.7 6.6
+Change-Id: I9eb92583f2cfe1a0a6bee54e3e3f31528c3b6993
+Reviewed-by: Richard Moe Gustavsen <richard.gustavsen@qt.io>
+---
+
+diff --git a/src/quicktemplates/qquickselectionrectangle.cpp b/src/quicktemplates/qquickselectionrectangle.cpp
+index f4543f0..7ef9996 100644
+--- a/src/quicktemplates/qquickselectionrectangle.cpp
++++ b/src/quicktemplates/qquickselectionrectangle.cpp
+@@ -491,7 +491,7 @@
+     m_tapHandler->setEnabled(enabled);
+ 
+     if (m_selectionMode == QQuickSelectionRectangle::Auto) {
+-        if (qobject_cast<QQuickScrollView *>(m_target->parentItem())) {
++        if (m_target && qobject_cast<QQuickScrollView *>(m_target->parentItem())) {
+             // ScrollView allows flicking with touch, but not with mouse. So we do
+             // the same here: you can drag to select with a mouse, but not with touch.
+             m_effectiveSelectionMode = QQuickSelectionRectangle::Drag;

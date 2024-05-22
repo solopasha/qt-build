@@ -1,0 +1,35 @@
+From 121fcc597d7d756737613570ac05a09911cec265 Mon Sep 17 00:00:00 2001
+From: Ulf Hermann <ulf.hermann@qt.io>
+Date: Tue, 26 Mar 2024 12:09:23 +0100
+Subject: [PATCH] QQuickTextEdit: Check QQuickAccessibleAttached for nullptr
+
+If the host object is in the process of being deleted, the attached
+object will be null. We cannot rule this out here, and crashes have been
+reported.
+
+Amends commmit 12517742fcbd40b2311b94abe840532eae3d8914
+
+Pick-to: 6.7
+Change-Id: I31fcab2999c8ab8c20f3a2cd58060cbbefa7de40
+---
+
+diff --git a/src/quick/items/qquicktextedit.cpp b/src/quick/items/qquicktextedit.cpp
+index 006d235..66615d9 100644
+--- a/src/quick/items/qquicktextedit.cpp
++++ b/src/quick/items/qquicktextedit.cpp
+@@ -1015,10 +1015,11 @@
+         return;
+ 
+     Q_Q(QQuickTextEdit);
+-    QQuickAccessibleAttached *accessibleAttached = qobject_cast<QQuickAccessibleAttached *>(qmlAttachedPropertiesObject<QQuickAccessibleAttached>(q, true));
+-    Q_ASSERT(accessibleAttached);
+-    accessibleAttached->setRole(effectiveAccessibleRole());
+-    accessibleAttached->set_readOnly(q->isReadOnly());
++    if (QQuickAccessibleAttached *accessibleAttached = qobject_cast<QQuickAccessibleAttached *>(
++                qmlAttachedPropertiesObject<QQuickAccessibleAttached>(q, true))) {
++        accessibleAttached->setRole(effectiveAccessibleRole());
++        accessibleAttached->set_readOnly(q->isReadOnly());
++    }
+ }
+ 
+ QAccessible::Role QQuickTextEditPrivate::accessibleRole() const

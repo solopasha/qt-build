@@ -2,25 +2,18 @@
 %global qt_module qtshadertools
 
 #global unstable 1
-%if 0%{?unstable}
-%global prerelease rc2
-%endif
 
 Summary: Qt6 - Qt Shader Tools module builds on the SPIR-V Open Source Ecosystem
 Name:    qt6-%{qt_module}
-Version: 6.7.1
+Version: 6.8.0~beta2
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
+%qt_source
 %global  majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
-%if 0%{?unstable}
-Source0: https://download.qt.io/development_releases/qt/%{majmin}/%{qt_version}/submodules/%{qt_module}-everywhere-src-%{qt_version}-%{prerelease}.tar.xz
-%else
-Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
-%endif
 
 # Upstream patches
 
@@ -46,7 +39,7 @@ Requires: qt6-qtbase-devel%{?_isa}
 
 
 %prep
-%autosetup -n %{qt_module}-everywhere-src-%{qt_version}%{?unstable:-%{prerelease}} -p1
+%autosetup -n %{sourcerootdir} -p1
 
 
 %build
@@ -108,19 +101,33 @@ popd
 %{_qt6_libdir}/cmake/Qt6ShaderToolsTools/*.cmake
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/pkgconfig/Qt6ShaderTools.pc
+%{_qt6_libdir}/cmake/Qt6BundledGlslang_Glslang
+%{_qt6_libdir}/cmake/Qt6BundledGlslang_Oglcompiler/
+%{_qt6_libdir}/cmake/Qt6BundledGlslang_Osdependent/
+%{_qt6_libdir}/cmake/Qt6BundledGlslang_Spirv/
+%{_qt6_libdir}/cmake/Qt6BundledSpirv_Cross/
 
 %changelog
-* Tue May 21 2024 Pavel Solovev <daron439@gmail.com> - 6.7.1-1
-- Update to 6.7.1
+* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
+- new version
 
-* Tue Apr 02 2024 Pavel Solovev <daron439@gmail.com> - 6.7.0-1
-- Update to 6.7.0
+* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
-* Tue Mar 26 2024 Pavel Solovev <daron439@gmail.com> - 6.6.3-1
-- Update to 6.6.3
+* Mon Jul 01 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-1
+- 6.7.2
 
-* Thu Feb 15 2024 Pavel Solovev <daron439@gmail.com> - 6.6.2-1
-- Update to 6.6.2
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-2
+- Rebuild for updated qtbase private api tag
+
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-1
+- 6.7.1
+
+* Tue Apr 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-1
+- 6.7.0
+
+* Thu Feb 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-1
+- 6.6.2
 
 * Fri Jan 26 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.6.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild

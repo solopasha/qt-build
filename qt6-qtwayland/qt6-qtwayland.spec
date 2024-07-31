@@ -2,29 +2,23 @@
 %global qt_module qtwayland
 
 #global unstable 1
-%if 0%{?unstable}
-%global prerelease rc2
-%endif
 
 %global examples 1
 
 Summary: Qt6 - Wayland platform support and QtCompositor module
 Name:    qt6-%{qt_module}
-Version: 6.7.1
+Version: 6.8.0~beta2
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
+%qt_source
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
-%if 0%{?unstable}
-Source0: https://download.qt.io/development_releases/qt/%{majmin}/%{qt_version}/submodules/%{qt_module}-everywhere-src-%{qt_version}-%{prerelease}.tar.xz
-%else
-Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
-%endif
 
 # Upstream patches
+Patch0:  qtwayland-client-ensure-guessed-popup-parent-has-shell-surface.patch
 
 # Upstreamable patches
 Patch10: qtwayland-use-adwaita-decorations-by-default.patch
@@ -78,7 +72,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{qt_module}-everywhere-src-%{qt_version}%{?unstable:-%{prerelease}} -p1
+%autosetup -n %{sourcerootdir} -p1
 
 
 %build
@@ -176,17 +170,29 @@ popd
 %endif
 
 %changelog
-* Tue May 21 2024 Pavel Solovev <daron439@gmail.com> - 6.7.1-1
-- Update to 6.7.1
+* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
+- new version
 
-* Tue Apr 02 2024 Pavel Solovev <daron439@gmail.com> - 6.7.0-1
-- Update to 6.7.0
+* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
-* Tue Mar 26 2024 Pavel Solovev <daron439@gmail.com> - 6.6.3-1
-- Update to 6.6.3
+* Tue Jul 09 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-2
+- Backport - Client: Ensure that guessed popup parent has shell surface
 
-* Thu Feb 15 2024 Pavel Solovev <daron439@gmail.com> - 6.6.2-1
-- Update to 6.6.2
+* Mon Jul 01 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-1
+- 6.7.2
+
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-1
+- 6.7.1
+
+* Tue Apr 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-1
+- 6.7.0
+
+* Mon Feb 19 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-2
+- Examples: also install source files
+
+* Thu Feb 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-1
+- 6.6.2
 
 * Thu Feb 08 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.1-5
 - Backport upstream fix: Fix Qt::KeypadModifier for key events

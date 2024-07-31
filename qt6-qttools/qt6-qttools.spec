@@ -1,34 +1,25 @@
 %global qt_module qttools
 
 #global unstable 1
-%if 0%{?unstable}
-%global prerelease rc2
-%endif
 
 %global examples 1
+# disable once Qt7 is stable and providing the apps
+%global metainfo 1
 
 Summary: Qt6 - QtTool components
 Name:    qt6-qttools
-Version: 6.7.1
+Version: 6.8.0~beta4
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
+%qt_source
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
-
-%if 0%{?unstable}
-Source0: https://download.qt.io/development_releases/qt/%{majmin}/%{qt_version}/submodules/%{qt_module}-everywhere-src-%{qt_version}-%{prerelease}.tar.xz
-%else
-Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
-%endif
 
 # help lrelease/lupdate use/prefer qmake-qt6
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
 Patch1: qttools-run-qttools-with-qt6-suffix.patch
-
-# 32-bit MIPS needs explicit -latomic
-Patch2: qttools-add-libatomic.patch
 
 ## upstream patches
 
@@ -37,11 +28,17 @@ Source21: designer.desktop
 Source22: linguist.desktop
 Source23: qdbusviewer.desktop
 
+# borrowed from Flathub with adjustments for Fedora
+Source31: io.qt.Designer.metainfo.xml
+Source32: io.qt.Linguist.metainfo.xml
+Source33: io.qt.qdbusviewer.metainfo.xml
+
 BuildRequires: gcc-c++
 BuildRequires: cmake
 BuildRequires: ninja-build
 BuildRequires: desktop-file-utils
 BuildRequires: /usr/bin/file
+BuildRequires: libappstream-glib
 BuildRequires: qt6-rpm-macros >= %{version}
 BuildRequires: qt6-qtbase-private-devel
 BuildRequires: qt6-qtbase-static >= %{version}
@@ -141,12 +138,8 @@ Requires: %{name}-common = %{version}-%{release}
 %endif
 
 %prep
-%setup -q -n %{qt_module}-everywhere-src-%{qt_version}%{?unstable:-%{prerelease}}
+%autosetup -n %{sourcerootdir} -p1
 
-%patch1 -p1 -b .run-qttools-with-qt6-suffix
-%ifarch %{mips32}
-%patch2 -p1 -b .libatomic
-%endif
 
 %build
 %cmake_qt6 \
@@ -164,6 +157,12 @@ desktop-file-install \
   --dir=%{buildroot}%{_datadir}/applications \
   --vendor="qt6" \
   %{SOURCE20} %{SOURCE21} %{SOURCE22} %{SOURCE23}
+
+%if 0%{?metainfo}
+install -Dm0644 -t %{buildroot}%{_metainfodir} \
+  %{SOURCE31} %{SOURCE32} %{SOURCE33}
+appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.xml
+%endif
 
 # icons
 install -m644 -p -D src/assistant/assistant/images/assistant.png %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/assistant-qt6.png
@@ -262,6 +261,9 @@ popd
 %{_qt6_bindir}/designer*
 %{_datadir}/applications/*designer.desktop
 %{_datadir}/icons/hicolor/*/apps/designer*.*
+%if 0%{?metainfo}
+%{_metainfodir}/io.qt.Designer.metainfo.xml
+%endif
 
 %files -n qt6-linguist
 %{_bindir}/linguist*
@@ -280,12 +282,18 @@ popd
 %{_qt6_libexecdir}/lprodump*
 %{_qt6_libexecdir}/lrelease*
 %{_qt6_libexecdir}/lupdate*
+%if 0%{?metainfo}
+%{_metainfodir}/io.qt.Linguist.metainfo.xml
+%endif
 
 %files -n qt6-qdbusviewer
 %{_bindir}/qdbusviewer*
 %{_qt6_bindir}/qdbusviewer*
 %{_datadir}/applications/*qdbusviewer.desktop
 %{_datadir}/icons/hicolor/*/apps/qdbusviewer*.*
+%if 0%{?metainfo}
+%{_metainfodir}/io.qt.qdbusviewer.metainfo.xml
+%endif
 
 %files devel
 %{_bindir}/pixeltool*
@@ -295,14 +303,14 @@ popd
 %{_qt6_bindir}/qtdiag*
 %{_qt6_bindir}/qtplugininfo*
 %{_qt6_headerdir}/QtQDocCatch/
+%{_qt6_headerdir}/QtQDocCatchConversions/
+%{_qt6_headerdir}/QtQDocCatchGenerators/
 %{_qt6_headerdir}/QtDesigner/
 %{_qt6_headerdir}/QtDesignerComponents/
 %{_qt6_headerdir}/QtHelp/
 %{_qt6_headerdir}/QtUiPlugin
 %{_qt6_headerdir}/QtUiTools/
 %{_qt6_headerdir}/QtTools/
-%{_qt6_headerdir}/QtQDocCatchGenerators/
-%{_qt6_headerdir}/QtQDocCatchConversions/
 %{_qt6_libdir}/libQt6Designer*.so
 %{_qt6_libdir}/libQt6Help.so
 %{_qt6_libdir}/libQt6UiTools.so
@@ -331,6 +339,8 @@ popd
 %dir %{_qt6_libdir}/cmake/Qt6LinguistTools
 %{_qt6_libdir}/cmake/Qt6UiTools/
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_qdoccatch_private.pri
+%{_qt6_archdatadir}/mkspecs/modules/qt_lib_qdoccatchconversions_private.pri
+%{_qt6_archdatadir}/mkspecs/modules/qt_lib_qdoccatchgenerators_private.pri
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_designer.pri
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_designer_private.pri
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_designercomponents_private.pri
@@ -341,8 +351,6 @@ popd
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_uiplugin.pri
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_uitools.pri
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_uitools_private.pri
-%{_qt6_archdatadir}/mkspecs/modules/qt_lib_qdoccatchconversions_private.pri
-%{_qt6_archdatadir}/mkspecs/modules/qt_lib_qdoccatchgenerators_private.pri
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/pkgconfig/*.pc
@@ -359,14 +367,29 @@ popd
 
 
 %changelog
-* Tue May 21 2024 Pavel Solovev <daron439@gmail.com> - 6.7.1-1
-- Update to 6.7.1
+* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
+- new version
 
-* Tue Apr 02 2024 Pavel Solovev <daron439@gmail.com> - 6.7.0-1
-- Update to 6.7.0
+* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
+- new version
 
-* Tue Mar 26 2024 Pavel Solovev <daron439@gmail.com> - 6.6.3-1
-- Update to 6.6.3
+* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
+- new version
+
+* Mon Jul 22 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 6.7.2-3
+- Add appstream data for apps
+
+* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Mon Jul 01 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-1
+- 6.7.2
+
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-1
+- 6.7.1
+
+* Tue Apr 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-1
+- 6.7.0
 
 * Sat Mar 2 2024 Marie Loise Nolden <loise@kde.org> - 6.6.2-3
 - minor cleanups

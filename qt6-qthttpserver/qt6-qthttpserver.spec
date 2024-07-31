@@ -1,23 +1,15 @@
-#global unstable 0
 %global qt_module qthttpserver
 
 %global examples 1
 
 Name:       qt6-qthttpserver
-Version:    6.7.1
+Version:    6.8.0~beta4
 Release:    1%{?dist}
 Summary:    Library to facilitate the creation of an http server with Qt
 
 License:    BSD-3-Clause AND GFDL-1.3-no-invariants-only AND GPL-3.0-only WITH Qt-GPL-exception-1.0
 URL:        http://qt-project.org/
-%global     majmin %(echo %{version} | cut -d. -f1-2)
-%global     qt_version %(echo %{version} | cut -d~ -f1)
-
-%if 0%{?unstable}
-Source0:    https://download.qt.io/development_releases/qt/%{majmin}/%{qt_version}/submodules/%{qt_module}-everywhere-src-%{qt_version}-%{prerelease}.tar.xz
-%else
-Source0:    https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
-%endif
+%qt_source
 
 BuildRequires:  qt6-rpm-macros
 BuildRequires:  cmake
@@ -52,7 +44,7 @@ to the usage of %{name}.
 %endif
 
 %prep
-%autosetup -n %{qt_module}-everywhere-src-%{version} -p1
+%autosetup -n %{sourcerootdir} -p1
 
 
 %build
@@ -90,17 +82,32 @@ to the usage of %{name}.
 %endif
 
 %changelog
-* Tue May 21 2024 Pavel Solovev <daron439@gmail.com> - 6.7.1-1
-- Update to 6.7.1
+* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
+- new version
 
-* Tue Apr 02 2024 Pavel Solovev <daron439@gmail.com> - 6.7.0-1
-- Update to 6.7.0
+* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
+- new version
 
-* Tue Mar 26 2024 Pavel Solovev <daron439@gmail.com> - 6.6.3-1
-- Update to 6.6.3
+* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
+- new version
 
-* Thu Feb 15 2024 Pavel Solovev <daron439@gmail.com> - 6.6.2-1
-- Update to 6.6.2
+* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Mon Jul 01 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-1
+- 6.7.2
+
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-1
+- 6.7.1
+
+* Tue Apr 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-1
+- 6.7.0
+
+* Mon Feb 19 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-2
+- Examples: also install source files
+
+* Thu Feb 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-1
+- 6.6.2
 
 * Fri Jan 26 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.6.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild

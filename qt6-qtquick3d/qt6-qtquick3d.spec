@@ -2,27 +2,20 @@
 %global qt_module qtquick3d
 
 #global unstable 1
-%if 0%{?unstable}
-%global prerelease rc2
-%endif
 
 %global examples 1
 
 Summary: Qt6 - Quick3D Libraries and utilities
 Name:    qt6-%{qt_module}
-Version: 6.7.1
+Version: 6.8.0~beta4
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
+%qt_source
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
-%if 0%{?unstable}
-Source0: https://download.qt.io/development_releases/qt/%{majmin}/%{qt_version}/submodules/%{qt_module}-everywhere-src-%{qt_version}-%{prerelease}.tar.xz
-%else
-Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
-%endif
 Patch0:  qtquick3d-fix-build-with-gcc11.patch
 
 BuildRequires: cmake
@@ -36,7 +29,8 @@ BuildRequires: qt6-qtdeclarative-devel
 BuildRequires: qt6-qtdeclarative-static
 BuildRequires: qt6-qtquicktimeline-devel
 BuildRequires: qt6-qtshadertools-devel
-
+BuildRequires: cmake(OpenXR)
+BuildRequires: cmake(assimp)
 #if 0{?fedora}
 # BuildRequires: pkgconfig(assimp) >= 5.0.0
 #endif
@@ -64,7 +58,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{qt_module}-everywhere-src-%{qt_version}%{?unstable:-%{prerelease}} -p1
+%autosetup -n %{sourcerootdir} -p1
 
 
 %build
@@ -103,7 +97,7 @@ mkdir %{buildroot}%{_bindir}
 pushd %{buildroot}%{_qt6_bindir}
 for i in * ; do
   case "${i}" in
-    balsam|meshdebug|shadergen|balsamui|instancer|materialeditor|shapegen)
+    balsam|meshdebug|shadergen|balsamui|instancer|shapegen|materialeditor)
       ln -v  ${i} %{buildroot}%{_bindir}/${i}-qt6
       ;;
     *)
@@ -132,82 +126,47 @@ popd
 %license LICENSES/GPL*
 %{_qt6_libdir}/libQt6Quick3D.so.6*
 %{_qt6_libdir}/libQt6Quick3DAssetImport.so.6*
-%{_qt6_libdir}/libQt6Quick3DRuntimeRender.so.6*
-%{_qt6_libdir}/libQt6Quick3DUtils.so.6*
-%{_qt6_libdir}/libQt6Quick3DIblBaker.so.6*
-%{_qt6_libdir}/libQt6Quick3DParticles.so.6*
 %{_qt6_libdir}/libQt6Quick3DAssetUtils.so.6*
 %{_qt6_libdir}/libQt6Quick3DEffects.so.6*
+%{_qt6_libdir}/libQt6Quick3DGlslParser.so.6*
 %{_qt6_libdir}/libQt6Quick3DHelpers.so.6*
 %{_qt6_libdir}/libQt6Quick3DHelpersImpl.so*
+%{_qt6_libdir}/libQt6Quick3DIblBaker.so.6*
 %{_qt6_libdir}/libQt6Quick3DParticleEffects.so.6*
-%{_qt6_libdir}/libQt6Quick3DGlslParser.so.6*
-%dir %{_qt6_qmldir}/QtQuick3D/
-%{_qt6_qmldir}/QtQuick3D/
+%{_qt6_libdir}/libQt6Quick3DParticles.so.6*
+%{_qt6_libdir}/libQt6Quick3DRuntimeRender.so.6*
+%{_qt6_libdir}/libQt6Quick3DUtils.so.6*
+%{_qt6_libdir}/libQt6Quick3DXr.so.6*
 %{_qt6_plugindir}/assetimporters/*.so
+%{_qt6_qmldir}/QtQuick3D/
 
 %files devel
 %{_bindir}/balsam-qt6
-%{_bindir}/meshdebug-qt6
-%{_bindir}/shadergen-qt6
 %{_bindir}/balsamui-qt6
 %{_bindir}/instancer-qt6
-%{_bindir}/materialeditor-qt6
+%{_bindir}/meshdebug-qt6
+%{_bindir}/shadergen-qt6
 %{_bindir}/shapegen-qt6
+%{_bindir}/materialeditor-qt6
 %{_qt6_bindir}/balsam
-%{_qt6_bindir}/meshdebug
-%{_qt6_bindir}/shadergen
 %{_qt6_bindir}/balsamui
 %{_qt6_bindir}/instancer
-%{_qt6_bindir}/materialeditor
+%{_qt6_bindir}/meshdebug
+%{_qt6_bindir}/shadergen
 %{_qt6_bindir}/shapegen
+%{_qt6_bindir}/materialeditor
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_libdir}/qt6/modules/*.json
-%{_qt6_includedir}/QtQuick3D
-%{_qt6_includedir}/QtQuick3DAssetImport
-%{_qt6_includedir}/QtQuick3DIblBaker
-%{_qt6_includedir}/QtQuick3DParticles
-%{_qt6_includedir}/QtQuick3DRuntimeRender
-%{_qt6_includedir}/QtQuick3DUtils
-%{_qt6_includedir}/QtQuick3DAssetUtils
-%{_qt6_includedir}/QtQuick3DHelpers
-%{_qt6_includedir}/QtQuick3DHelpersImpl
-%{_qt6_includedir}/QtQuick3DGlslParser
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DIblBaker
-%{_qt6_libdir}/cmake/Qt6Quick3DIblBaker/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DParticles
-%{_qt6_libdir}/cmake/Qt6Quick3DParticles/*.cmake
-%{_qt6_libdir}/cmake/Qt6/FindWrapQuick3DAssimp.cmake
+%{_qt6_includedir}/QtQuick3D*/
+%{_qt6_libdir}/cmake/Qt6/*.cmake
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/*.cmake
 %{_qt6_libdir}/cmake/Qt6Qml/*.cmake
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
 %ifarch x86_64 aarch64
-%dir %{_qt6_libdir}/cmake/Qt6BundledEmbree/
 %{_qt6_libdir}/cmake/Qt6/FindWrapBundledEmbreeConfigExtra.cmake
-%{_qt6_libdir}/cmake/Qt6BundledEmbree/*.cmake
+%{_qt6_libdir}/cmake/Qt6BundledEmbree/
 %endif
-%dir %{_qt6_libdir}/cmake/Qt6Quick3D/
-%{_qt6_libdir}/cmake/Qt6Quick3D/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DAssetImport/
-%{_qt6_libdir}/cmake/Qt6Quick3DAssetImport/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DRuntimeRender/
-%{_qt6_libdir}/cmake/Qt6Quick3DRuntimeRender/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DTools/
-%{_qt6_libdir}/cmake/Qt6Quick3DTools/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DUtils/
-%{_qt6_libdir}/cmake/Qt6Quick3DUtils/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DAssetUtils/
-%{_qt6_libdir}/cmake/Qt6Quick3DAssetUtils/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DEffects/
-%{_qt6_libdir}/cmake/Qt6Quick3DEffects/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DHelpers/
-%{_qt6_libdir}/cmake/Qt6Quick3DHelpers/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DHelpersImpl/
-%{_qt6_libdir}/cmake/Qt6Quick3DHelpersImpl/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DGlslParserPrivate
-%{_qt6_libdir}/cmake/Qt6Quick3DGlslParserPrivate/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DParticleEffects
-%{_qt6_libdir}/cmake/Qt6Quick3DParticleEffects/*.cmake
+%{_qt6_libdir}/cmake/Qt6Quick3D*/
 %ifarch x86_64 aarch64
 %{_qt6_libdir}/libQt6BundledEmbree.a
 %endif
@@ -215,26 +174,28 @@ popd
 %{_qt6_libdir}/libQt6Quick3D.so
 %{_qt6_libdir}/libQt6Quick3DAssetImport.prl
 %{_qt6_libdir}/libQt6Quick3DAssetImport.so
-%{_qt6_libdir}/libQt6Quick3DRuntimeRender.prl
-%{_qt6_libdir}/libQt6Quick3DRuntimeRender.so
-%{_qt6_libdir}/libQt6Quick3DUtils.prl
-%{_qt6_libdir}/libQt6Quick3DUtils.so
-%{_qt6_libdir}/libQt6Quick3DIblBaker.prl
-%{_qt6_libdir}/libQt6Quick3DIblBaker.so
-%{_qt6_libdir}/libQt6Quick3DParticles.prl
-%{_qt6_libdir}/libQt6Quick3DParticles.so
 %{_qt6_libdir}/libQt6Quick3DAssetUtils.prl
 %{_qt6_libdir}/libQt6Quick3DAssetUtils.so
 %{_qt6_libdir}/libQt6Quick3DEffects.prl
 %{_qt6_libdir}/libQt6Quick3DEffects.so
+%{_qt6_libdir}/libQt6Quick3DGlslParser.prl
+%{_qt6_libdir}/libQt6Quick3DGlslParser.so
 %{_qt6_libdir}/libQt6Quick3DHelpers.prl
 %{_qt6_libdir}/libQt6Quick3DHelpers.so
 %{_qt6_libdir}/libQt6Quick3DHelpersImpl.prl
 %{_qt6_libdir}/libQt6Quick3DHelpersImpl.so
-%{_qt6_libdir}/libQt6Quick3DGlslParser.prl
-%{_qt6_libdir}/libQt6Quick3DGlslParser.so
+%{_qt6_libdir}/libQt6Quick3DIblBaker.prl
+%{_qt6_libdir}/libQt6Quick3DIblBaker.so
 %{_qt6_libdir}/libQt6Quick3DParticleEffects.prl
 %{_qt6_libdir}/libQt6Quick3DParticleEffects.so
+%{_qt6_libdir}/libQt6Quick3DParticles.prl
+%{_qt6_libdir}/libQt6Quick3DParticles.so
+%{_qt6_libdir}/libQt6Quick3DRuntimeRender.prl
+%{_qt6_libdir}/libQt6Quick3DRuntimeRender.so
+%{_qt6_libdir}/libQt6Quick3DUtils.prl
+%{_qt6_libdir}/libQt6Quick3DUtils.so
+%{_qt6_libdir}/libQt6Quick3DXr.prl
+%{_qt6_libdir}/libQt6Quick3DXr.so
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_plugindir}/qmltooling/libqmldbg_quick3dprofiler.so
 %{_qt6_libdir}/pkgconfig/*.pc
@@ -248,17 +209,32 @@ popd
 %endif
 
 %changelog
-* Tue May 21 2024 Pavel Solovev <daron439@gmail.com> - 6.7.1-1
-- Update to 6.7.1
+* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
+- new version
 
-* Tue Apr 02 2024 Pavel Solovev <daron439@gmail.com> - 6.7.0-1
-- Update to 6.7.0
+* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
+- new version
 
-* Tue Mar 26 2024 Pavel Solovev <daron439@gmail.com> - 6.6.3-1
-- Update to 6.6.3
+* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
+- new version
 
-* Thu Feb 15 2024 Pavel Solovev <daron439@gmail.com> - 6.6.2-1
-- Update to 6.6.2
+* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Mon Jul 01 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-1
+- 6.7.2
+
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-1
+- 6.7.1
+
+* Tue Apr 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-1
+- 6.7.0
+
+* Mon Feb 19 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-2
+- Examples: also install source files
+
+* Thu Feb 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-1
+- 6.6.2
 
 * Fri Jan 26 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.6.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild

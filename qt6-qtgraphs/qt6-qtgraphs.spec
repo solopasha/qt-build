@@ -1,7 +1,7 @@
 %global        qt_module qtgraphs
 
 Name:          qt6-qtgraphs
-Version:       6.7.1
+Version:       6.8.0~beta4
 Release:       1%{?dist}
 
 %global examples 1
@@ -12,7 +12,7 @@ Release:       1%{?dist}
 Summary:       The Qt Graphs module enables you to visualize data in 3D
 License:       BSD-3-Clause AND GFDL-1.3-no-invariants-only AND GPL-3.0-only
 URL:           https://doc.qt.io/qt-6/qtgraphs-index.html
-Source0:       https://download.qt.io/official_releases/qt/%{majmin}/%{qt_version}/submodules/%{qt_module}-everywhere-src-%{qt_version}.tar.xz
+%qt_source
 
 BuildRequires: gcc-c++
 BuildRequires: cmake
@@ -55,7 +55,7 @@ Requires:      %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{qt_module}-everywhere-src-%{qt_version} -p1
+%autosetup -n %{sourcerootdir} -p1
 
 %build
 %cmake_qt6 \
@@ -82,18 +82,23 @@ popd
 %files
 %license LICENSES/BSD-3-Clause.txt LICENSES/GFDL*.txt LICENSES/GPL-*.txt
 %{_qt6_libdir}/libQt6Graphs.so.6*
-%{_qt6_libdir}/qt6/metatypes/qt6graphs_relwithdebinfo_metatypes.json
-%{_qt6_libdir}/qt6/modules/Graphs.json
-%{_qt6_qmldir}/QtGraphs
+%{_qt6_libdir}/libQt6GraphsWidgets.so.6*
+%{_qt6_libdir}/qt6/metatypes/qt6graphs*_relwithdebinfo_metatypes.json
+%{_qt6_libdir}/qt6/modules/Graphs*.json
+%{_qt6_qmldir}/QtGraphs/
 
 %files devel
-%{_qt6_headerdir}/QtGraphs
+%{_qt6_headerdir}/QtGraphs/
+%{_qt6_headerdir}/QtGraphsWidgets/
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtGraphsTestsConfig.cmake
-%{_qt6_libdir}/cmake/Qt6Graphs
+%{_qt6_libdir}/cmake/Qt6Graphs/
+%{_qt6_libdir}/cmake/Qt6GraphsWidgets/
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6Graphsplugin*.cmake
-%{_qt6_libdir}/libQt6Graphs.so
-%{_qt6_libdir}/pkgconfig/Qt6Graphs.pc
 %{_qt6_libdir}/libQt6Graphs.prl
+%{_qt6_libdir}/libQt6Graphs.so
+%{_qt6_libdir}/libQt6GraphsWidgets.prl
+%{_qt6_libdir}/libQt6GraphsWidgets.so
+%{_qt6_libdir}/pkgconfig/Qt6Graphs*.pc
 %{_qt6_libdir}/qt6/mkspecs/modules/qt_lib_graphs*.pri
 
 %if 0%{?examples}
@@ -102,14 +107,29 @@ popd
 %endif
 
 %changelog
-* Tue May 21 2024 Pavel Solovev <daron439@gmail.com> - 6.7.1-1
-- Update to 6.7.1
+* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
+- new version
 
-* Tue Apr 02 2024 Pavel Solovev <daron439@gmail.com> - 6.7.0-1
-- Update to 6.7.0
+* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
+- new version
 
-* Tue Mar 26 2024 Pavel Solovev <daron439@gmail.com> - 6.6.3-1
-- Update to 6.6.3
+* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
+- new version
+
+* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Mon Jul 01 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-1
+- 6.7.2
+
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-1
+- 6.7.1
+
+* Tue Apr 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-1
+- 6.7.0
+
+* Mon Feb 19 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-2
+- Examples: also install source files
 
 * Thu Feb 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-1
 - 6.6.2

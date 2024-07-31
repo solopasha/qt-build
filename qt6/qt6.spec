@@ -1,16 +1,16 @@
 
 Name: qt6
-Version: 6.7.1
+# This version MUST remain in sync with Qt6 versions!
+Version: 6.8.0~beta4
 Release: 1%{?dist}
 Summary: Qt6 meta package
 License: GPL-3.0-only
-URL: https://getfedora.org/
+URL:     https://getfedora.org/
 Source0: macros.qt6
 Source1: macros.qt6-srpm
 Source2: qmake-qt6.sh
 Source3: qt6qml.attr
 Source4: qt6qml.prov
-BuildArch: noarch
 
 Requires: qt6-qt3d
 Requires: qt6-qt5compat
@@ -88,19 +88,43 @@ Requires: qt6-rpm-macros
 %{summary}.
 
 %package rpm-macros
-Summary: RPM macros for building Qt6 and KDE Frameworks 5 packages
+Summary: RPM macros for building Qt6 and KDE Frameworks 6 packages
 Requires: cmake >= 3
 Requires: gcc-c++
+BuildArch: noarch
 %description rpm-macros
 %{summary}.
 
 %package srpm-macros
 Summary: RPM macros for source Qt6 packages
+BuildArch: noarch
 %description srpm-macros
 %{summary}.
 
+%package filesystem
+Summary: Filesystem for Qt6 packages
+%description filesystem
+Filesystem for Qt 6 packages.
 
 %install
+# See macros.qt6 where the directories are specified
+mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6
+mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/bin
+mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/cmake
+mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/examples
+mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/imports
+mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/metatypes
+mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/modules
+mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/libexec
+mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/mkspecs
+mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/plugins
+mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/qml
+mkdir -p %{buildroot}%{_datadir}/qt6
+mkdir -p %{buildroot}%{_docdir}/qt6
+mkdir -p %{buildroot}%{_includedir}/qt6
+mkdir -p %{buildroot}%{_datadir}/qt6/translations
+
+
 install -Dpm644 %{SOURCE0} %{buildroot}%{_rpmmacrodir}/macros.qt6
 install -Dpm644 %{SOURCE1} %{buildroot}%{_rpmmacrodir}/macros.qt6-srpm
 install -Dpm755 %{SOURCE2} %{buildroot}%{_bindir}/qmake-qt6.sh
@@ -147,18 +171,62 @@ echo "- Qt6 devel meta package" > %{buildroot}%{_docdir}/qt6-devel/README
 %{_rpmmacrodir}/macros.qt6-srpm
 
 
+%files filesystem
+%dir %{_prefix}/lib/qt6
+%dir %{_prefix}/%{_lib}/qt6
+%dir %{_prefix}/lib/qt6/bin
+%dir %{_prefix}/%{_lib}/qt6/bin
+%dir %{_prefix}/lib/qt6/cmake
+%dir %{_prefix}/%{_lib}/qt6/cmake
+%dir %{_prefix}/lib/qt6/examples
+%dir %{_prefix}/%{_lib}/qt6/examples
+%dir %{_prefix}/lib/qt6/imports
+%dir %{_prefix}/%{_lib}/qt6/imports
+%dir %{_prefix}/lib/qt6/metatypes
+%dir %{_prefix}/%{_lib}/qt6/metatypes
+%dir %{_prefix}/lib/qt6/modules
+%dir %{_prefix}/%{_lib}/qt6/modules
+%dir %{_prefix}/lib/qt6/libexec
+%dir %{_prefix}/%{_lib}/qt6/libexec
+%dir %{_prefix}/lib/qt6/mkspecs
+%dir %{_prefix}/%{_lib}/qt6/mkspecs
+%dir %{_prefix}/lib/qt6/plugins
+%dir %{_prefix}/%{_lib}/qt6/plugins
+%dir %{_prefix}/lib/qt6/qml
+%dir %{_prefix}/%{_lib}/qt6/qml
+%dir %{_datadir}/qt6
+%dir %{_docdir}/qt6
+%dir %{_includedir}/qt6
+%dir %{_datadir}/qt6/translations
+
+
 %changelog
-* Tue May 21 2024 Pavel Solovev <daron439@gmail.com> - 6.7.1-1
-- Update to 6.7.1
+* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
+- new version
 
-* Tue Apr 02 2024 Pavel Solovev <daron439@gmail.com> - 6.7.0-1
-- Update to 6.7.0
+* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
+- new version
 
-* Tue Mar 26 2024 Pavel Solovev <daron439@gmail.com> - 6.6.3-1
-- Update to 6.6.3
+* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
+- new version
 
-* Thu Feb 15 2024 Pavel Solovev <daron439@gmail.com> - 6.6.2-1
-- Update to 6.6.2
+* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Mon Jul 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-2
+- Introduce qt6-filesystem package
+
+* Mon Jul 01 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-1
+- 6.7.2
+
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-1
+- 6.7.1
+
+* Tue Apr 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-1
+- 6.7.0
+
+* Sun Jan 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-1
+- 6.6.2
 
 * Fri Jan 26 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.6.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild

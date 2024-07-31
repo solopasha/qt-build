@@ -1,9 +1,5 @@
 %global _default_patch_fuzz 2
-%global _fortify_level 2
-
 %global qt_module qtwebengine
-
-%global _hardened_build 1
 
 # package-notes causes FTBFS (#2043178)
 %undefine _package_note_file
@@ -37,7 +33,7 @@
 
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
-Version: 6.7.1
+Version: 6.8.0~beta4
 Release: 1%{?dist}
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
@@ -48,7 +44,7 @@ URL:     http://www.qt.io
 # cleaned tarball with patent-encumbered codecs removed from the bundled FFmpeg
 # ./qtwebengine-release.sh
 # ./clean_qtwebengine.sh 6.4.1
-Source0: qtwebengine-everywhere-src-%{version}-clean.tar.xz
+Source0: qtwebengine-everywhere-src-%{version_no_tilde}-clean.tar.xz
 
 # cleanup scripts used above
 Source2: clean_qtwebengine.sh
@@ -60,7 +56,18 @@ Source10: macros.qt6-qtwebengine
 # pulseaudio headers
 Source20: https://src.fedoraproject.org/lookaside/pkgs/qt6-qtwebengine/pulseaudio-12.2-headers.tar.gz/sha512/a5a9bcbb16030b3bc83cc0cc8f5e7f90e0723d3e83258a5c77eacb32eaa267118a73fa7814fbcc99a24e4907916a2b371ebb6dedc4f45541c3acf6c834fd35be/pulseaudio-12.2-headers.tar.gz
 
-Patch:    rtc-dont-use-h264.patch
+# workaround FTBFS against kernel-headers-5.2.0+
+Patch1:  qtwebengine-SIOCGSTAMP.patch
+Patch2:  qtwebengine-link-pipewire.patch
+# Fix/workaround FTBFS on aarch64 with newer glibc
+Patch3: qtwebengine-aarch64-new-stat.patch
+
+## Upstream patches:
+
+## Upstreamable patches:
+Patch110: qtwebengine-webrtc-system-openh264.patch
+Patch111: qtwebengine-blink-system-openh264.patch
+Patch112: qtwebengine-media-system-openh264.patch
 
 # handled by qt6-srpm-macros, which defines %%qt6_qtwebengine_arches
 # FIXME use/update qt6_qtwebengine_arches
@@ -89,6 +96,7 @@ BuildRequires: flex
 BuildRequires: gcc-c++
 %if 0%{?rhel} && 0%{?rhel} < 10
 BuildRequires: gcc-toolset-13
+BuildRequires: gcc-toolset-13-libatomic-devel
 %endif
 # gn links statically (for now)
 BuildRequires: libstdc++-static
@@ -98,12 +106,13 @@ BuildRequires: krb5-devel
 %if 0%{?use_system_libicu}
 BuildRequires: libicu-devel >= 68
 %endif
+BuildRequires: libatomic
 BuildRequires: libjpeg-devel
-BuildRequires: nodejs20
+BuildRequires: nodejs
 %if 0%{?use_system_re2}
 BuildRequires: re2-devel
+Provides: bundled(re2)
 %endif
-BuildRequires:  libatomic
 BuildRequires: snappy-devel
 BuildConflicts: minizip-devel
 Provides: bundled(minizip) = 2.8.1
@@ -137,7 +146,6 @@ BuildRequires: pkgconfig(libwebp) >= 0.6.0
 %endif
 BuildRequires: pkgconfig(libopenjp2)
 BuildRequires: pkgconfig(libtiff-4)
-BuildRequires: minizip-compat-devel
 BuildRequires: pkgconfig(nss)
 BuildRequires: pkgconfig(opus)
 BuildRequires: pkgconfig(poppler-cpp)
@@ -167,6 +175,7 @@ BuildRequires: pkgconfig(libavcodec)
 BuildRequires: pkgconfig(libavformat)
 BuildRequires: pkgconfig(libavutil)
 BuildRequires: pkgconfig(libva)
+BuildRequires: pkgconfig(openh264)
 
 %if 0%{?fedora} && 0%{?fedora} >= 39
 BuildRequires: python3-zombie-imp
@@ -337,7 +346,7 @@ Summary: Example files for qt6-qtpdf
 %{summary}.
 
 %prep
-%autosetup -p1 -n %{qt_module}-everywhere-src-%{version}%{?prerelease:-%{prerelease}} -a20
+%autosetup -n %{qt_module}-everywhere-src-%{version_no_tilde} -p1 -a20
 
 mv pulse src/3rdparty/chromium/
 
@@ -379,6 +388,7 @@ cp -p src/3rdparty/chromium/LICENSE LICENSE.Chromium
 # test -f "./include/QtWebEngineCore/qtwebenginecoreglobal.h"
 
 sed -i -e 's/symbol_level=[[:digit:]]/symbol_level=0/g' cmake/Functions.cmake
+sed '/libaom\/options.gni/a import("//third_party/webrtc/webrtc.gni")' -i src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
 
 %build
 %if 0%{?rhel} && 0%{?rhel} < 10
@@ -627,17 +637,39 @@ done
 %endif
 
 %changelog
-* Tue May 21 2024 Pavel Solovev <daron439@gmail.com> - 6.7.1-1
-- Update to 6.7.1
+* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
+- new version
 
-* Tue Apr 02 2024 Pavel Solovev <daron439@gmail.com> - 6.7.0-1
-- Update to 6.7.0
+* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
+- new version
 
-* Tue Mar 26 2024 Pavel Solovev <daron439@gmail.com> - 6.6.3-1
-- Update to 6.6.3
+* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
+- new version
 
-* Thu Feb 15 2024 Pavel Solovev <daron439@gmail.com> - 6.6.2-1
-- Update to 6.6.2
+* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Tue Jul 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-1
+- 6.7.2
+
+* Wed May 22 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-1
+- 6.7.1
+
+* Wed Apr 24 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-2
+- Rework and enable openh264 patches
+
+* Wed Apr 03 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-1
+- 6.7.0
+
+* Sun Mar 3 2024 Marie Loise Nolden <loise@kde.org> - 6.6.2-3
+- move qt designer plugin to -devel
+- remove old doc package code (docs are in qt6-doc)
+
+* Mon Feb 19 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-2
+- Examples: also install source files
+
+* Thu Feb 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-1
+- 6.6.2
 
 * Mon Jan 22 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.6.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild

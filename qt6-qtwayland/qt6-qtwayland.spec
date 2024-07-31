@@ -2,27 +2,20 @@
 %global qt_module qtwayland
 
 #global unstable 1
-%if 0%{?unstable}
-%global prerelease rc2
-%endif
 
 %global examples 1
 
 Summary: Qt6 - Wayland platform support and QtCompositor module
 Name:    qt6-%{qt_module}
-Version: 6.7.1
+Version: 6.8.0~beta4
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
+%qt_source
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
-%if 0%{?unstable}
-Source0: https://download.qt.io/development_releases/qt/%{majmin}/%{qt_version}/submodules/%{qt_module}-everywhere-src-%{qt_version}-%{prerelease}.tar.xz
-%else
-Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
-%endif
 
 # Upstream patches
 
@@ -37,6 +30,7 @@ BuildRequires: cmake
 BuildRequires: ninja-build
 BuildRequires: qt6-qtbase-devel >= %{version}
 BuildRequires: qt6-qtbase-static
+BuildRequires: qt6-qtsvg-devel
 BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
 BuildRequires: qt6-qtdeclarative-devel
@@ -78,7 +72,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{qt_module}-everywhere-src-%{qt_version}%{?unstable:-%{prerelease}} -p1
+%autosetup -n %{sourcerootdir} -p1
 
 
 %build
@@ -110,65 +104,59 @@ popd
 %files
 %doc README
 %license LICENSES/*
-%{_qt6_libdir}/libQt6WaylandCompositor.so.6*
 %{_qt6_libdir}/libQt6WaylandClient.so.6*
 %{_qt6_libdir}/libQt6WaylandCompositor.so.6*
-%{_qt6_libdir}/libQt6WaylandClient.so.6*
+%{_qt6_libdir}/libQt6WaylandCompositorIviapplication.so.6*
+%{_qt6_libdir}/libQt6WaylandCompositorPresentationTime.so.6*
+%{_qt6_libdir}/libQt6WaylandCompositorWLShell.so.6*
+%{_qt6_libdir}/libQt6WaylandCompositorXdgShell.so.6*
 %{_qt6_libdir}/libQt6WaylandEglClientHwIntegration.so.6*
 %{_qt6_libdir}/libQt6WaylandEglCompositorHwIntegration.so.6*
 %{_qt6_libdir}/libQt6WlShellIntegration.so.6*
-%{_qt6_plugindir}/wayland-decoration-client/
-%{_qt6_plugindir}/wayland-graphics-integration-server
-%{_qt6_plugindir}/wayland-graphics-integration-client
-%{_qt6_plugindir}/wayland-shell-integration
 %{_qt6_plugindir}/platforms/libqwayland-egl.so
 %{_qt6_plugindir}/platforms/libqwayland-generic.so
-#{_qt6_plugindir}/platforms/libqwayland-xcomposite-egl.so
-#{_qt6_plugindir}/platforms/libqwayland-xcomposite-glx.so
+%{_qt6_plugindir}/wayland-decoration-client/
+%{_qt6_plugindir}/wayland-graphics-integration-client/
+%{_qt6_plugindir}/wayland-graphics-integration-server/
+%{_qt6_plugindir}/wayland-shell-integration/
 %{_qt6_qmldir}/QtWayland/
 
 %files devel
-%{_qt6_libexecdir}/qtwaylandscanner
-%{_qt6_headerdir}/QtWaylandCompositor/
+%{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_headerdir}/QtWaylandClient/
+%{_qt6_headerdir}/QtWaylandCompositor*/
 %{_qt6_headerdir}/QtWaylandEglClientHwIntegration/
 %{_qt6_headerdir}/QtWaylandEglCompositorHwIntegration/
-%{_qt6_headerdir}/QtWlShellIntegration/
 %{_qt6_headerdir}/QtWaylandGlobal/
-%{_qt6_libdir}/libQt6WaylandCompositor.so
-%{_qt6_libdir}/libQt6WaylandClient.so
-%{_qt6_libdir}/libQt6WaylandEglClientHwIntegration.so
-%{_qt6_libdir}/libQt6WaylandEglCompositorHwIntegration.so
-%{_qt6_libdir}/libQt6WlShellIntegration.so
-%{_qt6_libdir}/libQt6WaylandCompositor.prl
-%{_qt6_libdir}/libQt6WaylandClient.prl
-%{_qt6_libdir}/libQt6WaylandEglClientHwIntegration.prl
-%{_qt6_libdir}/libQt6WaylandEglCompositorHwIntegration.prl
-%{_qt6_libdir}/libQt6WlShellIntegration.prl
-%{_qt6_libdir}/cmake/Qt6WaylandCompositor/Qt6WaylandCompositorConfig*.cmake
-%{_qt6_archdatadir}/mkspecs/modules/*.pri
+%{_qt6_headerdir}/QtWlShellIntegration/
 %{_qt6_libdir}/cmake/Qt6/*.cmake
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtWaylandTestsConfig.cmake
 %{_qt6_libdir}/cmake/Qt6Gui/*.cmake
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositor/
-%{_qt6_libdir}/cmake/Qt6WaylandCompositor/
-%dir %{_qt6_libdir}/cmake/Qt6WaylandClient/
-%{_qt6_libdir}/cmake/Qt6WaylandClient/
-%dir %{_qt6_libdir}/cmake/Qt6WaylandScannerTools/
-%{_qt6_libdir}/cmake/Qt6WaylandScannerTools/
-%dir %{_qt6_libdir}/cmake/Qt6WaylandEglClientHwIntegrationPrivate/
-%{_qt6_libdir}/cmake/Qt6WaylandEglClientHwIntegrationPrivate/
-%dir %{_qt6_libdir}/cmake/Qt6WaylandEglCompositorHwIntegrationPrivate/
-%{_qt6_libdir}/cmake/Qt6WaylandEglCompositorHwIntegrationPrivate/
-%dir %{_qt6_libdir}/cmake/Qt6WlShellIntegrationPrivate/
+%{_qt6_libdir}/cmake/Qt6Wayland*/
 %{_qt6_libdir}/cmake/Qt6WlShellIntegrationPrivate/
-%dir  %{_qt6_libdir}/cmake/Qt6WaylandGlobalPrivate/
-%{_qt6_libdir}/cmake/Qt6WaylandGlobalPrivate/
+%{_qt6_libdir}/libQt6WaylandClient.prl
+%{_qt6_libdir}/libQt6WaylandClient.so
+%{_qt6_libdir}/libQt6WaylandCompositor.prl
+%{_qt6_libdir}/libQt6WaylandCompositor.so
+%{_qt6_libdir}/libQt6WaylandCompositorIviapplication.prl
+%{_qt6_libdir}/libQt6WaylandCompositorIviapplication.so
+%{_qt6_libdir}/libQt6WaylandCompositorPresentationTime.prl
+%{_qt6_libdir}/libQt6WaylandCompositorPresentationTime.so
+%{_qt6_libdir}/libQt6WaylandCompositorWLShell.prl
+%{_qt6_libdir}/libQt6WaylandCompositorWLShell.so
+%{_qt6_libdir}/libQt6WaylandCompositorXdgShell.prl
+%{_qt6_libdir}/libQt6WaylandCompositorXdgShell.so
+%{_qt6_libdir}/libQt6WaylandEglClientHwIntegration.prl
+%{_qt6_libdir}/libQt6WaylandEglClientHwIntegration.so
+%{_qt6_libdir}/libQt6WaylandEglCompositorHwIntegration.prl
+%{_qt6_libdir}/libQt6WaylandEglCompositorHwIntegration.so
+%{_qt6_libdir}/libQt6WlShellIntegration.prl
+%{_qt6_libdir}/libQt6WlShellIntegration.so
+%{_qt6_libdir}/pkgconfig/*.pc
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
-%{_qt6_libdir}/pkgconfig/*.pc
-
+%{_qt6_libexecdir}/qtwaylandscanner
 
 %if 0%{?examples}
 %files examples
@@ -176,17 +164,35 @@ popd
 %endif
 
 %changelog
-* Tue May 21 2024 Pavel Solovev <daron439@gmail.com> - 6.7.1-1
-- Update to 6.7.1
+* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
+- new version
 
-* Tue Apr 02 2024 Pavel Solovev <daron439@gmail.com> - 6.7.0-1
-- Update to 6.7.0
+* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
+- new version
 
-* Tue Mar 26 2024 Pavel Solovev <daron439@gmail.com> - 6.6.3-1
-- Update to 6.6.3
+* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
+- new version
 
-* Thu Feb 15 2024 Pavel Solovev <daron439@gmail.com> - 6.6.2-1
-- Update to 6.6.2
+* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Tue Jul 09 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-2
+- Backport - Client: Ensure that guessed popup parent has shell surface
+
+* Mon Jul 01 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-1
+- 6.7.2
+
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-1
+- 6.7.1
+
+* Tue Apr 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-1
+- 6.7.0
+
+* Mon Feb 19 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-2
+- Examples: also install source files
+
+* Thu Feb 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-1
+- 6.6.2
 
 * Thu Feb 08 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.1-5
 - Backport upstream fix: Fix Qt::KeypadModifier for key events

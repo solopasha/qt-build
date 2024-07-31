@@ -7,31 +7,25 @@
 %global multilib_archs x86_64 %{ix86} %{?mips} ppc64 ppc s390x s390 sparc64 sparcv9
 
 #global unstable 1
-%if 0%{?unstable}
-%global prerelease rc2
-%endif
 
 %global examples 1
 
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
-Version: 6.7.1
+Version: 6.8.0~beta4
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
+%qt_source
 %global  majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
-%if 0%{?unstable}
-Source0: https://download.qt.io/development_releases/qt/%{majmin}/%{qt_version}/submodules/%{qt_module}-everywhere-src-%{qt_version}-%{prerelease}.tar.xz
-%else
-Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
-%endif
 
 # header file to workaround multilib issue
 # https://bugzilla.redhat.com/show_bug.cgi?id=1441343
 Source5: qv4global_p-multilib.h
+
 ## upstream patches
 
 ## upstreamable patches
@@ -45,6 +39,7 @@ BuildRequires: ninja-build
 BuildRequires: qt6-rpm-macros
 BuildRequires: qt6-qtbase-devel >= %{version}
 BuildRequires: qt6-qtbase-private-devel
+BuildRequires: qt6-qtbase-static
 BuildRequires: qt6-qtlanguageserver-devel >= %{version}
 BuildRequires: qt6-qtshadertools-devel >= %{version}
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
@@ -92,7 +87,7 @@ Provides:  qt6-qtquickcontrols2-examples = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{qt_module}-everywhere-src-%{qt_version}%{?unstable:-%{prerelease}} -p1
+%autosetup -n %{sourcerootdir} -p1
 
 
 %build
@@ -145,7 +140,6 @@ for prl_file in libQt6*.prl ; do
 done
 popd
 
-
 %check
 %if 0%{?tests}
 export CTEST_OUTPUT_ON_FAILURE=1
@@ -170,12 +164,13 @@ make check -k -C tests ||:
 %{_qt6_libdir}/libQt6LabsSharedImage.so.6*
 %{_qt6_libdir}/libQt6LabsWavefrontMesh.so.6*
 %{_qt6_libdir}/libQt6QmlLocalStorage.so.6*
+%{_qt6_libdir}/libQt6QmlNetwork.so.6*
 %{_qt6_libdir}/libQt6Qml.so.6*
 %{_qt6_libdir}/libQt6QmlCompiler.so.*
 %{_qt6_libdir}/libQt6QmlCore.so.6*
 %{_qt6_libdir}/libQt6QmlModels.so.6*
 %{_qt6_libdir}/libQt6QmlWorkerScript.so.6*
-%{_qt6_libdir}/libQt6Quick.so.6*
+%{_qt6_libdir}/libQt6Quick*.so.6*
 %{_qt6_libdir}/libQt6QuickControls2.so.6*
 %{_qt6_libdir}/libQt6QuickControls2Impl.so.6*
 %{_qt6_libdir}/libQt6QuickDialogs2.so.6*
@@ -189,24 +184,15 @@ make check -k -C tests ||:
 %{_qt6_libdir}/libQt6QuickTest.so.6*
 %{_qt6_libdir}/libQt6QuickTemplates2.so.6*
 %{_qt6_libdir}/libQt6QmlXmlListModel.so.6*
-%{_qt6_libdir}/libQt6QuickControls2Basic.so.6*
-%{_qt6_libdir}/libQt6QuickControls2BasicStyleImpl.so.6*
-%{_qt6_libdir}/libQt6QuickControls2Fusion.so.6*
-%{_qt6_libdir}/libQt6QuickControls2FusionStyleImpl.so.6*
-%{_qt6_libdir}/libQt6QuickControls2Imagine.so.6*
-%{_qt6_libdir}/libQt6QuickControls2ImagineStyleImpl.so.6*
-%{_qt6_libdir}/libQt6QuickControls2Material.so.6*
-%{_qt6_libdir}/libQt6QuickControls2MaterialStyleImpl.so.6*
-%{_qt6_libdir}/libQt6QuickControls2Universal.so.6*
-%{_qt6_libdir}/libQt6QuickControls2UniversalStyleImpl.so.6*
-%{_qt6_libdir}/libQt6QmlNetwork.so.6*
+%{_qt6_libdir}/libQt6QmlMeta.so.6*
+%{_qt6_libdir}/libQt6LabsPlatform.so.6*
 %{_qt6_plugindir}/qmltooling/
 %{_qt6_plugindir}/qmllint/
+%{_qt6_plugindir}/qmlls/
 %{_qt6_archdatadir}/qml/
 
 %files devel
 %dir %{_qt6_libdir}/cmake/Qt6PacketProtocolPrivate
-%dir %{_qt6_libdir}/cmake/Qt6Qml
 %dir %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins
 %dir %{_qt6_libdir}/cmake/Qt6QmlCompiler
 %dir %{_qt6_libdir}/cmake/Qt6QmlCore
@@ -219,10 +205,21 @@ make check -k -C tests ||:
 %dir %{_qt6_libdir}/cmake/Qt6LabsSettings
 %dir %{_qt6_libdir}/cmake/Qt6LabsSharedImage
 %dir %{_qt6_libdir}/cmake/Qt6LabsWavefrontMesh
+%dir %{_qt6_libdir}/cmake/Qt6QuickControls2Basic
+%dir %{_qt6_libdir}/cmake/Qt6QuickControls2BasicStyleImpl
+%dir %{_qt6_libdir}/cmake/Qt6QuickControls2Fusion
+%dir %{_qt6_libdir}/cmake/Qt6QuickControls2FusionStyleImpl
+%dir %{_qt6_libdir}/cmake/Qt6QuickControls2Imagine
+%dir %{_qt6_libdir}/cmake/Qt6QuickControls2ImagineStyleImpl
+%dir %{_qt6_libdir}/cmake/Qt6QuickControls2Material
+%dir %{_qt6_libdir}/cmake/Qt6QuickControls2MaterialStyleImpl
+%dir %{_qt6_libdir}/cmake/Qt6QuickControls2Universal
+%dir %{_qt6_libdir}/cmake/Qt6QuickControls2UniversalStyleImpl
 %dir %{_qt6_libdir}/cmake/Qt6QmlLSPrivate
 %dir %{_qt6_libdir}/cmake/Qt6QmlDomPrivate
 %dir %{_qt6_libdir}/cmake/Qt6QmlLocalStorage
 %dir %{_qt6_libdir}/cmake/Qt6QmlModels
+%dir %{_qt6_libdir}/cmake/Qt6QmlNetwork
 %dir %{_qt6_libdir}/cmake/Qt6QmlTools
 %dir %{_qt6_libdir}/cmake/Qt6QmlToolingSettingsPrivate
 %dir %{_qt6_libdir}/cmake/Qt6QmlWorkerScript
@@ -248,6 +245,7 @@ make check -k -C tests ||:
 %{_qt6_libexecdir}/qmlimportscanner
 %{_qt6_libexecdir}/qmltyperegistrar
 %{_qt6_libexecdir}/qmljsrootgen
+%{_qt6_libexecdir}/qmlaotstats
 %{_qt6_headerdir}/Qt*/
 %{_qt6_libdir}/libQt6LabsAnimation.so
 %{_qt6_libdir}/libQt6LabsFolderListModel.so
@@ -257,23 +255,22 @@ make check -k -C tests ||:
 %{_qt6_libdir}/libQt6LabsWavefrontMesh.so
 %{_qt6_libdir}/libQt6QmlLocalStorage.so
 %{_qt6_libdir}/libQt6Qml.so
+%{_qt6_libdir}/libQt6QmlNetwork.so
 %{_qt6_libdir}/libQt6QmlCompiler.so
 %{_qt6_libdir}/libQt6QmlCore.so
 %{_qt6_libdir}/libQt6QmlModels.so
 %{_qt6_libdir}/libQt6QmlWorkerScript.so
 %{_qt6_libdir}/libQt6Quick*.so
 %{_qt6_libdir}/libQt6QmlXmlListModel.so
-%{_qt6_libdir}/libQt6QmlNetwork.so
-%{_qt6_libdir}/libQt6QmlBuiltins.a
+%{_qt6_libdir}/libQt6QmlMeta.so
+%{_qt6_libdir}/libQt6LabsPlatform.so
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
+%{_qt6_libdir}/qt6/objects-RelWithDebInfo/QmlTypeRegistrarPrivate_resources_1/.qt/rcc/qrc_jsRootMetaTypes_init.cpp.o
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_archdatadir}/mkspecs/features/*.prf
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtDeclarativeTestsConfig.cmake
 %{_qt6_libdir}/cmake/Qt6PacketProtocolPrivate/*.cmake
-%{_qt6_libdir}/cmake/Qt6Qml/*.cmake*
-%{_qt6_libdir}/cmake/Qt6Qml/*.cpp.in
-%{_qt6_libdir}/cmake/Qt6Qml/*.qrc.in
-%{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
+%{_qt6_libdir}/cmake/Qt6Qml/
 %{_qt6_libdir}/cmake/Qt6QmlCompiler/*.cmake
 %{_qt6_libdir}/cmake/Qt6QmlCore/*.cmake
 %{_qt6_libdir}/cmake/Qt6QmlDebugPrivate/*.cmake
@@ -288,7 +285,18 @@ make check -k -C tests ||:
 %{_qt6_libdir}/cmake/Qt6QmlLSPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6QmlDomPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6QmlLocalStorage/*.cmake
+%{_qt6_libdir}/cmake/Qt6QuickControls2Basic/*.cmake
+%{_qt6_libdir}/cmake/Qt6QuickControls2BasicStyleImpl/*.cmake
+%{_qt6_libdir}/cmake/Qt6QuickControls2Fusion/*.cmake
+%{_qt6_libdir}/cmake/Qt6QuickControls2FusionStyleImpl/*.cmake
+%{_qt6_libdir}/cmake/Qt6QuickControls2Imagine/*.cmake
+%{_qt6_libdir}/cmake/Qt6QuickControls2ImagineStyleImpl/*.cmake
+%{_qt6_libdir}/cmake/Qt6QuickControls2Material/*.cmake
+%{_qt6_libdir}/cmake/Qt6QuickControls2MaterialStyleImpl/*.cmake
+%{_qt6_libdir}/cmake/Qt6QuickControls2Universal/*.cmake
+%{_qt6_libdir}/cmake/Qt6QuickControls2UniversalStyleImpl/*.cmake
 %{_qt6_libdir}/cmake/Qt6QmlModels/*.cmake
+%{_qt6_libdir}/cmake/Qt6QmlNetwork/*.cmake
 %{_qt6_libdir}/cmake/Qt6QmlTools/*.cmake
 %{_qt6_libdir}/cmake/Qt6QmlToolingSettingsPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6QmlWorkerScript/*.cmake
@@ -309,53 +317,24 @@ make check -k -C tests ||:
 %{_qt6_libdir}/cmake/Qt6QuickTemplates2/*.cmake
 %{_qt6_libdir}/cmake/Qt6QmlXmlListModel/*.cmake
 %{_qt6_libdir}/cmake/Qt6QuickWidgets/*.cmake
-%{_qt6_libdir}/cmake/Qt6QuickControls2Basic/
-%{_qt6_libdir}/cmake/Qt6QuickControls2BasicStyleImpl/
-%{_qt6_libdir}/cmake/Qt6QuickControls2Fusion/
-%{_qt6_libdir}/cmake/Qt6QuickControls2FusionStyleImpl/
-%{_qt6_libdir}/cmake/Qt6QuickControls2Imagine/
-%{_qt6_libdir}/cmake/Qt6QuickControls2ImagineStyleImpl/
-%{_qt6_libdir}/cmake/Qt6QuickControls2Material/
-%{_qt6_libdir}/cmake/Qt6QuickControls2MaterialStyleImpl/
-%{_qt6_libdir}/cmake/Qt6QuickControls2Universal/
-%{_qt6_libdir}/cmake/Qt6QuickControls2UniversalStyleImpl/
-%{_qt6_libdir}/cmake/Qt6QmlBuiltins/
-%{_qt6_libdir}/cmake/Qt6QmlNetwork/
+%{_qt6_libdir}/cmake/Qt6LabsPlatform/
+%{_qt6_libdir}/cmake/Qt6QmlMeta/
+%{_qt6_libdir}/cmake/Qt6QuickControls2FluentWinUI3StyleImpl/
+%{_qt6_libdir}/cmake/Qt6QmlAssetDownloader/
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/pkgconfig/*.pc
-%{_qt6_libdir}/qt6/objects-RelWithDebInfo/QmlTypeRegistrarPrivate_resources_1/.qt/rcc/qrc_jsRootMetaTypes_init.cpp.o
+%{_qt6_libdir}/libQt6*.prl
 
 %files static
-%{_qt6_libdir}/libQt6LabsAnimation.prl
-%{_qt6_libdir}/libQt6LabsFolderListModel.prl
-%{_qt6_libdir}/libQt6LabsQmlModels.prl
-%{_qt6_libdir}/libQt6LabsSettings.prl
-%{_qt6_libdir}/libQt6LabsSharedImage.prl
-%{_qt6_libdir}/libQt6LabsWavefrontMesh.prl
-%{_qt6_libdir}/libQt6QmlCore.prl
 %{_qt6_libdir}/libQt6QmlDom.a
-%{_qt6_libdir}/libQt6QmlDom.prl
-%{_qt6_libdir}/libQt6QmlLocalStorage.prl
 %{_qt6_libdir}/libQt6QmlLS.a
-%{_qt6_libdir}/libQt6QmlLS.prl
-%{_qt6_libdir}/libQt6Quick*.prl
-%{_qt6_libdir}/libQt6QmlWorkerScript.prl
-%{_qt6_libdir}/libQt6QmlModels.prl
-%{_qt6_libdir}/libQt6Qml.prl
-%{_qt6_libdir}/libQt6QmlCompiler.prl
-%{_qt6_libdir}/libQt6QmlTypeRegistrar.prl
 %{_qt6_libdir}/libQt6QmlTypeRegistrar.a
 %{_qt6_libdir}/libQt6QmlToolingSettings.a
-%{_qt6_libdir}/libQt6QmlToolingSettings.prl
 %{_qt6_libdir}/libQt6PacketProtocol.a
-%{_qt6_libdir}/libQt6PacketProtocol.prl
 %{_qt6_libdir}/libQt6QuickControlsTestUtils.a
 %{_qt6_libdir}/libQt6QuickTestUtils.a
 %{_qt6_libdir}/libQt6QmlDebug.a
-%{_qt6_libdir}/libQt6QmlDebug.prl
-%{_qt6_libdir}/libQt6QmlXmlListModel.prl
-%{_qt6_libdir}/libQt6QmlBuiltins.prl
-%{_qt6_libdir}/libQt6QmlNetwork.prl
+%{_qt6_libdir}/libQt6QmlAssetDownloader.a
 
 %if 0%{?examples}
 %files examples
@@ -363,20 +342,50 @@ make check -k -C tests ||:
 %endif
 
 %changelog
-* Tue May 21 2024 Pavel Solovev <daron439@gmail.com> - 6.7.1-1
-- Update to 6.7.1
+* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
+- new version
 
-* Tue Apr 02 2024 Pavel Solovev <daron439@gmail.com> - 6.7.0-1
-- Update to 6.7.0
+* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
+- new version
 
-* Fri Mar 29 2024 Pavel Solovev <daron439@gmail.com> - 6.6.3-2
-- pick patches
+* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
+- new version
 
-* Tue Mar 26 2024 Pavel Solovev <daron439@gmail.com> - 6.6.3-1
-- Update to 6.6.3
+* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
-* Thu Feb 15 2024 Pavel Solovev <daron439@gmail.com> - 6.6.2-1
-- Update to 6.6.2
+* Mon Jul 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-2
+- Do not own /usr/lib[64]/qml directory
+
+* Mon Jul 01 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-1
+- 6.7.2
+
+* Mon Jun 10 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-4
+- Move all *prl files to -devel subpacakge
+
+* Thu Jun 06 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-3
+- Backport upstream fix - dom: avoid asserts during dom construction
+
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-2
+- Rebuild for updated qtbase private api tag
+
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-1
+- 6.7.1
+
+* Wed Apr 03 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-2
+- Move libQt6QmlBuiltins.a to -devel subpackage
+
+* Tue Apr 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-1
+- 6.7.0
+
+* Tue Apr 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-3
+- Backport Qt patches for crashes
+
+* Mon Feb 19 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-2
+- Examples: also install source files
+
+* Thu Feb 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-1
+- 6.6.2
 
 * Fri Jan 26 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.6.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild

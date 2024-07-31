@@ -45,19 +45,15 @@ BuildRequires: pkgconfig(libsystemd)
 
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
-Version: 6.7.1
+Version: 6.8.0~beta4
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
+%qt_source
 %global  majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
-%if 0%{?unstable}
-Source0: https://download.qt.io/development_releases/qt/%{majmin}/%{qt_version}/submodules/%{qt_module}-everywhere-src-%{qt_version}-%{prerelease}.tar.xz
-%else
-Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
-%endif
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1227295
 Source1: qtlogging.ini
@@ -73,9 +69,8 @@ Source6: 10-qt6-check-opengl2.sh
 # macros
 Source10: macros.qt6-qtbase
 
-Patch0:   https://github.com/qt/qtbase/commit/f05cf3f11f4e42e05d069b5d9249d4b9aff41ffe.patch
-
-Patch1: qtbase-CMake-Install-objects-files-into-ARCHDATADIR.patch
+Patch1:  qtbase-CMake-Install-objects-files-into-ARCHDATADIR.patch
+Patch2:  qtbase-use-only-major-minor-for-private-api-tag.patch
 
 # upstreamable patches
 # namespace QT_VERSION_CHECK to workaround major/minor being pre-defined (#1396755)
@@ -106,7 +101,6 @@ Patch100: qtbase-use-qgnomeplatform-as-default-platform-theme-on-gnome.patch
 %endif
 
 ## upstream patches
-Patch200: qtbase-qgtk3theme-add-support-for-xdp-to-get-color-scheme.patch
 
 # Do not check any files in %%{_qt6_plugindir}/platformthemes/ for requires.
 # Those themes are there for platform integration. If the required libraries are
@@ -202,6 +196,8 @@ BuildRequires: mesa-dri-drivers
 BuildRequires: time
 BuildRequires: (wlheadless-run and %{wlheadless_compositor})
 %endif
+
+Requires:      qt6-filesystem
 
 Requires: %{name}-common = %{version}-%{release}
 
@@ -327,7 +323,7 @@ Qt6 libraries used for drawing widgets and OpenGL items.
 
 
 %prep
-%autosetup -n %{qt_module}-everywhere-src-%{qt_version}%{?unstable:-%{prerelease}} -p1
+%autosetup -n %{sourcerootdir} -p1
 
 # move some bundled libs to ensure they're not accidentally used
 pushd src/3rdparty
@@ -405,6 +401,7 @@ export MAKEFLAGS="%{?_smp_mflags}"
 # FIXME
 #  -DQT_FEATURE_directfb=ON \
 
+cat redhat-linux-build/config.summary || :
 %cmake_build
 
 
@@ -436,7 +433,7 @@ translationdir=%{_qt6_translationdir}
 
 Name: Qt6
 Description: Qt6 Configuration
-Version: 6.7.1
+Version: 6.8.0
 EOF
 
 # rpm macros
@@ -450,7 +447,7 @@ sed -i \
   %{buildroot}%{_rpmmacrodir}/macros.qt6-qtbase
 
 # create/own dirs
-mkdir -p %{buildroot}{%{_qt6_archdatadir}/mkspecs/modules,%{_qt6_importdir},%{_qt6_libexecdir},%{_qt6_plugindir}/{designer,iconengines,script,styles},%{_qt6_translationdir}}
+mkdir -p %{buildroot}%{_qt6_plugindir}/{designer,iconengines,script,styles}
 mkdir -p %{buildroot}%{_sysconfdir}/xdg/QtProject
 
 # hardlink files to {_bindir}, add -qt6 postfix to not conflict
@@ -531,19 +528,9 @@ make check -k ||:
 %{_qt6_libdir}/libQt6Sql.so.6*
 %{_qt6_libdir}/libQt6Test.so.6*
 %{_qt6_libdir}/libQt6Xml.so.6*
-%dir %{_qt6_docdir}/
 %{_qt6_docdir}/global/
 %{_qt6_docdir}/config/
-%{_qt6_importdir}/
-%{_qt6_translationdir}/
-%if "%{_qt6_prefix}" != "%{_prefix}"
-%dir %{_qt6_prefix}/
-%endif
-%dir %{_qt6_archdatadir}/
-%dir %{_qt6_datadir}/
 %{_qt6_datadir}/qtlogging.ini
-%dir %{_qt6_libexecdir}/
-%dir %{_qt6_plugindir}/
 %dir %{_qt6_plugindir}/designer/
 %dir %{_qt6_plugindir}/generic/
 %dir %{_qt6_plugindir}/iconengines/
@@ -568,8 +555,6 @@ make check -k ||:
 %{_rpmmacrodir}/macros.qt6-qtbase
 
 %files devel
-%dir %{_qt6_libdir}/qt6/modules
-%dir %{_qt6_libdir}/qt6/metatypes
 %dir %{_qt6_libdir}/cmake/Qt6
 %dir %{_qt6_libdir}/cmake/Qt6/platforms
 %dir %{_qt6_libdir}/cmake/Qt6/platforms/Platform
@@ -602,9 +587,6 @@ make check -k ||:
 %dir %{_qt6_libdir}/cmake/Qt6Widgets
 %dir %{_qt6_libdir}/cmake/Qt6WidgetsTools
 %dir %{_qt6_libdir}/cmake/Qt6Xml
-%if "%{_qt6_bindir}" != "%{_bindir}"
-%dir %{_qt6_bindir}
-%endif
 %{_bindir}/androiddeployqt
 %{_bindir}/androiddeployqt6
 %{_bindir}/androidtestrunner
@@ -640,9 +622,6 @@ make check -k ||:
 %{_qt6_libexecdir}/uic
 %{_qt6_libexecdir}/qt-testrunner.py
 %{_qt6_libdir}/qt6/modules/*.json
-%if "%{_qt6_headerdir}" != "%{_includedir}"
-%dir %{_qt6_headerdir}
-%endif
 %{_qt6_headerdir}/QtConcurrent/
 %{_qt6_headerdir}/QtCore/
 %{_qt6_headerdir}/QtDBus/
@@ -658,9 +637,10 @@ make check -k ||:
 %{_qt6_headerdir}/QtWidgets/
 %{_qt6_headerdir}/QtXcb/
 %{_qt6_headerdir}/QtXml/
-%{_qt6_headerdir}/QtEglFSDeviceIntegration
-%{_qt6_headerdir}/QtEglFsKmsGbmSupport
-%{_qt6_headerdir}/QtEglFsKmsSupport
+%{_qt6_headerdir}/QtEglFSDeviceIntegration/
+%{_qt6_headerdir}/QtEglFsKmsGbmSupport/
+%{_qt6_headerdir}/QtEglFsKmsSupport/
+%{_qt6_headerdir}/QtExamplesAssetDownloader/
 %{_qt6_mkspecsdir}/
 %{_qt6_libdir}/libQt6Concurrent.prl
 %{_qt6_libdir}/libQt6Concurrent.so
@@ -745,6 +725,7 @@ make check -k ||:
 %{_qt6_libdir}/cmake/Qt6WidgetsTools/*.cmake
 %{_qt6_libdir}/cmake/Qt6XcbQpaPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6Xml/*.cmake
+%{_qt6_libdir}/cmake/Qt6ExamplesAssetDownloaderPrivate/
 %{_qt6_libdir}/qt6/metatypes/*.json
 %{_qt6_libdir}/qt6/objects-RelWithDebInfo/ExampleIconsPrivate_resources_1/.qt/rcc/qrc_example_icons_init.cpp.o
 %{_qt6_libdir}/pkgconfig/*.pc
@@ -773,6 +754,8 @@ make check -k ||:
 %{_qt6_headerdir}/QtKmsSupport
 %{_qt6_libdir}/libQt6KmsSupport.*a
 %{_qt6_libdir}/libQt6KmsSupport.prl
+%{_qt6_libdir}/libQt6ExamplesAssetDownloader.a
+%{_qt6_libdir}/libQt6ExamplesAssetDownloader.prl
 %if 0%{?examples}
 %files examples
 %{_qt6_examplesdir}/
@@ -854,6 +837,35 @@ make check -k ||:
 
 
 %changelog
+* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
+- new version
+
+* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
+- new version
+
+* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
+- new version
+
+* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Mon Jul 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-4
+- Use qt6-filesystem
+
+* Mon Jul 08 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-3
+- HTTP2: Delay any communication until encrypted() can be responded to
+  Resolves: CVE-2024-39936
+
+* Wed Jul 03 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-2
+- Revert: Consider versioned targets when checking the existens in
+  __qt_internal_walk_libs
+
+* Mon Jul 01 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-1
+- 6.7.2
+
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-2
+- Use only major.minor version for private api tag
+
 * Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-1
 - 6.7.1
 

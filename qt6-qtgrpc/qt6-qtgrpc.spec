@@ -2,27 +2,20 @@
 %global qt_module qtgrpc
 
 #global unstable 1
-%if 0%{?unstable}
-%global prerelease rc2
-%endif
 
 %global examples 1
 
 Summary: Qt6 - Support for using gRPC and Protobuf
 Name:    qt6-%{qt_module}
-Version: 6.7.1
+Version: 6.8.0~beta4
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
+%qt_source
 %global  majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
-%if 0%{?unstable}
-Source0: https://download.qt.io/development_releases/qt/%{majmin}/%{qt_version}/submodules/%{qt_module}-everywhere-src-%{qt_version}-%{prerelease}.tar.xz
-%else
-Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
-%endif
 
 # filter plugin provides
 %global __provides_exclude_from ^%{_qt6_plugindir}/.*\\.so$
@@ -35,6 +28,7 @@ BuildRequires: qt6-qtdeclarative-devel >= %{version}
 BuildRequires: pkgconfig(grpc++)
 BuildRequires: pkgconfig(libprotobuf-c)
 BuildRequires: pkgconfig(protobuf)
+BuildRequires: zlib-static
 
 BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
@@ -63,7 +57,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{qt_module}-everywhere-src-%{qt_version}%{?unstable:-%{prerelease}} -p1
+%autosetup -n %{sourcerootdir} -p1
 
 
 %build
@@ -80,17 +74,20 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 %files
 %license LICENSES/GPL* LICENSES/LGPL*
+%{_qt6_archdatadir}/qml/QtGrpc/
+%{_qt6_archdatadir}/qml/QtProtobuf/
 %{_qt6_libdir}/libQt6Grpc.so.6*
+%{_qt6_libdir}/libQt6GrpcQuick.so.6*
 %{_qt6_libdir}/libQt6Protobuf.so.6*
 %{_qt6_libdir}/libQt6ProtobufQtCoreTypes.so.6*
 %{_qt6_libdir}/libQt6ProtobufQtGuiTypes.so.6*
+%{_qt6_libdir}/libQt6ProtobufQuick.so.6*
 %{_qt6_libdir}/libQt6ProtobufWellKnownTypes.so.6*
-%{_qt6_libdir}/libQt6GrpcQuick.so.6*
-%{_qt6_qmldir}/QtGrpc/
 
 %files devel
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_headerdir}/QtGrpc/
+%{_qt6_headerdir}/QtProtobufQuick/
 %{_qt6_headerdir}/QtProtobuf/
 %{_qt6_headerdir}/QtProtobufQtCoreTypes/
 %{_qt6_headerdir}/QtProtobufQtGuiTypes/
@@ -101,13 +98,15 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/libQt6ProtobufQtCoreTypes.so
 %{_qt6_libdir}/libQt6ProtobufQtGuiTypes.so
 %{_qt6_libdir}/libQt6ProtobufWellKnownTypes.so
-%{_qt6_libdir}/libQt6GrpcQuick.so
 %{_qt6_libdir}/libQt6Grpc.prl
 %{_qt6_libdir}/libQt6Protobuf.prl
 %{_qt6_libdir}/libQt6ProtobufWellKnownTypes.prl
 %{_qt6_libdir}/libQt6ProtobufQtCoreTypes.prl
 %{_qt6_libdir}/libQt6ProtobufQtGuiTypes.prl
+%{_qt6_libdir}/libQt6GrpcQuick.so
 %{_qt6_libdir}/libQt6GrpcQuick.prl
+%{_qt6_libdir}/libQt6ProtobufQuick.prl
+%{_qt6_libdir}/libQt6ProtobufQuick.so
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtGrpcTestsConfig.cmake
 %{_qt6_libdir}/cmake/Qt6/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6GrpcTools/
@@ -124,8 +123,11 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/cmake/Qt6ProtobufTools/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6ProtobufWellKnownTypes/
 %{_qt6_libdir}/cmake/Qt6ProtobufWellKnownTypes/*.cmake
-%{_qt6_libdir}/cmake/Qt6GrpcQuick/
-%{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/
+%dir %{_qt6_libdir}/cmake/Qt6GrpcQuick
+%{_qt6_libdir}/cmake/Qt6GrpcQuick/*.cmake
+%dir %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins
+%{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
+%{_qt6_libdir}/cmake/Qt6ProtobufQuick/
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/pkgconfig/*.pc
@@ -138,17 +140,32 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %changelog
-* Tue May 21 2024 Pavel Solovev <daron439@gmail.com> - 6.7.1-1
-- Update to 6.7.1
+* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
+- new version
 
-* Tue Apr 02 2024 Pavel Solovev <daron439@gmail.com> - 6.7.0-1
-- Update to 6.7.0
+* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
+- new version
 
-* Tue Mar 26 2024 Pavel Solovev <daron439@gmail.com> - 6.6.3-1
-- Update to 6.6.3
+* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
+- new version
 
-* Thu Feb 15 2024 Pavel Solovev <daron439@gmail.com> - 6.6.2-1
-- Update to 6.6.2
+* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Mon Jul 01 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-1
+- 6.7.2
+
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-1
+- 6.7.1
+
+* Tue Apr 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-1
+- 6.7.0
+
+* Mon Feb 19 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-2
+- Examples: also install source files
+
+* Thu Feb 15 2024 Jan Grulich <jgrulich@redhat.com> - 6.6.2-1
+- 6.6.2
 
 * Sun Feb 04 2024 Benjamin A. Beasley <code@musicinmybrain.net> - 6.6.1-3
 - Rebuilt for abseil-cpp-20240116.0

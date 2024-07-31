@@ -1,4 +1,3 @@
-
 %global qt_module qtmultimedia
 
 %global gst 0.10
@@ -13,27 +12,20 @@
 %endif
 
 #global unstable 1
-%if 0%{?unstable}
-%global prerelease rc2
-%endif
 
 %global examples 1
 
 Summary: Qt6 - Multimedia support
 Name:    qt6-%{qt_module}
-Version: 6.7.1
+Version: 6.8.0~beta4
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
+%qt_source
 %global  majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
-%if 0%{?unstable}
-Source0: https://download.qt.io/development_releases/qt/%{majmin}/%{qt_version}/submodules/%{qt_module}-everywhere-src-%{qt_version}-%{prerelease}.tar.xz
-%else
-Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
-%endif
 
 # filter plugin/qml provides
 %global __provides_exclude_from ^(%{_qt6_archdatadir}/qml/.*\\.so|%{_qt6_plugindir}/.*\\.so)$
@@ -66,10 +58,11 @@ BuildRequires: pkgconfig(libpulse) pkgconfig(libpulse-mainloop-glib)
 %if %{with ffmpeg}
 BuildRequires: ffmpeg-free-devel
 BuildRequires: libavcodec-free-devel
-BuildRequires: libavutil-free-devel
 BuildRequires: libavformat-free-devel
-BuildRequires: libswscale-free-devel
+BuildRequires: libavutil-free-devel
 BuildRequires: libswresample-free-devel
+BuildRequires: libswscale-free-devel
+BuildRequires: pipewire-devel
 BuildRequires: pkgconfig(libva) pkgconfig(libva-drm)
 %endif
 BuildRequires: pkgconfig(xrandr)
@@ -107,7 +100,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{qt_module}-everywhere-src-%{qt_version}%{?unstable:-%{prerelease}} -p1
+%autosetup -n %{sourcerootdir} -p1
 
 
 %build
@@ -157,31 +150,29 @@ popd
 %endif
 
 %files devel
-%{_qt6_headerdir}/QtQGstreamerMediaPlugin/
 %{_qt6_headerdir}/QtMultimedia/
 %{_qt6_headerdir}/QtMultimediaQuick/
 %{_qt6_headerdir}/QtMultimediaWidgets/
-%{_qt6_headerdir}/QtSpatialAudio/
+%{_qt6_headerdir}/QtQGstreamerMediaPluginImpl/
 %{_qt6_headerdir}/QtQuick3DSpatialAudio/
+%{_qt6_headerdir}/QtSpatialAudio/
 %{_qt6_libdir}/libQt6BundledResonanceAudio.a
-%{_qt6_libdir}/libQt6QGstreamerMediaPlugin.a
-%{_qt6_libdir}/libQt6QGstreamerMediaPlugin.prl
-%{_qt6_libdir}/libQt6Multimedia.so
 %{_qt6_libdir}/libQt6Multimedia.prl
-%{_qt6_libdir}/libQt6MultimediaQuick.so
+%{_qt6_libdir}/libQt6Multimedia.so
 %{_qt6_libdir}/libQt6MultimediaQuick.prl
-%{_qt6_libdir}/libQt6MultimediaWidgets.so
+%{_qt6_libdir}/libQt6MultimediaQuick.so
 %{_qt6_libdir}/libQt6MultimediaWidgets.prl
-%{_qt6_libdir}/libQt6SpatialAudio.so
-%{_qt6_libdir}/libQt6SpatialAudio.prl
-%{_qt6_libdir}/libQt6Quick3DSpatialAudio.so
+%{_qt6_libdir}/libQt6MultimediaWidgets.so
+%{_qt6_libdir}/libQt6QGstreamerMediaPluginImpl.a
+%{_qt6_libdir}/libQt6QGstreamerMediaPluginImpl.prl
 %{_qt6_libdir}/libQt6Quick3DSpatialAudio.prl
+%{_qt6_libdir}/libQt6Quick3DSpatialAudio.so
+%{_qt6_libdir}/libQt6SpatialAudio.prl
+%{_qt6_libdir}/libQt6SpatialAudio.so
 %{_qt6_libdir}/cmake/Qt6/*.cmake
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6BundledResonanceAudio/
 %{_qt6_libdir}/cmake/Qt6BundledResonanceAudio/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6QGstreamerMediaPluginPrivate/
-%{_qt6_libdir}/cmake/Qt6QGstreamerMediaPluginPrivate/*.cmake
 %dir  %{_qt6_libdir}/cmake/Qt6MultimediaQuickPrivate
 %{_qt6_libdir}/cmake/Qt6MultimediaQuickPrivate/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6Multimedia
@@ -194,6 +185,7 @@ popd
 %{_qt6_libdir}/cmake/Qt6Quick3DSpatialAudioPrivate/*cmake
 %dir %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
+%{_qt6_libdir}/cmake/Qt6QGstreamerMediaPluginImplPrivate/
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
@@ -207,14 +199,26 @@ popd
 
 
 %changelog
-* Tue May 21 2024 Pavel Solovev <daron439@gmail.com> - 6.7.1-1
-- Update to 6.7.1
+* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
+- new version
 
-* Tue Apr 02 2024 Pavel Solovev <daron439@gmail.com> - 6.7.0-1
-- Update to 6.7.0
+* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
+- new version
 
-* Tue Mar 26 2024 Pavel Solovev <daron439@gmail.com> - 6.6.3-1
-- Update to 6.6.3
+* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
+- new version
+
+* Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Mon Jul 01 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-1
+- 6.7.2
+
+* Tue May 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.1-1
+- 6.7.1
+
+* Tue Apr 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.0-1
+- 6.7.0
 
 * Thu Mar 21 2024 Marie Loise Nolden <loise@kde.org> - 6.6.2-3
 - add qt6-qtquick3d-devel as BR for spatial audio (3d)

@@ -1,5 +1,8 @@
 # SPDX-License-Identifier: MIT
 
+%_distro_extra_cflags -g1
+%_distro_extra_cxxflags -g1
+
 %_qt6_build_type RelWithDebInfo
 %_qt6_build_tool ninja
 
@@ -66,4 +69,5 @@
         -DINSTALL_QMLDIR=%{_qt6_qmldir} \\\
         -DINSTALL_SYSCONFDIR=%{_qt6_sysconfdir} \\\
         -DINSTALL_TRANSLATIONSDIR=%{_qt6_translationdir} \\\
-        -DQT_DISABLE_RPATH=TRUE
+        -DQT_DISABLE_RPATH=TRUE \\\
+        -DCMAKE_MESSAGE_LOG_LEVEL=STATUS

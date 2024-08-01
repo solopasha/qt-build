@@ -96,7 +96,7 @@ mkdir %{buildroot}%{_bindir}
 pushd %{buildroot}%{_qt6_bindir}
 for i in * ; do
   case "${i}" in
-    balsam|meshdebug|shadergen|balsamui|instancer|materialeditor|shapegen)
+    balsam|meshdebug|shadergen|balsamui|instancer|shapegen)
       ln -v  ${i} %{buildroot}%{_bindir}/${i}-qt6
       ;;
     *)
@@ -145,14 +145,12 @@ popd
 %{_bindir}/shadergen-qt6
 %{_bindir}/balsamui-qt6
 %{_bindir}/instancer-qt6
-%{_bindir}/materialeditor-qt6
 %{_bindir}/shapegen-qt6
 %{_qt6_bindir}/balsam
 %{_qt6_bindir}/meshdebug
 %{_qt6_bindir}/shadergen
 %{_qt6_bindir}/balsamui
 %{_qt6_bindir}/instancer
-%{_qt6_bindir}/materialeditor
 %{_qt6_bindir}/shapegen
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_libdir}/qt6/modules/*.json

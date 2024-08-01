@@ -74,22 +74,25 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 %files
 %license LICENSES/GPL* LICENSES/LGPL*
+%{_qt6_archdatadir}/qml/QtGrpc/
+%{_qt6_archdatadir}/qml/QtProtobuf/
 %{_qt6_libdir}/libQt6Grpc.so.6*
+%{_qt6_libdir}/libQt6GrpcQuick.so.6*
 %{_qt6_libdir}/libQt6Protobuf.so.6*
 %{_qt6_libdir}/libQt6ProtobufQtCoreTypes.so.6*
 %{_qt6_libdir}/libQt6ProtobufQtGuiTypes.so.6*
+%{_qt6_libdir}/libQt6ProtobufQuick.so.6*
 %{_qt6_libdir}/libQt6ProtobufWellKnownTypes.so.6*
-%{_qt6_libdir}/libQt6GrpcQuick.so.6*
-%{_qt6_archdatadir}/qml/QtGrpc
 
 %files devel
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_headerdir}/QtGrpc/
+%{_qt6_headerdir}/QtProtobufQuick/
 %{_qt6_headerdir}/QtProtobuf/
 %{_qt6_headerdir}/QtProtobufQtCoreTypes/
 %{_qt6_headerdir}/QtProtobufQtGuiTypes/
 %{_qt6_headerdir}/QtProtobufWellKnownTypes/
-%{_qt6_headerdir}/QtGrpcQuick
+%{_qt6_headerdir}/QtGrpcQuick/
 %{_qt6_libdir}/libQt6Grpc.so
 %{_qt6_libdir}/libQt6Protobuf.so
 %{_qt6_libdir}/libQt6ProtobufQtCoreTypes.so
@@ -102,6 +105,8 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/libQt6ProtobufQtGuiTypes.prl
 %{_qt6_libdir}/libQt6GrpcQuick.so
 %{_qt6_libdir}/libQt6GrpcQuick.prl
+%{_qt6_libdir}/libQt6ProtobufQuick.prl
+%{_qt6_libdir}/libQt6ProtobufQuick.so
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtGrpcTestsConfig.cmake
 %{_qt6_libdir}/cmake/Qt6/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6GrpcTools/
@@ -122,6 +127,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/cmake/Qt6GrpcQuick/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
+%{_qt6_libdir}/cmake/Qt6ProtobufQuick/
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/pkgconfig/*.pc

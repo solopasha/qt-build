@@ -82,18 +82,23 @@ popd
 %files
 %license LICENSES/BSD-3-Clause.txt LICENSES/GFDL*.txt LICENSES/GPL-*.txt
 %{_qt6_libdir}/libQt6Graphs.so.6*
-%{_qt6_libdir}/qt6/metatypes/qt6graphs_relwithdebinfo_metatypes.json
-%{_qt6_libdir}/qt6/modules/Graphs.json
-%{_qt6_qmldir}/QtGraphs
+%{_qt6_libdir}/libQt6GraphsWidgets.so.6*
+%{_qt6_libdir}/qt6/metatypes/qt6graphs*_relwithdebinfo_metatypes.json
+%{_qt6_libdir}/qt6/modules/Graphs*.json
+%{_qt6_qmldir}/QtGraphs/
 
 %files devel
-%{_qt6_headerdir}/QtGraphs
+%{_qt6_headerdir}/QtGraphs/
+%{_qt6_headerdir}/QtGraphsWidgets/
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtGraphsTestsConfig.cmake
-%{_qt6_libdir}/cmake/Qt6Graphs
+%{_qt6_libdir}/cmake/Qt6Graphs/
+%{_qt6_libdir}/cmake/Qt6GraphsWidgets/
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6Graphsplugin*.cmake
-%{_qt6_libdir}/libQt6Graphs.so
-%{_qt6_libdir}/pkgconfig/Qt6Graphs.pc
 %{_qt6_libdir}/libQt6Graphs.prl
+%{_qt6_libdir}/libQt6Graphs.so
+%{_qt6_libdir}/libQt6GraphsWidgets.prl
+%{_qt6_libdir}/libQt6GraphsWidgets.so
+%{_qt6_libdir}/pkgconfig/Qt6Graphs*.pc
 %{_qt6_libdir}/qt6/mkspecs/modules/qt_lib_graphs*.pri
 
 %if 0%{?examples}

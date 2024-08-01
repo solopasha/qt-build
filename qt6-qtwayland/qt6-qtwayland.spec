@@ -30,6 +30,7 @@ BuildRequires: cmake
 BuildRequires: ninja-build
 BuildRequires: qt6-qtbase-devel >= %{version}
 BuildRequires: qt6-qtbase-static
+BuildRequires: qt6-qtsvg-devel
 BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
 BuildRequires: qt6-qtdeclarative-devel

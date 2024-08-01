@@ -29,7 +29,8 @@ BuildRequires: qt6-qtdeclarative-devel
 BuildRequires: qt6-qtdeclarative-static
 BuildRequires: qt6-qtquicktimeline-devel
 BuildRequires: qt6-qtshadertools-devel
-
+BuildRequires: cmake(OpenXR)
+BuildRequires: cmake(assimp)
 #if 0{?fedora}
 # BuildRequires: pkgconfig(assimp) >= 5.0.0
 #endif

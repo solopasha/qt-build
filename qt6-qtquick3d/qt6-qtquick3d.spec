@@ -125,80 +125,48 @@ popd
 %license LICENSES/GPL*
 %{_qt6_libdir}/libQt6Quick3D.so.6*
 %{_qt6_libdir}/libQt6Quick3DAssetImport.so.6*
-%{_qt6_libdir}/libQt6Quick3DRuntimeRender.so.6*
-%{_qt6_libdir}/libQt6Quick3DUtils.so.6*
-%{_qt6_libdir}/libQt6Quick3DIblBaker.so.6*
-%{_qt6_libdir}/libQt6Quick3DParticles.so.6*
 %{_qt6_libdir}/libQt6Quick3DAssetUtils.so.6*
 %{_qt6_libdir}/libQt6Quick3DEffects.so.6*
+%{_qt6_libdir}/libQt6Quick3DGlslParser.so.6*
 %{_qt6_libdir}/libQt6Quick3DHelpers.so.6*
 %{_qt6_libdir}/libQt6Quick3DHelpersImpl.so*
+%{_qt6_libdir}/libQt6Quick3DIblBaker.so.6*
 %{_qt6_libdir}/libQt6Quick3DParticleEffects.so.6*
-%{_qt6_libdir}/libQt6Quick3DGlslParser.so.6*
-%dir %{_qt6_qmldir}/QtQuick3D/
-%{_qt6_qmldir}/QtQuick3D/
+%{_qt6_libdir}/libQt6Quick3DParticles.so.6*
+%{_qt6_libdir}/libQt6Quick3DRuntimeRender.so.6*
+%{_qt6_libdir}/libQt6Quick3DUtils.so.6*
+%{_qt6_libdir}/libQt6Quick3DXr.so.6*
 %{_qt6_plugindir}/assetimporters/*.so
+%{_qt6_qmldir}/QtQuick3D/
 
 %files devel
 %{_bindir}/balsam-qt6
-%{_bindir}/meshdebug-qt6
-%{_bindir}/shadergen-qt6
 %{_bindir}/balsamui-qt6
 %{_bindir}/instancer-qt6
+%{_bindir}/meshdebug-qt6
+%{_bindir}/shadergen-qt6
 %{_bindir}/shapegen-qt6
 %{_qt6_bindir}/balsam
-%{_qt6_bindir}/meshdebug
-%{_qt6_bindir}/shadergen
 %{_qt6_bindir}/balsamui
 %{_qt6_bindir}/instancer
+%{_qt6_bindir}/meshdebug
+%{_qt6_bindir}/shadergen
 %{_qt6_bindir}/shapegen
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_libdir}/qt6/modules/*.json
-%{_qt6_includedir}/QtQuick3D
-%{_qt6_includedir}/QtQuick3DAssetImport
-%{_qt6_includedir}/QtQuick3DIblBaker
-%{_qt6_includedir}/QtQuick3DParticles
-%{_qt6_includedir}/QtQuick3DRuntimeRender
-%{_qt6_includedir}/QtQuick3DUtils
-%{_qt6_includedir}/QtQuick3DAssetUtils
-%{_qt6_includedir}/QtQuick3DHelpers
-%{_qt6_includedir}/QtQuick3DHelpersImpl
-%{_qt6_includedir}/QtQuick3DGlslParser
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DIblBaker
-%{_qt6_libdir}/cmake/Qt6Quick3DIblBaker/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DParticles
-%{_qt6_libdir}/cmake/Qt6Quick3DParticles/*.cmake
-%{_qt6_libdir}/cmake/Qt6/FindWrapQuick3DAssimp.cmake
+%{_qt6_includedir}/QtOpenXR/
+%{_qt6_includedir}/QtQuick3D*/
+%{_qt6_libdir}/cmake/Qt6/*.cmake
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/*.cmake
 %{_qt6_libdir}/cmake/Qt6Qml/*.cmake
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
 %ifarch x86_64 aarch64
-%dir %{_qt6_libdir}/cmake/Qt6BundledEmbree/
 %{_qt6_libdir}/cmake/Qt6/FindWrapBundledEmbreeConfigExtra.cmake
-%{_qt6_libdir}/cmake/Qt6BundledEmbree/*.cmake
+%{_qt6_libdir}/cmake/Qt6BundledEmbree/
 %endif
-%dir %{_qt6_libdir}/cmake/Qt6Quick3D/
-%{_qt6_libdir}/cmake/Qt6Quick3D/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DAssetImport/
-%{_qt6_libdir}/cmake/Qt6Quick3DAssetImport/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DRuntimeRender/
-%{_qt6_libdir}/cmake/Qt6Quick3DRuntimeRender/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DTools/
-%{_qt6_libdir}/cmake/Qt6Quick3DTools/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DUtils/
-%{_qt6_libdir}/cmake/Qt6Quick3DUtils/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DAssetUtils/
-%{_qt6_libdir}/cmake/Qt6Quick3DAssetUtils/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DEffects/
-%{_qt6_libdir}/cmake/Qt6Quick3DEffects/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DHelpers/
-%{_qt6_libdir}/cmake/Qt6Quick3DHelpers/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DHelpersImpl/
-%{_qt6_libdir}/cmake/Qt6Quick3DHelpersImpl/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DGlslParserPrivate
-%{_qt6_libdir}/cmake/Qt6Quick3DGlslParserPrivate/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Quick3DParticleEffects
-%{_qt6_libdir}/cmake/Qt6Quick3DParticleEffects/*.cmake
+%{_qt6_libdir}/cmake/Qt6Quick3D*/
+%{_qt6_libdir}/cmake/Qt6BundledOpenXR/
+%{_qt6_libdir}/cmake/Qt6OpenXRPrivate/
 %ifarch x86_64 aarch64
 %{_qt6_libdir}/libQt6BundledEmbree.a
 %endif
@@ -206,26 +174,28 @@ popd
 %{_qt6_libdir}/libQt6Quick3D.so
 %{_qt6_libdir}/libQt6Quick3DAssetImport.prl
 %{_qt6_libdir}/libQt6Quick3DAssetImport.so
-%{_qt6_libdir}/libQt6Quick3DRuntimeRender.prl
-%{_qt6_libdir}/libQt6Quick3DRuntimeRender.so
-%{_qt6_libdir}/libQt6Quick3DUtils.prl
-%{_qt6_libdir}/libQt6Quick3DUtils.so
-%{_qt6_libdir}/libQt6Quick3DIblBaker.prl
-%{_qt6_libdir}/libQt6Quick3DIblBaker.so
-%{_qt6_libdir}/libQt6Quick3DParticles.prl
-%{_qt6_libdir}/libQt6Quick3DParticles.so
 %{_qt6_libdir}/libQt6Quick3DAssetUtils.prl
 %{_qt6_libdir}/libQt6Quick3DAssetUtils.so
 %{_qt6_libdir}/libQt6Quick3DEffects.prl
 %{_qt6_libdir}/libQt6Quick3DEffects.so
+%{_qt6_libdir}/libQt6Quick3DGlslParser.prl
+%{_qt6_libdir}/libQt6Quick3DGlslParser.so
 %{_qt6_libdir}/libQt6Quick3DHelpers.prl
 %{_qt6_libdir}/libQt6Quick3DHelpers.so
 %{_qt6_libdir}/libQt6Quick3DHelpersImpl.prl
 %{_qt6_libdir}/libQt6Quick3DHelpersImpl.so
-%{_qt6_libdir}/libQt6Quick3DGlslParser.prl
-%{_qt6_libdir}/libQt6Quick3DGlslParser.so
+%{_qt6_libdir}/libQt6Quick3DIblBaker.prl
+%{_qt6_libdir}/libQt6Quick3DIblBaker.so
 %{_qt6_libdir}/libQt6Quick3DParticleEffects.prl
 %{_qt6_libdir}/libQt6Quick3DParticleEffects.so
+%{_qt6_libdir}/libQt6Quick3DParticles.prl
+%{_qt6_libdir}/libQt6Quick3DParticles.so
+%{_qt6_libdir}/libQt6Quick3DRuntimeRender.prl
+%{_qt6_libdir}/libQt6Quick3DRuntimeRender.so
+%{_qt6_libdir}/libQt6Quick3DUtils.prl
+%{_qt6_libdir}/libQt6Quick3DUtils.so
+%{_qt6_libdir}/libQt6Quick3DXr.prl
+%{_qt6_libdir}/libQt6Quick3DXr.so
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_plugindir}/qmltooling/libqmldbg_quick3dprofiler.so
 %{_qt6_libdir}/pkgconfig/*.pc

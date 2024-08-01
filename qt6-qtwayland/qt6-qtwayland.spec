@@ -18,7 +18,6 @@ Url:     http://www.qt.io
 
 
 # Upstream patches
-Patch0:  qtwayland-client-ensure-guessed-popup-parent-has-shell-surface.patch
 
 # Upstreamable patches
 Patch10: qtwayland-use-adwaita-decorations-by-default.patch

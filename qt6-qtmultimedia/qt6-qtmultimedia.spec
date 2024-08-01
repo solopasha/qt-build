@@ -58,10 +58,11 @@ BuildRequires: pkgconfig(libpulse) pkgconfig(libpulse-mainloop-glib)
 %if %{with ffmpeg}
 BuildRequires: ffmpeg-free-devel
 BuildRequires: libavcodec-free-devel
-BuildRequires: libavutil-free-devel
 BuildRequires: libavformat-free-devel
-BuildRequires: libswscale-free-devel
+BuildRequires: libavutil-free-devel
 BuildRequires: libswresample-free-devel
+BuildRequires: libswscale-free-devel
+BuildRequires: pipewire-devel
 BuildRequires: pkgconfig(libva) pkgconfig(libva-drm)
 %endif
 BuildRequires: pkgconfig(xrandr)
@@ -149,15 +150,12 @@ popd
 %endif
 
 %files devel
-%{_qt6_headerdir}/QtQGstreamerMediaPlugin/
 %{_qt6_headerdir}/QtMultimedia/
 %{_qt6_headerdir}/QtMultimediaQuick/
 %{_qt6_headerdir}/QtMultimediaWidgets/
 %{_qt6_headerdir}/QtSpatialAudio/
 %{_qt6_headerdir}/QtQuick3DSpatialAudio/
 %{_qt6_libdir}/libQt6BundledResonanceAudio.a
-%{_qt6_libdir}/libQt6QGstreamerMediaPlugin.a
-%{_qt6_libdir}/libQt6QGstreamerMediaPlugin.prl
 %{_qt6_libdir}/libQt6Multimedia.so
 %{_qt6_libdir}/libQt6Multimedia.prl
 %{_qt6_libdir}/libQt6MultimediaQuick.so
@@ -172,8 +170,6 @@ popd
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6BundledResonanceAudio/
 %{_qt6_libdir}/cmake/Qt6BundledResonanceAudio/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6QGstreamerMediaPluginPrivate/
-%{_qt6_libdir}/cmake/Qt6QGstreamerMediaPluginPrivate/*.cmake
 %dir  %{_qt6_libdir}/cmake/Qt6MultimediaQuickPrivate
 %{_qt6_libdir}/cmake/Qt6MultimediaQuickPrivate/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6Multimedia

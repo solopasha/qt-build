@@ -155,7 +155,6 @@ popd
 %{_qt6_bindir}/shapegen
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_libdir}/qt6/modules/*.json
-%{_qt6_includedir}/QtOpenXR/
 %{_qt6_includedir}/QtQuick3D*/
 %{_qt6_libdir}/cmake/Qt6/*.cmake
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/*.cmake
@@ -166,8 +165,6 @@ popd
 %{_qt6_libdir}/cmake/Qt6BundledEmbree/
 %endif
 %{_qt6_libdir}/cmake/Qt6Quick3D*/
-%{_qt6_libdir}/cmake/Qt6BundledOpenXR/
-%{_qt6_libdir}/cmake/Qt6OpenXRPrivate/
 %ifarch x86_64 aarch64
 %{_qt6_libdir}/libQt6BundledEmbree.a
 %endif

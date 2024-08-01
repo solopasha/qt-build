@@ -16,14 +16,6 @@ Url:     http://www.qt.io
 %global  majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
-
-# build failure with gcc10
-# various C++ runtime headers indirectly included <string> which in turn
-# included <local> and <cerrno>.  Those indirect inclusions have been
-# eliminated which in turn forces packages to include the C++ headers they
-# actually need.
-# Patch0: qtpositioning-gcc10.patch
-
 # filter plugin/qml provides
 %global __provides_exclude_from ^(%{_qt6_archdatadir}/qml/.*\\.so|%{_qt6_plugindir}/.*\\.so)$
 
@@ -107,30 +99,29 @@ popd
 %files
 %license LICENSES/GPL* LICENSES/LGPL*
 %{_qt6_libdir}/libQt6Positioning.so.6*
-%dir %{_qt6_archdatadir}/qml/QtPositioning
-%{_qt6_archdatadir}/qml/QtPositioning/*
+%{_qt6_archdatadir}/qml/QtPositioning/
 %{_qt6_plugindir}/position/
 %{_qt6_libdir}/libQt6PositioningQuick.so.6*
 
 %files devel
+%{_qt6_archdatadir}/mkspecs/modules/qt_lib_positioning*.pri
 %{_qt6_headerdir}/QtPositioning/
-%{_qt6_libdir}/libQt6Positioning.so
-%{_qt6_libdir}/libQt6Positioning.prl
 %{_qt6_headerdir}/QtPositioningQuick/
-%{_qt6_libdir}/libQt6PositioningQuick.so
-%{_qt6_libdir}/libQt6PositioningQuick.prl
-%dir %{_qt6_libdir}/cmake/Qt6Positioning
 %{_qt6_libdir}/cmake/Qt6/*.cmake
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtPositioningTestsConfig.cmake
 %{_qt6_libdir}/cmake/Qt6Bundled_Clip2Tri/Qt6Bundled_Clip2TriDependencies.cmake
-%{_qt6_libdir}/cmake/Qt6Positioning/*.cmake
-%{_qt6_libdir}/cmake/Qt6PositioningQuick/*.cmake
+%{_qt6_libdir}/cmake/Qt6Bundled_Clipper/
+%{_qt6_libdir}/cmake/Qt6Bundled_Poly2Tri/
+%{_qt6_libdir}/cmake/Qt6Positioning/
+%{_qt6_libdir}/cmake/Qt6PositioningQuick/
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
-%{_qt6_archdatadir}/mkspecs/modules/qt_lib_positioning*.pri
-%{_qt6_archdatadir}/mkspecs/modules/qt_lib_positioning*.pri
+%{_qt6_libdir}/libQt6Positioning.prl
+%{_qt6_libdir}/libQt6Positioning.so
+%{_qt6_libdir}/libQt6PositioningQuick.prl
+%{_qt6_libdir}/libQt6PositioningQuick.so
+%{_qt6_libdir}/pkgconfig/*.pc
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
-%{_qt6_libdir}/pkgconfig/*.pc
 
 %if 0%{?examples}
 %files examples

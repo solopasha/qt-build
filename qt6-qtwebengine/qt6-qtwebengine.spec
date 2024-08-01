@@ -1,3 +1,4 @@
+%global _default_patch_fuzz 2
 %global qt_module qtwebengine
 
 # package-notes causes FTBFS (#2043178)

@@ -146,7 +146,6 @@ BuildRequires: pkgconfig(libwebp) >= 0.6.0
 %endif
 BuildRequires: pkgconfig(libopenjp2)
 BuildRequires: pkgconfig(libtiff-4)
-BuildRequires: minizip-compat-devel
 BuildRequires: pkgconfig(nss)
 BuildRequires: pkgconfig(opus)
 BuildRequires: pkgconfig(poppler-cpp)

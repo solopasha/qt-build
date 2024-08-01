@@ -106,7 +106,7 @@ popd
 %license LICENSES/*
 %{_qt6_libdir}/libQt6WaylandClient.so.6*
 %{_qt6_libdir}/libQt6WaylandCompositor.so.6*
-%{_qt6_libdir}/libQt6WaylandCompositorIviapplication.6*
+%{_qt6_libdir}/libQt6WaylandCompositorIviapplication.so.6*
 %{_qt6_libdir}/libQt6WaylandCompositorPresentationTime.so.6*
 %{_qt6_libdir}/libQt6WaylandCompositorWLShell.so.6*
 %{_qt6_libdir}/libQt6WaylandCompositorXdgShell.so.6*

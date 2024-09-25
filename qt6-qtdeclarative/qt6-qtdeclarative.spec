@@ -6,13 +6,11 @@
 # definition borrowed from qtbase
 %global multilib_archs x86_64 %{ix86} %{?mips} ppc64 ppc s390x s390 sparc64 sparcv9
 
-#global unstable 1
-
 %global examples 1
 
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
-Version: 6.8.0~beta4
+Version: 6.8.0~rc
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -342,6 +340,9 @@ make check -k -C tests ||:
 %endif
 
 %changelog
+* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
+- new version
+
 * Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
 - new version
 

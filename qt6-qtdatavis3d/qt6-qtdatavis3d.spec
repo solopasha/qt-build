@@ -1,13 +1,11 @@
 
 %global qt_module qtdatavis3d
 
-#global unstable 1
-
 %global examples 1
 
 Summary: Qt6 - Qt Data Visualization component
 Name:    qt6-%{qt_module}
-Version: 6.8.0~beta4
+Version: 6.8.0~rc
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -92,6 +90,9 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 
 %changelog
+* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
+- new version
+
 * Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
 - new version
 

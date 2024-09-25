@@ -1,7 +1,7 @@
 %global        qt_module qtgraphs
 
 Name:          qt6-qtgraphs
-Version:       6.8.0~beta4
+Version:       6.8.0~rc
 Release:       1%{?dist}
 
 %global examples 1
@@ -107,6 +107,9 @@ popd
 %endif
 
 %changelog
+* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
+- new version
+
 * Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
 - new version
 

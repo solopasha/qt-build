@@ -1,14 +1,12 @@
 %global qt_module qttools
 
-#global unstable 1
-
 %global examples 1
 # disable once Qt7 is stable and providing the apps
 %global metainfo 1
 
 Summary: Qt6 - QtTool components
 Name:    qt6-qttools
-Version: 6.8.0~beta4
+Version: 6.8.0~rc
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -367,6 +365,9 @@ popd
 
 
 %changelog
+* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
+- new version
+
 * Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
 - new version
 

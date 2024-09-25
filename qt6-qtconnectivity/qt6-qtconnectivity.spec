@@ -1,13 +1,11 @@
 
 %global qt_module qtconnectivity
 
-#global unstable 1
-
 %global examples 1
 
 Summary: Qt6 - Connectivity components
 Name:    qt6-%{qt_module}
-Version: 6.8.0~beta4
+Version: 6.8.0~rc
 Release: 1%{?dist}
 
 # See LICENSE.GPL3, respectively, for exception details
@@ -113,6 +111,9 @@ popd
 %endif
 
 %changelog
+* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
+- new version
+
 * Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
 - new version
 

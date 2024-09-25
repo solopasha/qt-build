@@ -1,11 +1,9 @@
 
 %global qt_module qt3d
 
-#global unstable 1
-
 Summary: Qt6 - Qt3D QML bindings and C++ APIs
 Name:    qt6-%{qt_module}
-Version: 6.8.0~beta4
+Version: 6.8.0~rc
 Release: 1%{?dist}
 
 %global examples 1
@@ -193,6 +191,9 @@ popd
 
 
 %changelog
+* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
+- new version
+
 * Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
 - new version
 

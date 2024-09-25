@@ -19,8 +19,6 @@
 
 %global use_system_re2 0
 
-#global prerelease rc
-
 # spellchecking dictionary directory
 %global _qtwebengine_dictionaries_dir %{_qt6_datadir}/qtwebengine_dictionaries
 
@@ -33,7 +31,7 @@
 
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
-Version: 6.8.0~beta4
+Version: 6.8.0~rc
 Release: 1%{?dist}
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
@@ -637,6 +635,9 @@ done
 %endif
 
 %changelog
+* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
+- new version
+
 * Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
 - new version
 

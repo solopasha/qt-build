@@ -40,12 +40,9 @@ BuildRequires: pkgconfig(libsystemd)
 ## skip for now, until we're better at it --rex
 #global tests 1
 
-#global unstable 0
-%global prerelease rc2
-
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
-Version: 6.8.0~beta4
+Version: 6.8.0~rc
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -401,7 +398,6 @@ export MAKEFLAGS="%{?_smp_mflags}"
 # FIXME
 #  -DQT_FEATURE_directfb=ON \
 
-cat redhat-linux-build/config.summary || :
 %cmake_build
 
 
@@ -837,6 +833,9 @@ make check -k ||:
 
 
 %changelog
+* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
+- new version
+
 * Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
 - new version
 

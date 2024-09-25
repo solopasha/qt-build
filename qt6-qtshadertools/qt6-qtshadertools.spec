@@ -1,11 +1,9 @@
 
 %global qt_module qtshadertools
 
-#global unstable 1
-
 Summary: Qt6 - Qt Shader Tools module builds on the SPIR-V Open Source Ecosystem
 Name:    qt6-%{qt_module}
-Version: 6.8.0~beta4
+Version: 6.8.0~rc
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -103,6 +101,9 @@ popd
 %{_qt6_libdir}/pkgconfig/Qt6ShaderTools.pc
 
 %changelog
+* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
+- new version
+
 * Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
 - new version
 

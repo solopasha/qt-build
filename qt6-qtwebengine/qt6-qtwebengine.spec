@@ -389,6 +389,7 @@ sed -i -e 's/symbol_level=[[:digit:]]/symbol_level=0/g' cmake/Functions.cmake
 sed '/libaom\/options.gni/a import("//third_party/webrtc/webrtc.gni")' -i src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
 
 %build
+%global _vpath_builddir b
 %if 0%{?rhel} && 0%{?rhel} < 10
 . /opt/rh/gcc-toolset-13/enable
 %endif

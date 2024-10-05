@@ -7,7 +7,7 @@ pkg_ver_maj_min = $(subst .$(lastword $(subst ., ,$(pkg_ver))),,$(pkg_ver))
 
 prepare:
 	dnf distro-sync --nodocs --setopt=install_weak_deps=0 --disablerepo=\* \
-				--repofrompath 'qt6-test,https://download.copr.fedorainfracloud.org/results/solopasha/qt6-test/fedora-40-x86_64/devel/' \
+				--repofrompath 'qt6-test,https://download.copr.fedorainfracloud.org/results/solopasha/qt6-test/fedora-41-x86_64/' \
 				--setopt='qt6-test.gpgkey=https://download.copr.fedorainfracloud.org/results/solopasha/qt6-test/pubkey.gpg' \
 				qt6-srpm-macros
 	dnf in --nodocs --setopt=install_weak_deps=0 rpmdevtools

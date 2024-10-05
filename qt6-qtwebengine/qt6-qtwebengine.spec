@@ -385,7 +385,6 @@ cp -p src/3rdparty/chromium/LICENSE LICENSE.Chromium
 # # abort if this doesn't get created by syncqt.pl
 # test -f "./include/QtWebEngineCore/qtwebenginecoreglobal.h"
 
-sed -i -e 's/symbol_level=[[:digit:]]/symbol_level=0/g' cmake/Functions.cmake
 sed '/libaom\/options.gni/a import("//third_party/webrtc/webrtc.gni")' -i src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
 
 %build

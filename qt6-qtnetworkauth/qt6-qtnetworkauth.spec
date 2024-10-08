@@ -5,7 +5,7 @@
 
 Summary: Qt6 - NetworkAuth component
 Name:    qt6-%{qt_module}
-Version: 6.8.0~rc
+Version: 6.8.0
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -98,6 +98,9 @@ popd
 
 
 %changelog
+* Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
+- new version
+
 * Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
 - new version
 

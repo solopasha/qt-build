@@ -6,7 +6,7 @@
 Summary: Qt6 - Wayland platform support and QtCompositor module
 Name:    qt6-%{qt_module}
 Version: 6.8.0
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -16,6 +16,7 @@ Url:     http://www.qt.io
 
 
 # Upstream patches
+Patch: c2f61bc4.patch
 
 # Upstreamable patches
 Patch10: qtwayland-use-adwaita-decorations-by-default.patch
@@ -162,6 +163,9 @@ popd
 %endif
 
 %changelog
+* Wed Oct 09 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.1
+- rebuilt
+
 * Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
 - new version
 

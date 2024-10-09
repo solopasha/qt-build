@@ -98,6 +98,7 @@ Patch100: qtbase-use-qgnomeplatform-as-default-platform-theme-on-gnome.patch
 %endif
 
 ## upstream patches
+Patch: 2ea3abed0125d81ca4f3bacb9650db7314657332.patch
 
 # Do not check any files in %%{_qt6_plugindir}/platformthemes/ for requires.
 # Those themes are there for platform integration. If the required libraries are

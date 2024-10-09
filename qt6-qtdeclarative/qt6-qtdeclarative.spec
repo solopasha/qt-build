@@ -26,7 +26,7 @@ Source5: qv4global_p-multilib.h
 
 ## upstream patches
 Patch: bce74f0.diff
-Patch: 330731d0cb221477ab3d856db032126403ae6a0.patch
+Patch: 3330731d0cb221477ab3d856db032126403ae6a0.patch
 Patch: 2aefbca84d2f3dca2c2697f13710b6907c0c7e59.patch
 ## upstreamable patches
 

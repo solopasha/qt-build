@@ -43,7 +43,7 @@ BuildRequires: pkgconfig(libsystemd)
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
 Version: 6.8.0
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
@@ -834,6 +834,9 @@ make check -k ||:
 
 
 %changelog
+* Wed Oct 09 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.1
+- rebuilt
+
 * Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
 - new version
 

@@ -25,7 +25,7 @@ Url:     http://www.qt.io
 Source5: qv4global_p-multilib.h
 
 ## upstream patches
-
+Patch: bce74f0.diff
 ## upstreamable patches
 
 # filter qml provides

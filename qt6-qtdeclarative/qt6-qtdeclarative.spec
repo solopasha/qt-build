@@ -11,7 +11,7 @@
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
 Version: 6.8.0
-Release: 1%{?dist}.1
+Release: 1%{?dist}.2
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -26,6 +26,8 @@ Source5: qv4global_p-multilib.h
 
 ## upstream patches
 Patch: bce74f0.diff
+Patch: 330731d0cb221477ab3d856db032126403ae6a0.patch
+Patch: 2aefbca84d2f3dca2c2697f13710b6907c0c7e59.patch
 ## upstreamable patches
 
 # filter qml provides
@@ -340,6 +342,9 @@ make check -k -C tests ||:
 %endif
 
 %changelog
+* Wed Oct 09 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.2
+- rebuilt
+
 * Wed Oct 09 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.1
 - rebuilt
 

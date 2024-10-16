@@ -1,19 +1,17 @@
 diff --git a/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn b/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
-index 0be70ed4b..bec344dec 100644
+index f05ad3eb2..8c73aa08e 100644
 --- a/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
 +++ b/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
-@@ -3,6 +3,7 @@
+@@ -3,9 +3,19 @@
  # found in the LICENSE file.
-
+ 
  import("//build/buildflag_header.gni")
 +import("//build/config/linux/pkg_config.gni")
  import("//media/media_options.gni")
  import("//third_party/blink/renderer/modules/modules.gni")
  import("//third_party/libaom/options.gni")
-@@ -13,6 +14,14 @@ buildflag_header("buildflags") {
-   flags = [ "RTC_USE_H264=$rtc_use_h264" ]
- }
-
++import("//third_party/webrtc/webrtc.gni")
++
 +if (rtc_use_h264 && rtc_use_system_openh264) {
 +  pkg_config("openh264") {
 +    packages = [
@@ -21,14 +19,13 @@ index 0be70ed4b..bec344dec 100644
 +    ]
 +  }
 +}
-+
+ 
  blink_modules_sources("mediarecorder") {
    sources = [
-     "audio_track_encoder.cc",
-@@ -62,7 +71,11 @@ blink_modules_sources("mediarecorder") {
+@@ -56,7 +66,11 @@ blink_modules_sources("mediarecorder") {
        "h264_encoder.h",
      ]
-
+ 
 -    deps += [ "//third_party/openh264:encoder" ]
 +    if (rtc_use_system_openh264) {
 +      configs += [":openh264"]
@@ -36,16 +33,16 @@ index 0be70ed4b..bec344dec 100644
 +      deps += [ "//third_party/openh264:encoder" ]
 +    }
    }
-
+ 
    if (enable_libaom) {
 diff --git a/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn b/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn
-index 28205ad14..def86bc8f 100644
+index 1ad082fe7..7bf84b932 100644
 --- a/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn
 +++ b/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn
 @@ -2,11 +2,21 @@
  # Use of this source code is governed by a BSD-style license that can be
  # found in the LICENSE file.
-
+ 
 +import("//build/config/linux/pkg_config.gni")
  import("//media/media_options.gni")
  import("//third_party/blink/renderer/modules/modules.gni")
@@ -61,10 +58,10 @@ index 28205ad14..def86bc8f 100644
 +    ]
 +  }
 +}
-
+ 
  blink_modules_sources("webcodecs") {
    sources = [
-@@ -115,7 +125,11 @@ blink_modules_sources("webcodecs") {
+@@ -117,7 +127,11 @@ blink_modules_sources("webcodecs") {
      deps += [ "//third_party/libvpx" ]
    }
    if (media_use_openh264) {

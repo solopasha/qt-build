@@ -1,4 +1,3 @@
-%global _default_patch_fuzz 2
 %global qt_module qtwebengine
 
 # package-notes causes FTBFS (#2043178)
@@ -6,11 +5,7 @@
 
 %global use_system_libwebp 1
 %global use_system_jsoncpp 1
-%if 0%{?rhel} && 0%{?rhel} == 9
-%global use_system_libicu 0
-%else
 %global use_system_libicu 1
-%endif
 
 %if 0%{?fedora} && 0%{?fedora} >= 39
 # Bundled python-six is too old to work with Python 3.12+
@@ -54,11 +49,7 @@ Source10: macros.qt6-qtwebengine
 # pulseaudio headers
 Source20: https://src.fedoraproject.org/lookaside/pkgs/qt6-qtwebengine/pulseaudio-12.2-headers.tar.gz/sha512/a5a9bcbb16030b3bc83cc0cc8f5e7f90e0723d3e83258a5c77eacb32eaa267118a73fa7814fbcc99a24e4907916a2b371ebb6dedc4f45541c3acf6c834fd35be/pulseaudio-12.2-headers.tar.gz
 
-# workaround FTBFS against kernel-headers-5.2.0+
-Patch1:  qtwebengine-SIOCGSTAMP.patch
 Patch2:  qtwebengine-link-pipewire.patch
-# Fix/workaround FTBFS on aarch64 with newer glibc
-Patch3: qtwebengine-aarch64-new-stat.patch
 
 ## Upstream patches:
 
@@ -73,7 +64,6 @@ Patch112: qtwebengine-media-system-openh264.patch
 ExclusiveArch: aarch64 x86_64
 
 BuildRequires: cmake
-BuildRequires: make
 BuildRequires: qt6-srpm-macros
 BuildRequires: qt6-qtbase-devel
 BuildRequires: qt6-qtbase-private-devel
@@ -88,7 +78,6 @@ BuildRequires: qt6-qtquickcontrols2-devel
 BuildRequires: qt6-qtwebchannel-devel
 # for examples?
 BuildRequires: ninja-build
-BuildRequires: cmake
 BuildRequires: bison
 BuildRequires: flex
 BuildRequires: gcc-c++
@@ -109,6 +98,7 @@ BuildRequires: libjpeg-devel
 BuildRequires: nodejs
 %if 0%{?use_system_re2}
 BuildRequires: re2-devel
+%else
 Provides: bundled(re2)
 %endif
 BuildRequires: snappy-devel
@@ -366,12 +356,6 @@ ln -s /usr/lib/python%{python3_version}/site-packages/six.py src/3rdparty/chromi
 ln -s /usr/lib/python%{python3_version}/site-packages/six.py src/3rdparty/chromium/third_party/wpt_tools/wpt/tools/third_party/six/six.py
 %endif
 
-%if 0%{?use_system_re2}
-# http://bugzilla.redhat.com/1337585
-# can't just delete, but we'll overwrite with system headers to be on the safe side
-cp -bv /usr/include/re2/*.h src/3rdparty/chromium/third_party/re2/src/re2/
-%endif
-
 # copy the Chromium license so it is installed with the appropriate name
 cp -p src/3rdparty/chromium/LICENSE LICENSE.Chromium
 
@@ -385,7 +369,6 @@ cp -p src/3rdparty/chromium/LICENSE LICENSE.Chromium
 # # abort if this doesn't get created by syncqt.pl
 # test -f "./include/QtWebEngineCore/qtwebenginecoreglobal.h"
 
-sed '/libaom\/options.gni/a import("//third_party/webrtc/webrtc.gni")' -i src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
 
 %build
 %global _vpath_builddir b
@@ -409,6 +392,9 @@ export NINJA_PATH=%{__ninja}
   -DFEATURE_webengine_system_icu:BOOL=%{?use_system_libicu} \
   -DFEATURE_webengine_system_libevent:BOOL=ON \
   -DFEATURE_webengine_system_ffmpeg:BOOL=ON \
+%if 0%{?use_system_re2}
+  -DQT_FEATURE_webengine_system_re2=ON \
+%endif
   -DFEATURE_webengine_webrtc:BOOL=ON \
   -DFEATURE_webengine_webrtc_pipewire:BOOL=ON \
   -DQT_BUILD_EXAMPLES:BOOL=%{?examples:ON}%{!?examples:OFF} \

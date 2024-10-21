@@ -1,0 +1,64 @@
+From cce81f296eeae2d20f4f51e0ec4e0d3491e2f909 Mon Sep 17 00:00:00 2001
+From: Alexey Edelev <alexey.edelev@qt.io>
+Date: Wed, 4 Sep 2024 13:27:35 +0200
+Subject: [PATCH] Mark Cups::Cups optional target when building for non-APPLE
+ systems
+
+Relax the dependency on Cups for PrintSupport module on non-APPLE
+platforms. 30bb15e7bf42a07b49700b6e822513f125d9ed4d added the missing
+dependency for the PrintSupportPrivate target, but made it required.
+In general users not necessarly need the Cups found when linking
+PrintSupport on non-APPLE platforms. So we may mark Cups optional.
+
+We also need Cups as the required dependency when Qt is built
+statically, since then QCupsPrinterSupportPlugin will require the
+library to be found.
+
+Amends 30bb15e7bf42a07b49700b6e822513f125d9ed4d
+
+Pick-to: 6.5 6.7 6.8
+Change-Id: Ia31d52f7beb9fab6ffa5123147a243f5be6345ef
+Reviewed-by: Alexandru Croitor <alexandru.croitor@qt.io>
+---
+ src/plugins/printsupport/cups/CMakeLists.txt | 7 ++++++-
+ src/printsupport/configure.cmake             | 9 +++++++--
+ 2 files changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/src/plugins/printsupport/cups/CMakeLists.txt b/src/plugins/printsupport/cups/CMakeLists.txt
+index b6400d2d36b..6811fca10a2 100644
+--- a/src/plugins/printsupport/cups/CMakeLists.txt
++++ b/src/plugins/printsupport/cups/CMakeLists.txt
+@@ -1,7 +1,12 @@
+ # Copyright (C) 2022 The Qt Company Ltd.
+ # SPDX-License-Identifier: BSD-3-Clause
+ 
+-qt_find_package(Cups PROVIDED_TARGETS Cups::Cups)
++if(NOT APPLE AND BUILD_SHARED_LIBS)
++    set(mark_cups_optional MARK_OPTIONAL)
++else()
++    set(mark_cups_optional "")
++endif()
++qt_find_package(Cups PROVIDED_TARGETS Cups::Cups ${mark_cups_optional})
+ 
+ #####################################################################
+ ## QCupsPrinterSupportPlugin Plugin:
+diff --git a/src/printsupport/configure.cmake b/src/printsupport/configure.cmake
+index a8b4ed38036..bdd370694a1 100644
+--- a/src/printsupport/configure.cmake
++++ b/src/printsupport/configure.cmake
+@@ -9,8 +9,13 @@
+ 
+ #### Libraries
+ 
+-qt_find_package(Cups PROVIDED_TARGETS Cups::Cups MODULE_NAME printsupport QMAKE_LIB cups)
+-
++if(NOT APPLE AND BUILD_SHARED_LIBS)
++    set(mark_cups_optional MARK_OPTIONAL)
++else()
++    set(mark_cups_optional "")
++endif()
++qt_find_package(Cups PROVIDED_TARGETS Cups::Cups
++    MODULE_NAME printsupport QMAKE_LIB cups ${mark_cups_optional})
+ 
+ #### Tests
+ 

@@ -43,7 +43,7 @@ BuildRequires: pkgconfig(libsystemd)
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
 Version: 6.8.0
-Release: 1%{?dist}.1
+Release: 2%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
@@ -99,6 +99,7 @@ Patch100: qtbase-use-qgnomeplatform-as-default-platform-theme-on-gnome.patch
 
 ## upstream patches
 Patch: 2ea3abed0125d81ca4f3bacb9650db7314657332.patch
+Patch: cce81f296eeae2d20f4f51e0ec4e0d3491e2f909.patch
 
 # Do not check any files in %%{_qt6_plugindir}/platformthemes/ for requires.
 # Those themes are there for platform integration. If the required libraries are
@@ -834,6 +835,9 @@ make check -k ||:
 
 
 %changelog
+* Mon Oct 21 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-2
+- QtPrintSupport: make cups optional target
+
 * Wed Oct 09 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.1
 - rebuilt
 

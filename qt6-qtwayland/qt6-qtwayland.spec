@@ -6,7 +6,7 @@
 Summary: Qt6 - Wayland platform support and QtCompositor module
 Name:    qt6-%{qt_module}
 Version: 6.8.0
-Release: 1%{?dist}.1
+Release: 1%{?dist}.2
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -17,9 +17,9 @@ Url:     http://www.qt.io
 
 # Upstream patches
 Patch: c2f61bc4.patch
+Patch: https://github.com/qt/qtwayland/commit/76e3c3db4cc9b7e4f86d3efeacf17a689d43c74f.patch
 
 # Upstreamable patches
-Patch10: qtwayland-use-adwaita-decorations-by-default.patch
 
 # filter qml provides
 %global __provides_exclude_from ^%{_qt6_archdatadir}/qml/.*\\.so$
@@ -48,7 +48,10 @@ BuildRequires: pkgconfig(libudev)
 BuildRequires: pkgconfig(libinput)
 BuildRequires: pkgconfig(libdrm)
 
-BuildRequires:  libXext-devel
+BuildRequires: libXext-devel
+
+Obsoletes:     qadwaitadecorations-qt6
+Provides:      qadwaitadecorations-qt6
 
 %description
 %{summary}.
@@ -163,6 +166,9 @@ popd
 %endif
 
 %changelog
+* Wed Oct 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.2
+- Adopt Fedora changes
+
 * Wed Oct 09 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.1
 - rebuilt
 

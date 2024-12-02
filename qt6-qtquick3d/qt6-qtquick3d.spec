@@ -169,6 +169,8 @@ popd
 %ifarch x86_64 aarch64
 %{_qt6_libdir}/libQt6BundledEmbree.a
 %endif
+%{_qt6_libdir}/cmake/Qt6BundledOpenXR/
+%{_qt6_libdir}/libQt6BundledOpenXR.a
 %{_qt6_libdir}/libQt6Quick3D.prl
 %{_qt6_libdir}/libQt6Quick3D.so
 %{_qt6_libdir}/libQt6Quick3DAssetImport.prl

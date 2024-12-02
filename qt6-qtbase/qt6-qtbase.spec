@@ -42,8 +42,8 @@ BuildRequires: pkgconfig(libsystemd)
 
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
-Version: 6.8.0
-Release: 2%{?dist}
+Version: 6.8.1
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
@@ -98,8 +98,7 @@ Patch100: qtbase-use-qgnomeplatform-as-default-platform-theme-on-gnome.patch
 %endif
 
 ## upstream patches
-Patch: 2ea3abed0125d81ca4f3bacb9650db7314657332.patch
-Patch: cce81f296eeae2d20f4f51e0ec4e0d3491e2f909.patch
+Patch200: emoji.patch
 
 # Do not check any files in %%{_qt6_plugindir}/platformthemes/ for requires.
 # Those themes are there for platform integration. If the required libraries are
@@ -431,7 +430,7 @@ translationdir=%{_qt6_translationdir}
 
 Name: Qt6
 Description: Qt6 Configuration
-Version: 6.8.0
+Version: 6.8.1
 EOF
 
 # rpm macros
@@ -619,6 +618,7 @@ make check -k ||:
 %{_qt6_libexecdir}/rcc
 %{_qt6_libexecdir}/uic
 %{_qt6_libexecdir}/qt-testrunner.py
+%{_qt6_libexecdir}/qt-android-runner.py
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_headerdir}/QtConcurrent/
 %{_qt6_headerdir}/QtCore/
@@ -687,9 +687,11 @@ make check -k ||:
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules/*.cmake
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/modules/*.cmake
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/qt_attribution.json
+%{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/REUSE.toml
 %{_qt6_libdir}/cmake/Qt6/3rdparty/kwin/COPYING-CMAKE-SCRIPTS
 %{_qt6_libdir}/cmake/Qt6/3rdparty/kwin/*.cmake
 %{_qt6_libdir}/cmake/Qt6/3rdparty/kwin/qt_attribution.json
+%{_qt6_libdir}/cmake/Qt6/3rdparty/kwin/REUSE.toml
 %{_qt6_libdir}/cmake/Qt6BuildInternals/*.cmake
 %{_qt6_libdir}/cmake/Qt6BuildInternals/QtStandaloneTestTemplateProject/CMakeLists.txt
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtBaseTestsConfig.cmake
@@ -727,6 +729,7 @@ make check -k ||:
 %{_qt6_libdir}/qt6/metatypes/*.json
 %{_qt6_libdir}/qt6/objects-RelWithDebInfo/ExampleIconsPrivate_resources_1/.qt/rcc/qrc_example_icons_init.cpp.o
 %{_qt6_libdir}/pkgconfig/*.pc
+%{_qt6_libdir}/qt6/sbom/qtbase-6.8.1.spdx
 
 %if 0%{?egl}
 %{_qt6_libdir}/libQt6EglFsKmsSupport.prl
@@ -835,6 +838,9 @@ make check -k ||:
 
 
 %changelog
+* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
+- new version
+
 * Mon Oct 21 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-2
 - QtPrintSupport: make cups optional target
 

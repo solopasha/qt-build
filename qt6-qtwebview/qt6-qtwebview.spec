@@ -4,7 +4,7 @@
 
 Summary: Qt6 - WebView component
 Name:    qt6-%{qt_module}
-Version: 6.8.0
+Version: 6.8.1
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -72,6 +72,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_plugindir}/webview/libqtwebview_webengine.so
 
 %files devel
+%{_qt6_libdir}/qt6/sbom/*.spdx
 %dir %{_qt6_headerdir}/QtWebView
 %{_qt6_headerdir}/QtWebView/*
 %dir %{_qt6_headerdir}/QtWebViewQuick
@@ -99,6 +100,9 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 
 %changelog
+* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
+- new version
+
 * Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
 - new version
 

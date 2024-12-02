@@ -1,7 +1,7 @@
 %global        qt_module qtgraphs
 
 Name:          qt6-qtgraphs
-Version:       6.8.0
+Version:       6.8.1
 Release:       1%{?dist}
 
 %global examples 1
@@ -88,6 +88,7 @@ popd
 %{_qt6_qmldir}/QtGraphs/
 
 %files devel
+%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_qt6_headerdir}/QtGraphs/
 %{_qt6_headerdir}/QtGraphsWidgets/
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtGraphsTestsConfig.cmake
@@ -107,6 +108,9 @@ popd
 %endif
 
 %changelog
+* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
+- new version
+
 * Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
 - new version
 

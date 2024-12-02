@@ -5,8 +5,8 @@
 
 Summary: Qt6 - Wayland platform support and QtCompositor module
 Name:    qt6-%{qt_module}
-Version: 6.8.0
-Release: 1%{?dist}.2
+Version: 6.8.1
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -17,7 +17,7 @@ Url:     http://www.qt.io
 
 # Upstream patches
 Patch: c2f61bc4.patch
-Patch: https://github.com/qt/qtwayland/commit/76e3c3db4cc9b7e4f86d3efeacf17a689d43c74f.patch
+Patch: https://invent.kde.org/qt/qt/qtwayland/-/commit/24002ac6cbd01dbde4944b63c1f7c87ed2bd72b5.patch
 
 # Upstreamable patches
 
@@ -124,6 +124,7 @@ popd
 %{_qt6_qmldir}/QtWayland/
 
 %files devel
+%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_headerdir}/QtWaylandClient/
 %{_qt6_headerdir}/QtWaylandCompositor*/
@@ -166,6 +167,9 @@ popd
 %endif
 
 %changelog
+* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
+- new version
+
 * Wed Oct 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.2
 - Adopt Fedora changes
 

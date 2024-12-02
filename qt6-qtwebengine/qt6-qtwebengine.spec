@@ -26,8 +26,8 @@
 
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
-Version: 6.8.0
-Release: 1%{?dist}.1
+Version: 6.8.1
+Release: 1%{?dist}
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
 # See also http://qt-project.org/doc/qt-5.0/qtdoc/licensing.html
@@ -52,7 +52,6 @@ Source20: https://src.fedoraproject.org/lookaside/pkgs/qt6-qtwebengine/pulseaudi
 Patch2:  qtwebengine-link-pipewire.patch
 
 ## Upstream patches:
-Source500: https://github.com/qt/qtwebengine-chromium/commit/0ce73c83f0e7d81981a9edbdfc890079b20bcd28.patch
 
 ## Upstreamable patches:
 Patch110: qtwebengine-webrtc-system-openh264.patch
@@ -337,8 +336,6 @@ Summary: Example files for qt6-qtpdf
 %prep
 %autosetup -n %{qt_module}-everywhere-src-%{version_no_tilde} -p1 -a20
 
-patch -Np1 -d src/3rdparty -i %{SOURCE500}
-
 mv pulse src/3rdparty/chromium/
 
 pushd src/3rdparty/chromium
@@ -533,6 +530,7 @@ done
 %lang(zh_TW) %{_qt6_translationdir}/qtwebengine_locales/zh-TW.pak
 
 %files devel
+%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_rpmmacrodir}/macros.qt6-qtwebengine
 %dir %{_qt6_headerdir}/QtWebEngineCore
 %{_qt6_headerdir}/QtWebEngineCore/*
@@ -624,6 +622,9 @@ done
 %endif
 
 %changelog
+* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
+- new version
+
 * Wed Oct 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.1
 - pick upstream commit
 

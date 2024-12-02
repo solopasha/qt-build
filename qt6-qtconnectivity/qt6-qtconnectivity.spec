@@ -5,7 +5,7 @@
 
 Summary: Qt6 - Connectivity components
 Name:    qt6-%{qt_module}
-Version: 6.8.0
+Version: 6.8.1
 Release: 1%{?dist}
 
 # See LICENSE.GPL3, respectively, for exception details
@@ -86,6 +86,7 @@ popd
 %{_qt6_libdir}/libQt6Nfc.so.6*
 
 %files devel
+%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_qt6_headerdir}/QtBluetooth/
 %{_qt6_libdir}/libQt6Bluetooth.so
 %{_qt6_libdir}/libQt6Bluetooth.prl
@@ -111,6 +112,9 @@ popd
 %endif
 
 %changelog
+* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
+- new version
+
 * Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
 - new version
 

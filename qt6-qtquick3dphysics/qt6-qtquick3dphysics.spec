@@ -5,7 +5,7 @@
 
 Summary: Qt6 - Quick3D Physics Libraries and utilities
 Name:    qt6-%{qt_module}
-Version: 6.8.0
+Version: 6.8.1
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -73,6 +73,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_qmldir}//QtQuick3D/
 
 %files devel
+%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_qt6_bindir}/cooker
 
 %dir %{_qt6_headerdir}/QtQuick3DPhysics
@@ -105,6 +106,9 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %changelog
+* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
+- new version
+
 * Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
 - new version
 

@@ -5,7 +5,7 @@
 
 Summary: Qt6 - Quick3D Libraries and utilities
 Name:    qt6-%{qt_module}
-Version: 6.8.0
+Version: 6.8.1
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -27,8 +27,8 @@ BuildRequires: qt6-qtdeclarative-devel
 BuildRequires: qt6-qtdeclarative-static
 BuildRequires: qt6-qtquicktimeline-devel
 BuildRequires: qt6-qtshadertools-devel
-BuildRequires: cmake(OpenXR)
-BuildRequires: cmake(assimp)
+#BuildRequires: cmake(OpenXR)
+#BuildRequires: cmake(assimp)
 #if 0{?fedora}
 # BuildRequires: pkgconfig(assimp) >= 5.0.0
 #endif
@@ -139,6 +139,7 @@ popd
 %{_qt6_qmldir}/QtQuick3D/
 
 %files devel
+%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_bindir}/balsam-qt6
 %{_bindir}/balsamui-qt6
 %{_bindir}/instancer-qt6
@@ -207,6 +208,9 @@ popd
 %endif
 
 %changelog
+* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
+- new version
+
 * Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
 - new version
 

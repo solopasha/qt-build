@@ -3,7 +3,7 @@
 
 Summary: Qt6 - QuickTimeline plugin
 Name:    qt6-%{qt_module}
-Version: 6.8.0
+Version: 6.8.1
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -58,6 +58,7 @@ Requires: qt6-qtdeclarative-devel%{?_isa}
 %{_qt6_qmldir}/QtQuick/Timeline/
 
 %files devel
+%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_qt6_includedir}/QtQuickTimeline/
 %{_qt6_includedir}/QtQuickTimelineBlendTrees/
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/*.cmake
@@ -78,6 +79,9 @@ Requires: qt6-qtdeclarative-devel%{?_isa}
 %{_qt6_libdir}/pkgconfig/*.pc
 
 %changelog
+* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
+- new version
+
 * Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
 - new version
 

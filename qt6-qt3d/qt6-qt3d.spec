@@ -3,7 +3,7 @@
 
 Summary: Qt6 - Qt3D QML bindings and C++ APIs
 Name:    qt6-%{qt_module}
-Version: 6.8.0
+Version: 6.8.1
 Release: 1%{?dist}
 
 %global examples 1
@@ -116,6 +116,7 @@ popd
 %{_qt6_qmldir}/QtQuick/Scene3D/
 
 %files devel
+%{_qt6_libdir}/qt6/sbom/*.spdx
 %dir %{_qt6_libdir}/cmake/Qt63DAnimation
 %dir %{_qt6_libdir}/cmake/Qt63DCore/
 %dir %{_qt6_libdir}/cmake/Qt63DExtras
@@ -191,6 +192,9 @@ popd
 
 
 %changelog
+* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
+- new version
+
 * Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
 - new version
 

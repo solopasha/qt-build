@@ -10,8 +10,8 @@
 
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
-Version: 6.8.0
-Release: 1%{?dist}.2
+Version: 6.8.1
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -19,15 +19,11 @@ Url:     http://www.qt.io
 %global  majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
-
 # header file to workaround multilib issue
 # https://bugzilla.redhat.com/show_bug.cgi?id=1441343
 Source5: qv4global_p-multilib.h
 
 ## upstream patches
-Patch: bce74f0.diff
-Patch: 3330731d0cb221477ab3d856db032126403ae6a0.patch
-Patch: 2aefbca84d2f3dca2c2697f13710b6907c0c7e59.patch
 ## upstreamable patches
 
 # filter qml provides
@@ -192,6 +188,7 @@ make check -k -C tests ||:
 %{_qt6_archdatadir}/qml/
 
 %files devel
+%{_qt6_libdir}/qt6/sbom/*.spdx
 %dir %{_qt6_libdir}/cmake/Qt6PacketProtocolPrivate
 %dir %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins
 %dir %{_qt6_libdir}/cmake/Qt6QmlCompiler
@@ -342,6 +339,9 @@ make check -k -C tests ||:
 %endif
 
 %changelog
+* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
+- new version
+
 * Wed Oct 09 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.2
 - rebuilt
 

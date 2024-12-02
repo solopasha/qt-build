@@ -3,7 +3,7 @@
 %global examples 1
 
 Name:       qt6-qthttpserver
-Version:    6.8.0
+Version:    6.8.1
 Release:    1%{?dist}
 Summary:    Library to facilitate the creation of an http server with Qt
 
@@ -63,6 +63,7 @@ to the usage of %{name}.
 %{_qt6_libdir}/libQt6HttpServer.so.6{,.*}
 
 %files devel
+%{_qt6_libdir}/qt6/sbom/*.spdx
 %dir %{_qt6_headerdir}/QtHttpServer
 %{_qt6_headerdir}/QtHttpServer/*
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtHttpServerTestsConfig.cmake
@@ -82,6 +83,9 @@ to the usage of %{name}.
 %endif
 
 %changelog
+* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
+- new version
+
 * Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
 - new version
 

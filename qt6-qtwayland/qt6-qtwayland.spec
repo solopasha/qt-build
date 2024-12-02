@@ -1,7 +1,7 @@
 
 %global qt_module qtwayland
 
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - Wayland platform support and QtCompositor module
 Name:    qt6-%{qt_module}

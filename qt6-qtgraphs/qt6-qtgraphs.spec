@@ -4,7 +4,7 @@ Name:          qt6-qtgraphs
 Version:       6.8.1
 Release:       1%{?dist}
 
-%global examples 1
+#global examples 1
 
 %global        majmin %(echo %{version} | cut -d. -f1-2)
 %global        qt_version %(echo %{version} | cut -d~ -f1)

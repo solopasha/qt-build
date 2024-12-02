@@ -11,7 +11,7 @@
 %bcond_without ffmpeg
 %endif
 
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - Multimedia support
 Name:    qt6-%{qt_module}

@@ -6,7 +6,7 @@ Name:    qt6-%{qt_module}
 Version: 6.8.1
 Release: 1%{?dist}
 
-%global examples 1
+#global examples 1
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io

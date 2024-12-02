@@ -1,6 +1,6 @@
 %global qt_module qtspeech
 
-%global examples 1
+#global examples 1
 
 %bcond flite 0%{?fedora}
 

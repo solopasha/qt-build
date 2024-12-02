@@ -1,7 +1,7 @@
 
 %global qt_module qtremoteobjects
 
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - Qt Remote Objects
 Name:    qt6-%{qt_module}

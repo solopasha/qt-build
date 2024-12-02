@@ -1,7 +1,7 @@
 
 %global qt_module qtserialbus
 
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - SerialBus component
 Name:    qt6-%{qt_module}

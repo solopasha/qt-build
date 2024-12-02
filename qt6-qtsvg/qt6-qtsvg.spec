@@ -1,7 +1,7 @@
 
 %global qt_module qtsvg
 
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - Support for rendering and displaying SVG
 Name:    qt6-%{qt_module}

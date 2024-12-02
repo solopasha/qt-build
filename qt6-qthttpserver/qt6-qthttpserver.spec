@@ -1,6 +1,6 @@
 %global qt_module qthttpserver
 
-%global examples 1
+#global examples 1
 
 Name:       qt6-qthttpserver
 Version:    6.8.1

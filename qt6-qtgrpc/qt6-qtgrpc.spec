@@ -1,7 +1,7 @@
 
 %global qt_module qtgrpc
 
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - Support for using gRPC and Protobuf
 Name:    qt6-%{qt_module}

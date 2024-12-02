@@ -1,7 +1,7 @@
 
 %global qt_module qtpositioning
 
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - Positioning component
 Name:    qt6-%{qt_module}

@@ -1,7 +1,7 @@
 
 %global qt_module qtlocation
 
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - Location Libraries
 Name:    qt6-%{qt_module}

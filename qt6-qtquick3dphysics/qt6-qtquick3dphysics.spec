@@ -1,7 +1,7 @@
 %global qt_module qtquick3dphysics
 
 	
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - Quick3D Physics Libraries and utilities
 Name:    qt6-%{qt_module}

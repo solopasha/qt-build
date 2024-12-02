@@ -22,7 +22,7 @@
 # and designer plugins
 %global __provides_exclude_from ^%{_qt6_plugindir}/.*\\.so$
 
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine

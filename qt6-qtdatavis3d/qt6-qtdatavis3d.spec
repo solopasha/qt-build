@@ -1,7 +1,7 @@
 
 %global qt_module qtdatavis3d
 
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - Qt Data Visualization component
 Name:    qt6-%{qt_module}

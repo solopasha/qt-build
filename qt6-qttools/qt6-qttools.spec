@@ -1,6 +1,6 @@
 %global qt_module qttools
 
-%global examples 1
+#global examples 1
 # disable once Qt7 is stable and providing the apps
 %global metainfo 1
 

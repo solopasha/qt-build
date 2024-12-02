@@ -1,7 +1,7 @@
 
 %global qt_module qtconnectivity
 
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - Connectivity components
 Name:    qt6-%{qt_module}

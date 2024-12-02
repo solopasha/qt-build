@@ -1,7 +1,7 @@
 
 %global qt_module qt5compat
 
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - Qt 5 Compatibility Libraries
 Name:    qt6-%{qt_module}

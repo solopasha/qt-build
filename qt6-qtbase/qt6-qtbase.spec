@@ -36,7 +36,7 @@
 %global journald 1
 BuildRequires: pkgconfig(libsystemd)
 
-%global examples 1
+#global examples 1
 ## skip for now, until we're better at it --rex
 #global tests 1
 

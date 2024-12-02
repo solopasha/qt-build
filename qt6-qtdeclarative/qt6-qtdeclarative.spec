@@ -6,7 +6,7 @@
 # definition borrowed from qtbase
 %global multilib_archs x86_64 %{ix86} %{?mips} ppc64 ppc s390x s390 sparc64 sparcv9
 
-%global examples 1
+#global examples 1
 
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}

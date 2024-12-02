@@ -21,9 +21,6 @@ Release: 1%{?dist}
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
 %qt_source
-%global  majmin %(echo %{version} | cut -d. -f1-2)
-%global  qt_version %(echo %{version} | cut -d~ -f1)
-
 
 # filter plugin/qml provides
 %global __provides_exclude_from ^(%{_qt6_archdatadir}/qml/.*\\.so|%{_qt6_plugindir}/.*\\.so)$
@@ -155,6 +152,7 @@ popd
 %{_qt6_headerdir}/QtQGstreamerMediaPluginImpl/
 %{_qt6_headerdir}/QtQuick3DSpatialAudio/
 %{_qt6_headerdir}/QtSpatialAudio/
+%{_qt6_headerdir}/QtMultimediaTestLib/
 %{_qt6_libdir}/libQt6BundledResonanceAudio.a
 %{_qt6_libdir}/libQt6Multimedia.prl
 %{_qt6_libdir}/libQt6Multimedia.so
@@ -168,6 +166,8 @@ popd
 %{_qt6_libdir}/libQt6Quick3DSpatialAudio.so
 %{_qt6_libdir}/libQt6SpatialAudio.prl
 %{_qt6_libdir}/libQt6SpatialAudio.so
+%{_qt6_libdir}/libQt6MultimediaTestLib.prl
+%{_qt6_libdir}/libQt6MultimediaTestLib.a
 %{_qt6_libdir}/cmake/Qt6/*.cmake
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6BundledResonanceAudio/
@@ -185,6 +185,7 @@ popd
 %dir %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
 %{_qt6_libdir}/cmake/Qt6QGstreamerMediaPluginImplPrivate/
+%{_qt6_libdir}/cmake/Qt6MultimediaTestLibPrivate/
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json

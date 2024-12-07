@@ -9,8 +9,7 @@ License: GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
 %qt_source
 %global majmin %(echo %{version} | cut -d. -f1-2)
-%global  qt_version %(echo %{version} | cut -d~ -f1)
-
+%global qt_version %(echo %{version} | cut -d~ -f1)
 
 BuildArch: noarch
 
@@ -79,7 +78,6 @@ Provides: %{_qt6}-zh_TW = %{version}-%{release}
 #find_lang qttranslations --all-name --with-qt --without-mo
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/*
 %{_qt6_datadir}/translations/catalogs.json
 %lang(ar) %{_qt6_translationdir}/*_ar.qm

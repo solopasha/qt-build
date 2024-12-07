@@ -10,6 +10,7 @@ Summary:    Library to facilitate the creation of an http server with Qt
 License:    BSD-3-Clause AND GFDL-1.3-no-invariants-only AND GPL-3.0-only WITH Qt-GPL-exception-1.0
 URL:        http://qt-project.org/
 %qt_source
+%global     qt_version %(echo %{version} | cut -d~ -f1)
 
 BuildRequires:  qt6-rpm-macros
 BuildRequires:  cmake
@@ -64,11 +65,9 @@ to the usage of %{name}.
 %{_qt6_libdir}/libQt6HttpServer.so.6{,.*}
 
 %files devel
-%dir %{_qt6_headerdir}/QtHttpServer
-%{_qt6_headerdir}/QtHttpServer/*
+%{_qt6_headerdir}/QtHttpServer/
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtHttpServerTestsConfig.cmake
-%dir %{_qt6_libdir}/cmake/Qt6HttpServer
-%{_qt6_libdir}/cmake/Qt6HttpServer/*
+%{_qt6_libdir}/cmake/Qt6HttpServer/
 %{_qt6_libdir}/libQt6HttpServer.prl
 %{_qt6_libdir}/libQt6HttpServer.so
 %{_qt6_libdir}/pkgconfig/Qt6HttpServer.pc

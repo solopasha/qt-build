@@ -6,7 +6,7 @@
 Summary: Qt6 - Connectivity components
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 # See LICENSE.GPL3, respectively, for exception details
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -80,13 +80,13 @@ popd
 %ldconfig_scriptlets
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/GPL* LICENSES/LGPL*
 %{_qt6_libexecdir}/sdpscanner
 %{_qt6_libdir}/libQt6Bluetooth.so.6*
 %{_qt6_libdir}/libQt6Nfc.so.6*
 
 %files devel
-%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_qt6_headerdir}/QtBluetooth/
 %{_qt6_libdir}/libQt6Bluetooth.so
 %{_qt6_libdir}/libQt6Bluetooth.prl
@@ -112,6 +112,9 @@ popd
 %endif
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

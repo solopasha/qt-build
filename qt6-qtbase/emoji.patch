@@ -20422,7 +20422,7 @@ index 38e1b4ad20..55fa13176d 100644
  
      static unsigned int bestFoundry(int script, unsigned int score, int styleStrategy,
 diff --git a/src/gui/text/qfontengine.cpp b/src/gui/text/qfontengine.cpp
-index f5aec97809..b5183dfdee 100644
+index f5aec97809..2e5c062474 100644
 --- a/src/gui/text/qfontengine.cpp
 +++ b/src/gui/text/qfontengine.cpp
 @@ -1734,7 +1734,7 @@ QFontEngineMulti::~QFontEngineMulti()
@@ -20452,44 +20452,7 @@ index f5aec97809..b5183dfdee 100644
          engine->fontDef.weight = request.weight;
          if (request.style > QFont::StyleNormal)
              engine->fontDef.style = request.style;
-@@ -1884,8 +1884,11 @@ int QFontEngineMulti::stringToCMap(const QChar *str, int len,
-     int glyph_pos = 0;
-     QStringIterator it(str, str + len);
- 
--    int lastFallback = -1;
-+#if defined(QT_NO_EMOJISEGMENTER)
-     char32_t previousUcs4 = 0;
-+#endif
-+
-+    int lastFallback = -1;
-     while (it.hasNext()) {
-         const char32_t ucs4 = it.peekNext();
- 
-@@ -1944,6 +1947,7 @@ int QFontEngineMulti::stringToCMap(const QChar *str, int len,
-                 }
-             }
- 
-+#if defined(QT_NO_EMOJISEGMENTER)
-             // For variant-selectors, they are modifiers to the previous character. If we
-             // end up with different font selections for the selector and the character it
-             // modifies, we try applying the selector font to the preceding character as well
-@@ -1982,11 +1986,15 @@ int QFontEngineMulti::stringToCMap(const QChar *str, int len,
-                     }
-                 }
-             }
-+#endif
-         }
- 
-         it.advance();
-         ++glyph_pos;
-+
-+#if defined(QT_NO_EMOJISEGMENTER)
-         previousUcs4 = ucs4;
-+#endif
-     }
- 
-     *nglyphs = glyph_pos;
-@@ -2363,7 +2371,7 @@ QFontEngine *QFontEngineMulti::createMultiFontEngine(QFontEngine *fe, int script
+@@ -2363,7 +2363,7 @@ QFontEngine *QFontEngineMulti::createMultiFontEngine(QFontEngine *fe, int script
          ++it;
      }
      if (!engine) {

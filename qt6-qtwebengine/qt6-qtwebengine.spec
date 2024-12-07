@@ -27,7 +27,7 @@
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
 # See also http://qt-project.org/doc/qt-5.0/qtdoc/licensing.html
@@ -336,6 +336,8 @@ Summary: Example files for qt6-qtpdf
 %prep
 %autosetup -n %{qt_module}-everywhere-src-%{version_no_tilde} -p1 -a20
 
+sed -i -e 's/symbol_level=[[:digit:]]/symbol_level=1/g' cmake/Functions.cmake
+
 mv pulse src/3rdparty/chromium/
 
 pushd src/3rdparty/chromium
@@ -455,6 +457,7 @@ while read filename ; do
 done
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSE.*
 %{_qt6_libdir}/libQt6WebEngineCore.so.*
 %{_qt6_libdir}/libQt6WebEngineQuick.so.*
@@ -530,7 +533,6 @@ done
 %lang(zh_TW) %{_qt6_translationdir}/qtwebengine_locales/zh-TW.pak
 
 %files devel
-%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_rpmmacrodir}/macros.qt6-qtwebengine
 %dir %{_qt6_headerdir}/QtWebEngineCore
 %{_qt6_headerdir}/QtWebEngineCore/*
@@ -622,6 +624,9 @@ done
 %endif
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

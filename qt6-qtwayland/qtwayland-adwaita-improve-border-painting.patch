@@ -1,0 +1,74 @@
+From 1304ba3997951a93939b04b9ad1df1e0a0c146eb Mon Sep 17 00:00:00 2001
+From: Jan Grulich <jgrulich@redhat.com>
+Date: Tue, 19 Nov 2024 19:15:08 +0100
+Subject: [PATCH] Adwaita decorations: improve border painting
+
+This is a backport of two changes pushed to QAdwaitaDecorations upstream
+that further improve painting of border around the application window.
+Using the 0.5px adjustment makes the border to look better as the line
+better aligns. Also the separator between window and title doesn't need
+to be painted separately. Co-authored with Lorenzo Bertini.
+
+Pick-to: 6.8
+Change-Id: Ib841073884dee58e599a173c259547416d2ed8ce
+---
+
+diff --git a/src/plugins/decorations/adwaita/qwaylandadwaitadecoration.cpp b/src/plugins/decorations/adwaita/qwaylandadwaitadecoration.cpp
+index 2d3575b..c32ab4a 100644
+--- a/src/plugins/decorations/adwaita/qwaylandadwaitadecoration.cpp
++++ b/src/plugins/decorations/adwaita/qwaylandadwaitadecoration.cpp
+@@ -46,7 +46,6 @@
+ static constexpr int ceShadowsWidth = 10;
+ static constexpr int ceTitlebarHeight = 38;
+ static constexpr int ceWindowBorderWidth = 1;
+-static constexpr qreal ceTitlebarSeperatorWidth = 0.5;
+ 
+ static QMap<QWaylandAdwaitaDecoration::ButtonIcon, QString> buttonMap = {
+     { QWaylandAdwaitaDecoration::CloseIcon, "window-close-symbolic"_L1 },
+@@ -129,36 +128,29 @@
+     /*
+      * Titlebar and window border
+      */
+-    const int titleBarWidth = surfaceRect.width() - margins().left() - margins().right();
+     QPainterPath path;
++    const QPointF topLeft = { margins(ShadowsOnly).left() + 0.5,
++                              margins(ShadowsOnly).top() - 0.5 };
++    const int titleBarWidth = surfaceRect.width() - margins(ShadowsOnly).left()
++            - margins(ShadowsOnly).right() - 0.5;
++    const int borderRectHeight =
++            surfaceRect.height() - margins().top() - margins().bottom() + 0.5;
+ 
+     // Maximized or tiled won't have rounded corners
+     if (waylandWindow()->windowStates() & Qt::WindowMaximized
+         || waylandWindow()->toplevelWindowTilingStates() != QWaylandWindow::WindowNoState)
+-        path.addRect(margins().left(), margins().bottom(), titleBarWidth, margins().top());
++        path.addRect(QRectF(topLeft, QSizeF(titleBarWidth, margins().top())));
+     else
+-        path.addRoundedRect(margins().left(), margins().bottom(), titleBarWidth,
+-                            margins().top() + ceCornerRadius, ceCornerRadius, ceCornerRadius);
++        path.addRoundedRect(QRectF(topLeft, QSizeF(titleBarWidth, margins().top() + ceCornerRadius)),
++                            ceCornerRadius, ceCornerRadius);
+ 
+     p.save();
+     p.setPen(color(Border));
+     p.fillPath(path.simplified(), color(Background));
+     p.drawPath(path);
+-    p.drawRect(margins().left(), margins().top(), titleBarWidth, surfaceRect.height() - margins().top() - margins().bottom());
++    p.drawRect(QRectF(topLeft.x(), margins().top(), titleBarWidth, borderRectHeight));
+     p.restore();
+ 
+-
+-    /*
+-     * Titlebar separator
+-     */
+-    p.save();
+-    p.setPen(color(Border));
+-    p.drawLine(QLineF(margins().left(), margins().top() - ceTitlebarSeperatorWidth,
+-                        surfaceRect.width() - margins().right(),
+-                        margins().top() - ceTitlebarSeperatorWidth));
+-    p.restore();
+-
+-
+     /*
+      * Window title
+      */

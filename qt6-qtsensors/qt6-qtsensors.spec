@@ -6,7 +6,7 @@
 Summary: Qt6 - Sensors component
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -87,6 +87,7 @@ popd
 %ldconfig_scriptlets
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/*
 %{_qt6_libdir}/libQt6Sensors.so.6*
 %{_qt6_libdir}/libQt6SensorsQuick.so.6*
@@ -94,7 +95,6 @@ popd
 %{_qt6_archdatadir}/qml/QtSensors/
 
 %files devel
-%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_qt6_headerdir}/QtSensors/
 %{_qt6_headerdir}/QtSensorsQuick/
 %{_qt6_libdir}/libQt6Sensors.so
@@ -119,6 +119,9 @@ popd
 %endif
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

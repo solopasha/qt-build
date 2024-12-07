@@ -4,7 +4,7 @@
 Summary: Qt6 - LanguageServer component
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt.io
@@ -48,8 +48,8 @@ Requires: qt6-qtbase-devel%{?_isa}
 
 
 %files devel
-%{_qt6_libdir}/qt6/sbom/*.spdx
 %license LICENSES/*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_libdir}/libQt6JsonRpc.a
 %{_qt6_libdir}/libQt6LanguageServer.a
 %{_qt6_headerdir}/QtJsonRpc/
@@ -68,6 +68,9 @@ Requires: qt6-qtbase-devel%{?_isa}
 
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

@@ -6,7 +6,7 @@
 Summary: Qt6 - Support for rendering and displaying SVG
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -77,6 +77,7 @@ popd
 
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/GPL* LICENSES/LGPL*
 %{_qt6_libdir}/libQt6Svg.so.6*
 %{_qt6_libdir}/libQt6SvgWidgets.so.6*
@@ -84,7 +85,6 @@ popd
 %{_qt6_plugindir}/imageformats/libqsvg.so
 
 %files devel
-%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_headerdir}/QtSvg/
 %{_qt6_headerdir}/QtSvgWidgets/
@@ -108,6 +108,9 @@ popd
 %endif
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

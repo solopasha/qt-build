@@ -7,7 +7,7 @@
 Summary: Qt6 - Speech component
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 # Code can be either LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only
 # See e.g. src/plugins/speechdispatcher or src/tts
@@ -105,6 +105,7 @@ popd
 
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/GPL* LICENSES/LGPL* LICENSES/BSD*
 %{_qt6_libdir}/libQt6TextToSpeech.so.6{,.*}
 %dir %{_qt6_plugindir}/texttospeech
@@ -124,7 +125,6 @@ popd
 %{_qt6_libdir}/cmake/Qt6TextToSpeech/Qt6QTextToSpeechSpeechdPlugin*.cmake
 
 %files devel
-%{_qt6_libdir}/qt6/sbom/*.spdx
 %dir %{_qt6_headerdir}/QtTextToSpeech
 %{_qt6_headerdir}/QtTextToSpeech/*
 %{_qt6_libdir}/libQt6TextToSpeech.so
@@ -146,6 +146,9 @@ popd
 %endif
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

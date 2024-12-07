@@ -3,7 +3,7 @@
 Summary: Qt6 - QtTranslations module
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -79,6 +79,7 @@ Provides: %{_qt6}-zh_TW = %{version}-%{release}
 #find_lang qttranslations --all-name --with-qt --without-mo
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/*
 %{_qt6_datadir}/translations/catalogs.json
 %lang(ar) %{_qt6_translationdir}/*_ar.qm
@@ -119,6 +120,9 @@ Provides: %{_qt6}-zh_TW = %{version}-%{release}
 
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

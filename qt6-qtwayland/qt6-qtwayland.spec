@@ -6,7 +6,7 @@
 Summary: Qt6 - Wayland platform support and QtCompositor module
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -14,10 +14,11 @@ Url:     http://www.qt.io
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
-
 # Upstream patches
 Patch: c2f61bc4.patch
 Patch: https://invent.kde.org/qt/qt/qtwayland/-/commit/24002ac6cbd01dbde4944b63c1f7c87ed2bd72b5.patch
+Patch: https://invent.kde.org/qt/qt/qtwayland/-/commit/070414dd4155e13583e5e8b16bed1a5b68d32910.patch
+Patch: qtwayland-adwaita-improve-border-painting.patch
 
 # Upstreamable patches
 
@@ -104,6 +105,7 @@ popd
 %ldconfig_scriptlets
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %doc README
 %license LICENSES/*
 %{_qt6_libdir}/libQt6WaylandClient.so.6*
@@ -124,7 +126,6 @@ popd
 %{_qt6_qmldir}/QtWayland/
 
 %files devel
-%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_headerdir}/QtWaylandClient/
 %{_qt6_headerdir}/QtWaylandCompositor*/
@@ -167,6 +168,9 @@ popd
 %endif
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

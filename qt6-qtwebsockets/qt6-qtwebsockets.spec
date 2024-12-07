@@ -6,7 +6,7 @@
 Summary: Qt6 - WebSockets component
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
@@ -82,11 +82,11 @@ popd
 %ldconfig_scriptlets
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/*
 %{_qt6_libdir}/libQt6WebSockets.so.6*
 
 %files devel
-%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_qt6_headerdir}/QtWebSockets/
 %{_qt6_libdir}/libQt6WebSockets.so
 %{_qt6_libdir}/libQt6WebSockets.prl
@@ -107,6 +107,9 @@ popd
 
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

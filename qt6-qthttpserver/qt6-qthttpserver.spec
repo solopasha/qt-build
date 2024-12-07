@@ -4,7 +4,7 @@
 
 Name:       qt6-qthttpserver
 Version:    6.8.1
-Release:    1%{?dist}
+Release:    1%{?dist}.1
 Summary:    Library to facilitate the creation of an http server with Qt
 
 License:    BSD-3-Clause AND GFDL-1.3-no-invariants-only AND GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -59,11 +59,11 @@ to the usage of %{name}.
 %cmake_install
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/*.txt
 %{_qt6_libdir}/libQt6HttpServer.so.6{,.*}
 
 %files devel
-%{_qt6_libdir}/qt6/sbom/*.spdx
 %dir %{_qt6_headerdir}/QtHttpServer
 %{_qt6_headerdir}/QtHttpServer/*
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtHttpServerTestsConfig.cmake
@@ -83,6 +83,9 @@ to the usage of %{name}.
 %endif
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

@@ -2,7 +2,7 @@
 
 Name:          qt6-qtgraphs
 Version:       6.8.1
-Release:       1%{?dist}
+Release:       1%{?dist}.1
 
 #global examples 1
 
@@ -80,6 +80,7 @@ done
 popd
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/BSD-3-Clause.txt LICENSES/GFDL*.txt LICENSES/GPL-*.txt
 %{_qt6_libdir}/libQt6Graphs.so.6*
 %{_qt6_libdir}/libQt6GraphsWidgets.so.6*
@@ -88,7 +89,6 @@ popd
 %{_qt6_qmldir}/QtGraphs/
 
 %files devel
-%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_qt6_headerdir}/QtGraphs/
 %{_qt6_headerdir}/QtGraphsWidgets/
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtGraphsTestsConfig.cmake
@@ -108,6 +108,9 @@ popd
 %endif
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

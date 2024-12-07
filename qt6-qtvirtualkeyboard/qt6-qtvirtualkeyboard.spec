@@ -6,7 +6,7 @@
 Summary: Qt6 - VirtualKeyboard component
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt.io
@@ -78,6 +78,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %cmake_install
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/*
 %{_qt6_libdir}/libQt6HunspellInputMethod.so.6*
 %{_qt6_libdir}/libQt6VirtualKeyboard.so.6*
@@ -86,7 +87,6 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_qmldir}/QtQuick/VirtualKeyboard/
 
 %files devel
-%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_qt6_headerdir}/QtHunspellInputMethod/
 %{_qt6_headerdir}/QtVirtualKeyboard/
 %{_qt6_headerdir}/QtVirtualKeyboardSettings/
@@ -118,6 +118,9 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

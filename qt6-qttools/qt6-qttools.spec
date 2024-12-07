@@ -7,7 +7,7 @@
 Summary: Qt6 - QtTool components
 Name:    qt6-qttools
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -221,6 +221,7 @@ popd
 
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_bindir}/qdbus-qt6
 %{_qt6_bindir}/qdbus
 %{_qt6_bindir}/qdbus-qt6
@@ -294,7 +295,6 @@ popd
 %endif
 
 %files devel
-%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_bindir}/pixeltool*
 %{_bindir}/qtdiag*
 %{_bindir}/qtplugininfo*
@@ -366,6 +366,9 @@ popd
 
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

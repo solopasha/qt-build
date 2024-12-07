@@ -6,7 +6,7 @@
 Summary: Qt6 - Charts component
 Name:    qt6-%{qt_module}
 Version: 6.8.1
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -60,13 +60,13 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 
 %files
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/GPL*
 %{_qt6_libdir}/libQt6Charts.so.6*
 %{_qt6_libdir}/libQt6ChartsQml.so.6*
 %{_qt6_qmldir}/QtCharts/
 
 %files devel
-%{_qt6_libdir}/qt6/sbom/*.spdx
 %{_qt6_headerdir}/QtCharts/
 %{_qt6_headerdir}/QtChartsQml/
 %{_qt6_libdir}/libQt6Charts.so
@@ -90,6 +90,9 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %changelog
+* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+- rebuilt
+
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version
 

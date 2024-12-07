@@ -21,6 +21,7 @@ Release: 1%{?dist}.1
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
 %qt_source
+%global  qt_version %(echo %{version} | cut -d~ -f1)
 
 # filter plugin/qml provides
 %global __provides_exclude_from ^(%{_qt6_archdatadir}/qml/.*\\.so|%{_qt6_plugindir}/.*\\.so)$

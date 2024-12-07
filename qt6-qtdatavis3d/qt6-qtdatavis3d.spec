@@ -60,8 +60,8 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %cmake_install
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/GPL*
+%{_qt6_archdatadir}/sbom/qtdatavisualization-%{qt_version}.spdx
 %{_qt6_libdir}/libQt6DataVisualization.so.6*
 %{_qt6_libdir}/libQt6DataVisualizationQml.so.6*
 %{_qt6_qmldir}/QtDataVisualization/

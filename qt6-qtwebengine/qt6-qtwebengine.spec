@@ -457,8 +457,8 @@ while read filename ; do
 done
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSE.*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{version_no_git}.spdx
 %{_qt6_libdir}/libQt6WebEngineCore.so.*
 %{_qt6_libdir}/libQt6WebEngineQuick.so.*
 %{_qt6_libdir}/libQt6WebEngineQuickDelegatesQml.so.*

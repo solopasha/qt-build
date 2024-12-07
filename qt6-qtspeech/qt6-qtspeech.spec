@@ -105,7 +105,7 @@ popd
 
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{version_no_git}.spdx
 %license LICENSES/GPL* LICENSES/LGPL* LICENSES/BSD*
 %{_qt6_libdir}/libQt6TextToSpeech.so.6{,.*}
 %dir %{_qt6_plugindir}/texttospeech

@@ -64,7 +64,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{version_no_git}.spdx
 %license LICENSES/GPL* LICENSES/LGPL*
 %{_qt6_libdir}/libQt6WebView.so.6{,.*}
 %{_qt6_libdir}/libQt6WebViewQuick.so.6{,.*}

@@ -5,8 +5,8 @@
 
 Summary: Qt6 - Positioning component
 Name:    qt6-%{qt_module}
-Version: 6.8.1
-Release: 1%{?dist}.1
+Version: 6.9.0~beta1
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -62,12 +62,6 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 
 %build
-# QT is known not to work properly with LTO at this point.  Some of the issues
-# are being worked on upstream and disabling LTO should be re-evaluated as
-# we update this change.  Until such time...
-# Disable LTO
-%define _lto_cflags %{nil}
-
 %cmake_qt6 \
   -DQT_BUILD_EXAMPLES:BOOL=%{?examples:ON}%{!?examples:OFF} \
   -DQT_INSTALL_EXAMPLES_SOURCES=%{?examples:ON}%{!?examples:OFF}
@@ -126,6 +120,9 @@ popd
 %endif
 
 %changelog
+* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
+- new version
+
 * Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
 - rebuilt
 

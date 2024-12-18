@@ -1,5 +1,6 @@
+Submodule src/3rdparty deb4119a4..5268a3b75:
 diff --git a/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn b/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
-index f05ad3eb2..8c73aa08e 100644
+index f30411eddcf..277b440c9ea 100644
 --- a/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
 +++ b/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
 @@ -3,9 +3,19 @@
@@ -22,7 +23,7 @@ index f05ad3eb2..8c73aa08e 100644
  
  blink_modules_sources("mediarecorder") {
    sources = [
-@@ -56,7 +66,11 @@ blink_modules_sources("mediarecorder") {
+@@ -57,7 +67,11 @@ blink_modules_sources("mediarecorder") {
        "h264_encoder.h",
      ]
  
@@ -36,10 +37,10 @@ index f05ad3eb2..8c73aa08e 100644
  
    if (enable_libaom) {
 diff --git a/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn b/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn
-index 1ad082fe7..7bf84b932 100644
+index 1c13a54568c..79063ef48f4 100644
 --- a/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn
 +++ b/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn
-@@ -2,11 +2,21 @@
+@@ -2,12 +2,22 @@
  # Use of this source code is governed by a BSD-style license that can be
  # found in the LICENSE file.
  
@@ -47,6 +48,7 @@ index 1ad082fe7..7bf84b932 100644
  import("//media/media_options.gni")
  import("//third_party/blink/renderer/modules/modules.gni")
  import("//third_party/libaom/options.gni")
+ import("//third_party/libgav1/options.gni")
  import("//third_party/libprotobuf-mutator/fuzzable_proto_library.gni")
  import("//third_party/protobuf/proto_library.gni")
 +import("//third_party/webrtc/webrtc.gni")
@@ -61,7 +63,7 @@ index 1ad082fe7..7bf84b932 100644
  
  blink_modules_sources("webcodecs") {
    sources = [
-@@ -117,7 +127,11 @@ blink_modules_sources("webcodecs") {
+@@ -120,7 +130,11 @@ blink_modules_sources("webcodecs") {
      deps += [ "//third_party/libvpx" ]
    }
    if (media_use_openh264) {

@@ -1,8 +1,8 @@
 
 Name: qt6
 # This version MUST remain in sync with Qt6 versions!
-Version: 6.8.1
-Release: 1%{?dist}.3
+Version: 6.9.0~beta1
+Release: 1%{?dist}
 Summary: Qt6 meta package
 License: GPL-3.0-only
 URL:     https://getfedora.org/
@@ -104,17 +104,30 @@ Filesystem for Qt 6 packages.
 
 %install
 # See macros.qt6 where the directories are specified
-mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6
-mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/bin
-mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/cmake
-mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/examples
-mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/imports
-mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/metatypes
-mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/modules
-mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/libexec
-mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/mkspecs
-mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/plugins
-mkdir -p %{buildroot}%{_prefix}/{lib,%{_lib}}/qt6/qml
+mkdir -p %{buildroot}%{_prefix}/lib/qt6
+mkdir -p %{buildroot}%{_prefix}/lib/qt6/bin
+mkdir -p %{buildroot}%{_prefix}/lib/qt6/cmake
+mkdir -p %{buildroot}%{_prefix}/lib/qt6/examples
+mkdir -p %{buildroot}%{_prefix}/lib/qt6/imports
+mkdir -p %{buildroot}%{_prefix}/lib/qt6/metatypes
+mkdir -p %{buildroot}%{_prefix}/lib/qt6/modules
+mkdir -p %{buildroot}%{_prefix}/lib/qt6/libexec
+mkdir -p %{buildroot}%{_prefix}/lib/qt6/mkspecs
+mkdir -p %{buildroot}%{_prefix}/lib/qt6/plugins
+mkdir -p %{buildroot}%{_prefix}/lib/qt6/qml
+%if "%{_lib}" != "lib"
+mkdir -p %{buildroot}%{_prefix}/%{_lib}/qt6
+mkdir -p %{buildroot}%{_prefix}/%{_lib}/qt6/bin
+mkdir -p %{buildroot}%{_prefix}/%{_lib}/qt6/cmake
+mkdir -p %{buildroot}%{_prefix}/%{_lib}/qt6/examples
+mkdir -p %{buildroot}%{_prefix}/%{_lib}/qt6/imports
+mkdir -p %{buildroot}%{_prefix}/%{_lib}/qt6/metatypes
+mkdir -p %{buildroot}%{_prefix}/%{_lib}/qt6/modules
+mkdir -p %{buildroot}%{_prefix}/%{_lib}/qt6/libexec
+mkdir -p %{buildroot}%{_prefix}/%{_lib}/qt6/mkspecs
+mkdir -p %{buildroot}%{_prefix}/%{_lib}/qt6/plugins
+mkdir -p %{buildroot}%{_prefix}/%{_lib}/qt6/qml
+%endif
 mkdir -p %{buildroot}%{_datadir}/qt6
 mkdir -p %{buildroot}%{_docdir}/qt6
 mkdir -p %{buildroot}%{_includedir}/qt6
@@ -169,27 +182,29 @@ echo "- Qt6 devel meta package" > %{buildroot}%{_docdir}/qt6-devel/README
 
 %files filesystem
 %dir %{_prefix}/lib/qt6
-%dir %{_prefix}/%{_lib}/qt6
 %dir %{_prefix}/lib/qt6/bin
-%dir %{_prefix}/%{_lib}/qt6/bin
 %dir %{_prefix}/lib/qt6/cmake
-%dir %{_prefix}/%{_lib}/qt6/cmake
 %dir %{_prefix}/lib/qt6/examples
-%dir %{_prefix}/%{_lib}/qt6/examples
 %dir %{_prefix}/lib/qt6/imports
-%dir %{_prefix}/%{_lib}/qt6/imports
 %dir %{_prefix}/lib/qt6/metatypes
-%dir %{_prefix}/%{_lib}/qt6/metatypes
 %dir %{_prefix}/lib/qt6/modules
-%dir %{_prefix}/%{_lib}/qt6/modules
 %dir %{_prefix}/lib/qt6/libexec
-%dir %{_prefix}/%{_lib}/qt6/libexec
 %dir %{_prefix}/lib/qt6/mkspecs
-%dir %{_prefix}/%{_lib}/qt6/mkspecs
 %dir %{_prefix}/lib/qt6/plugins
-%dir %{_prefix}/%{_lib}/qt6/plugins
 %dir %{_prefix}/lib/qt6/qml
+%if "%{_lib}" != "lib"
+%dir %{_prefix}/%{_lib}/qt6
+%dir %{_prefix}/%{_lib}/qt6/bin
+%dir %{_prefix}/%{_lib}/qt6/cmake
+%dir %{_prefix}/%{_lib}/qt6/examples
+%dir %{_prefix}/%{_lib}/qt6/imports
+%dir %{_prefix}/%{_lib}/qt6/metatypes
+%dir %{_prefix}/%{_lib}/qt6/modules
+%dir %{_prefix}/%{_lib}/qt6/libexec
+%dir %{_prefix}/%{_lib}/qt6/mkspecs
+%dir %{_prefix}/%{_lib}/qt6/plugins
 %dir %{_prefix}/%{_lib}/qt6/qml
+%endif
 %dir %{_datadir}/qt6
 %dir %{_docdir}/qt6
 %dir %{_includedir}/qt6
@@ -197,6 +212,9 @@ echo "- Qt6 devel meta package" > %{buildroot}%{_docdir}/qt6-devel/README
 
 
 %changelog
+* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
+- new version
+
 * Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.3
 - rebuilt
 

@@ -1,8 +1,6 @@
 
 %global qt_module qtdeclarative
 
-%define _lto_cflags %{nil}
-
 # definition borrowed from qtbase
 %global multilib_archs x86_64 %{ix86} %{?mips} ppc64 ppc s390x s390 sparc64 sparcv9
 
@@ -10,8 +8,8 @@
 
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
-Version: 6.8.1
-Release: 1%{?dist}.1
+Version: 6.9.0~beta1
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -63,6 +61,10 @@ Requires:  %{name}%{?_isa} = %{version}-%{release}
 Requires:  qt6-qtbase-devel%{?_isa}
 Obsoletes: qt6-qtquickcontrols2-devel < 6.2.0~beta3-1
 Provides:  qt6-qtquickcontrols2-devel = %{version}-%{release}
+# rhbz#2330219
+# Require qt6-qtbase-private-devel until this is fixed upstream or a better
+# workaround is found.
+Requires: (qt6-qtbase-private-devel if cmake >= 3.31.0)
 %description devel
 %{summary}.
 
@@ -259,6 +261,8 @@ make check -k -C tests ||:
 %dir %{_qt6_libdir}/cmake/Qt6QuickTools
 %dir %{_qt6_libdir}/cmake/Qt6QuickVectorImage
 %dir %{_qt6_libdir}/cmake/Qt6QuickWidgets
+%dir %{_qt6_libdir}/cmake/Qt6QmlFormatPrivate
+%dir %{_qt6_libdir}/cmake/Qt6QuickEffects
 %{_bindir}/qml*
 %{_bindir}/svgtoqml
 %{_qt6_bindir}/qml*
@@ -300,6 +304,7 @@ make check -k -C tests ||:
 %{_qt6_headerdir}/QtQuickVectorImage/
 %{_qt6_headerdir}/QtQuickVectorImageGenerator/
 %{_qt6_headerdir}/QtQuickWidgets/
+%{_qt6_headerdir}/QtQmlFormat/
 %{_qt6_libdir}/libQt6Labs*.prl
 %{_qt6_libdir}/libQt6Labs*.so
 %{_qt6_libdir}/libQt6Qml.prl
@@ -405,6 +410,8 @@ make check -k -C tests ||:
 %{_qt6_libdir}/cmake/Qt6QuickTools/*.cmake
 %{_qt6_libdir}/cmake/Qt6QuickVectorImage/*.cmake
 %{_qt6_libdir}/cmake/Qt6QuickWidgets/*.cmake
+%{_qt6_libdir}/cmake/Qt6QmlFormatPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6QuickEffects/*.cmake
 %dir %{_qt6_mkspecsdir}/features
 %{_qt6_mkspecsdir}/features/qmlcache.prf
 %{_qt6_mkspecsdir}/features/qmltypes.prf
@@ -487,6 +494,7 @@ make check -k -C tests ||:
 %{_qt6_mkspecsdir}/modules/qt_lib_quicktemplates2.pri
 %{_qt6_mkspecsdir}/modules/qt_lib_quickvectorimage.pri
 %{_qt6_mkspecsdir}/modules/qt_lib_quickwidgets.pri
+%{_qt6_mkspecsdir}/modules/qt_lib_quickeffects.pri
 %{_qt6_libdir}/pkgconfig/Qt6Labs*.pc
 %{_qt6_libdir}/pkgconfig/Qt6Qml.pc
 %{_qt6_libdir}/pkgconfig/Qt6QmlCompiler.pc
@@ -513,21 +521,21 @@ make check -k -C tests ||:
 %{_qt6_libdir}/pkgconfig/Qt6QuickTest.pc
 %{_qt6_libdir}/pkgconfig/Qt6QuickVectorImage.pc
 %{_qt6_libdir}/pkgconfig/Qt6QuickWidgets.pc
+%{_qt6_libdir}/pkgconfig/Qt6QuickEffects.pc
+# FIXME:
+# This (slit to -private-devel) didn't work out because of rhbz#2330219
+# Might be something to consider in the future.
 # Private stuff
 # {_qt6_headerdir}/*/{qt_version}
-%dir %{_qt6_libdir}/cmake/Qt6QuickEffectsPrivate
 %dir %{_qt6_libdir}/cmake/Qt6QuickParticlesPrivate
 %dir %{_qt6_libdir}/cmake/Qt6QuickShapesPrivate
 %dir %{_qt6_libdir}/cmake/Qt6QuickVectorImageGeneratorPrivate
-%{_qt6_libdir}/cmake/Qt6QuickEffectsPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6QuickParticlesPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6QuickShapesPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6QuickVectorImageGeneratorPrivate/*.cmake
-%{_qt6_descriptionsdir}/QuickEffectsPrivate.json
 %{_qt6_descriptionsdir}/QuickParticlesPrivate.json
 %{_qt6_descriptionsdir}/QuickShapesPrivate.json
 %{_qt6_descriptionsdir}/QuickVectorImageGeneratorPrivate.json
-%{_qt6_metatypesdir}/qt6quickeffectsprivate_relwithdebinfo_metatypes.json
 %{_qt6_metatypesdir}/qt6quickparticlesprivate_relwithdebinfo_metatypes.json
 %{_qt6_metatypesdir}/qt6quickshapesprivate_relwithdebinfo_metatypes.json
 %{_qt6_metatypesdir}/qt6quickvectorimagegeneratorprivate_relwithdebinfo_metatypes.json
@@ -575,6 +583,8 @@ make check -k -C tests ||:
 %{_qt6_libdir}/libQt6QuickControlsTestUtils.prl
 %{_qt6_libdir}/libQt6QuickTestUtils.a
 %{_qt6_libdir}/libQt6QuickTestUtils.prl
+%{_qt6_libdir}/libQt6QmlFormat.a
+%{_qt6_libdir}/libQt6QmlFormat.prl
 %{_qt6_descriptionsdir}/PacketProtocolPrivate.json
 %{_qt6_descriptionsdir}/QmlDebugPrivate.json
 %{_qt6_descriptionsdir}/QmlDomPrivate.json
@@ -583,6 +593,8 @@ make check -k -C tests ||:
 %{_qt6_descriptionsdir}/QmlTypeRegistrarPrivate.json
 %{_qt6_descriptionsdir}/QuickControlsTestUtilsPrivate.json
 %{_qt6_descriptionsdir}/QuickTestUtilsPrivate.json
+%{_qt6_descriptionsdir}/QmlFormatPrivate.json
+%{_qt6_descriptionsdir}/QuickEffects.json
 %{_qt6_metatypesdir}/qt6packetprotocolprivate_*_metatypes.json
 %{_qt6_metatypesdir}/qt6qmldebugprivate_*_metatypes.json
 %{_qt6_metatypesdir}/qt6qmldomprivate_*_metatypes.json
@@ -591,15 +603,18 @@ make check -k -C tests ||:
 %{_qt6_metatypesdir}/qt6qmltyperegistrarprivate_*_metatypes.json
 %{_qt6_metatypesdir}/qt6quickcontrolstestutilsprivate_*_metatypes.json
 %{_qt6_metatypesdir}/qt6quicktestutilsprivate_*_metatypes.json
-%{_qt6_mkspecsdir}/modules/qt_lib_labs*_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_packetprotocol_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_qmldebug_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_qmldom_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_qmlls_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_qmltoolingsettings_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_qmltyperegistrar_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_quickcontrolstestutilsprivate_private.pri
-%{_qt6_mkspecsdir}/modules/qt_lib_quicktestutilsprivate_private.pri
+%{_qt6_metatypesdir}/qt6qmlformatprivate_relwithdebinfo_metatypes.json
+%{_qt6_metatypesdir}/qt6quickeffects_relwithdebinfo_metatypes.json
+# FIXME:
+# Same to qtbase, we probably cannot have mkspecs separate from -devel
+#{_qt6_mkspecsdir}/modules/qt_lib_packetprotocol_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_qmldebug_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_qmldom_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_qmlls_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_qmltoolingsettings_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_qmltyperegistrar_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_quickcontrolstestutilsprivate_private.pri
+#{_qt6_mkspecsdir}/modules/qt_lib_quicktestutilsprivate_private.pri
 %{_qt6_archdatadir}/objects-*/QmlTypeRegistrarPrivate_resources_1/
 
 %if 0%{?examples}
@@ -607,7 +622,11 @@ make check -k -C tests ||:
 %{_qt6_examplesdir}/
 %endif
 
+
 %changelog
+* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
+- new version
+
 * Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
 - rebuilt
 

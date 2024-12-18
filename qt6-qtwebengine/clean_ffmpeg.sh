@@ -1,6 +1,6 @@
 #!/bin/bash
-# Copyright 2013 Tomas Popela <tpopela@redhat.com>
-# Copyright 2016-2017 Kevin Kofler <Kevin@tigcc.ticalc.org>
+# Copyright 2013-2015 Tomas Popela <tpopela@redhat.com>
+# Copyright 2022-2024 Than Ngo <than@redhat.com>
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
 # "Software"), to deal in the Software without restriction, including
@@ -20,14 +20,41 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-where=`pwd`
+# $1 files
+# $2 verbose
+function copy_files() {
+    for file in $1
+    do
+        dir_name=$(echo "$file" | sed 's%/[^/]*$%/%')
+        if [[ $dir_name == */* ]]; then
+            tmp_dir_name="tmp_"$dir_name
+            mkdir -p "../tmp_ffmpeg/$tmp_dir_name"
+        else
+            tmp_dir_name=$file
+        fi
 
-generated_files=`./get_free_ffmpeg_source_files.py $1 0`
+        if [ "$2" -eq 1 ]; then
+            cp "$file" "../tmp_ffmpeg/$tmp_dir_name"
+        else
+            cp "$file" "../tmp_ffmpeg/$tmp_dir_name" > /dev/null 2>&1
+        fi
+    done
+}
+
+where=$(pwd)
+
+if ! generated_files=$(./get_free_ffmpeg_source_files.py "$1" "$2"); then
+    exit 1
+fi
+# As the build system files does not contain the header files, cheat here
+# and generate the header files names from source files. These that does not
+# exist will be later skipped while copying.
 generated_files_headers="${generated_files//.c/.h}"
-generated_files_headers="${generated_files_headers//.S/.h}"
-generated_files_headers="${generated_files_headers//.asm/.h}"
-
-cd $1/third_party/ffmpeg
+generated_files_headers="$generated_files_headers ${generated_files//.c/_internal.h}"
+if [ "$2" -ne "1" ]; then
+    generated_files_headers="$generated_files_headers ${generated_files//.S/.h}"
+fi
+generated_files_headers="$generated_files_headers ${generated_files//.asm/.h}"
 
 header_files="  libavcodec/x86/inline_asm.h \
                 libavcodec/x86/hpeldsp.h \
@@ -61,9 +88,6 @@ header_files="  libavcodec/x86/inline_asm.h \
                 libavcodec/dv.h \
                 libavcodec/error_resilience.h \
                 libavcodec/fdctdsp.h \
-                libavcodec/fft.h \
-                libavcodec/fft-internal.h \
-                libavcodec/fft_table.h \
                 libavcodec/flac.h \
                 libavcodec/flacdsp.h \
                 libavcodec/flac_parse.h \
@@ -74,13 +98,13 @@ header_files="  libavcodec/x86/inline_asm.h \
                 libavcodec/hevc.h \
                 libavcodec/hpeldsp.h \
                 libavcodec/hwaccels.h \
+                libavcodec/hwaccel_internal.h \
                 libavcodec/hwconfig.h \
                 libavcodec/idctdsp.h \
                 libavcodec/internal.h \
+                libavcodec/itut35.h \
                 libavcodec/kbdwin.h \
                 libavcodec/mathops.h \
-                libavcodec/mdct15.c \
-                libavcodec/mdct15.h \
                 libavcodec/me_cmp.h \
                 libavcodec/mlp_parse.h \
                 libavcodec/motion_est.h \
@@ -153,11 +177,15 @@ header_files="  libavcodec/x86/inline_asm.h \
                 libavformat/version.h \
                 libavformat/version_major.h \
                 libavformat/w64.h \
+                libavformat/iamf_parse.h \
+                libavformat/iamf_reader.h \
+                libavformat/iamf.h \
+                libavformat/avio.h \
                 libavutil/aarch64/cpu.h \
                 libavutil/x86/asm.h \
                 libavutil/x86/bswap.h \
                 libavutil/x86/cpu.h \
-                libavutil/x86/emms.h
+                libavutil/emms.h \
                 libavutil/x86/intreadwrite.h \
                 libavutil/x86/intmath.h
                 libavutil/x86/timer.h \
@@ -193,33 +221,31 @@ header_files="  libavcodec/x86/inline_asm.h \
                 libavutil/timestamp.h \
                 libavutil/tx_priv.h \
                 libavutil/version.h \
+                libavutil/sfc64.h \
+                libavutil/log.h \
+                libavutil/mathematics.h \
+                libavutil/opt.h \
                 libswresample/swresample.h \
                 libswresample/version.h \
                 libswresample/version_major.h \
                 compat/va_copy.h \
                 compat/atomics/gcc/stdatomic.h "
 
-manual_files="  libavcodec/aarch64/fft_neon.S \
-                libavcodec/aarch64/h264pred_neon.S \
+manual_files="  libavcodec/aarch64/h264pred_neon.S \
                 libavcodec/aarch64/hpeldsp_neon.S \
-                libavcodec/aarch64/mdct_neon.S \
                 libavcodec/aarch64/neon.S \
                 libavcodec/aarch64/vorbisdsp_neon.S \
                 libavcodec/aarch64/vorbisdsp_init.c \
                 libavcodec/aarch64/vp8dsp_neon.S \
                 libavcodec/x86/hpeldsp.asm \
                 libavcodec/x86/hpeldsp_rnd_template.c \
-                libavcodec/x86/mdct15.asm \
-                libavcodec/x86/mdct15_init.c \
                 libavcodec/x86/rnd_template.c \
                 libavcodec/x86/videodsp.asm \
                 libavcodec/x86/videodsp_init.c \
                 libavcodec/x86/vorbisdsp_init.c \
                 libavcodec/x86/vp3dsp.asm \
                 libavcodec/x86/vp8dsp.asm \
-                libavcodec/autorename_libavcodec_mdct15.c \
                 libavcodec/bit_depth_template.c \
-                libavcodec/fft_template.c \
                 libavcodec/flacdec.c \
                 libavcodec/flacdsp.c \
                 libavcodec/flacdsp_template.c \
@@ -227,8 +253,6 @@ manual_files="  libavcodec/aarch64/fft_neon.S \
                 libavcodec/h264pred_template.c \
                 libavcodec/hpel_template.c \
                 libavcodec/hpeldsp.c \
-                libavcodec/mdct15.c \
-                libavcodec/mdct_template.c \
                 libavcodec/options.c \
                 libavcodec/pcm.c \
                 libavcodec/pel_template.c \
@@ -281,7 +305,6 @@ mp3_files="     libavcodec/aarch64/aacpsdsp_init_aarch64.c \
                 libavcodec/autorename_libavcodec_mpegaudiodsp.c \
                 libavcodec/autorename_libavcodec_sbrdsp.c \
                 libavcodec/cbrt_data.c \
-                libavcodec/dct.c \
                 libavcodec/dct32_fixed.c \
                 libavcodec/dct32_float.c \
                 libavcodec/dct32_template.c \
@@ -299,7 +322,6 @@ mp3_files="     libavcodec/aarch64/aacpsdsp_init_aarch64.c \
                 libavcodec/sbrdsp.c \
                 libavcodec/sbrdsp_template.c \
                 libavcodec/sinewin.c \
-                libavcodec/x86/dct_init.c \
                 libavcodec/x86/dct32.asm \
                 libavcodec/x86/imdct36.asm \
                 libavcodec/x86/mpegaudiodsp.c \
@@ -330,26 +352,27 @@ other_files="   BUILD.gn \
                 README.md \
                 RELEASE "
 
-files=$generated_files$manual_files$other_files$generated_files_headers$header_files
+cd "$1/third_party/ffmpeg" || exit 1
 
-for f in $files
+copy_files "$generated_files" 0
+copy_files "$generated_files_headers" 0
+copy_files "$manual_files" 1
+copy_files "$other_files" 1
+copy_files "$header_files" 1
+copy_files "$mp3_files" 1
+
+mkdir -p ../tmp_ffmpeg/tmp_chromium/config
+cp -r chromium/config ../tmp_ffmpeg/tmp_chromium
+
+cd ../tmp_ffmpeg || exit 1
+
+while IFS= read -r -d '' tmp_directory
 do
-    dir_name=`dirname $f`/
-    if [[ $dir_name == ./ ]]; then
-        dir_name=
-    else
-        mkdir -p ../tmp_ffmpeg/$dir_name
-    fi
+    new_name=${tmp_directory//tmp_/}
+    mv "$tmp_directory" "$new_name"
+done <  <(find . -type d -name 'tmp_*' -print0)
 
-    cp -p $f ../tmp_ffmpeg/$dir_name 2>/dev/null
-done
+cd "$where" || exit 1
 
-# whole directory
-mkdir -p ../tmp_ffmpeg/chromium
-cp -pr chromium/config ../tmp_ffmpeg/chromium/
-
-cd ..
-rm -rf ffmpeg
-mv tmp_ffmpeg ffmpeg
-
-cd $where
+rm -rf "$1/third_party/ffmpeg"
+mv "$1/third_party/tmp_ffmpeg" "$1/third_party/ffmpeg"

@@ -3,8 +3,8 @@
 #global examples 1
 
 Name:       qt6-qthttpserver
-Version:    6.8.1
-Release:    1%{?dist}.1
+Version:    6.9.0~beta1
+Release:    1%{?dist}
 Summary:    Library to facilitate the creation of an http server with Qt
 
 License:    BSD-3-Clause AND GFDL-1.3-no-invariants-only AND GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -82,6 +82,9 @@ to the usage of %{name}.
 %endif
 
 %changelog
+* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
+- new version
+
 * Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
 - rebuilt
 

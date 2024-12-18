@@ -42,7 +42,7 @@ BuildRequires: pkgconfig(libsystemd)
 
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
-Version: 6.8.1
+Version: 6.9.0~beta1
 Release: 1%{?dist}.1
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -98,7 +98,6 @@ Patch100: qtbase-use-qgnomeplatform-as-default-platform-theme-on-gnome.patch
 %endif
 
 ## upstream patches
-Patch200: emoji.patch
 
 # Do not check any files in %%{_qt6_plugindir}/platformthemes/ for requires.
 # Those themes are there for platform integration. If the required libraries are
@@ -212,6 +211,8 @@ handling.
 %package common
 Summary: Common files for Qt6
 Requires: %{name} = %{version}-%{release}
+Obsoletes: qgnomeplatform-common < 0.9.3
+Provides:  qgnomeplatform-common = %{version}-%{release}
 BuildArch: noarch
 %description common
 %{summary}.
@@ -311,6 +312,10 @@ Recommends: mesa-dri-drivers%{?_isa}
 Recommends: qt6-qtwayland%{?_isa}
 # Required for some locales: https://pagure.io/fedora-kde/SIG/issue/311
 Recommends: qt6-qttranslations
+Obsoletes: adwaita-qt6 < 1.4.3
+Obsoletes: libadwaita-qt6 <  1.4.3
+Obsoletes: qgnomeplatform-qt6 < 0.9.3
+Provides:  qgnomeplatform-qt6 = %{version}-%{release}
 # for Source6: 10-qt6-check-opengl2.sh:
 # glxinfo
 Requires: glx-utils
@@ -334,12 +339,6 @@ test -x configure || chmod +x configure
 
 
 %build
-# QT is known not to work properly with LTO at this point.  Some of the issues
-# are being worked on upstream and disabling LTO should be re-evaluated as
-# we update this change.  Until such time...
-# Disable LTO
-# https://bugzilla.redhat.com/1900527
-%define _lto_cflags %{nil}
 
 ## FIXME/TODO:
 # * for %%ix86, add sse2 enabled builds for Qt6Gui, Qt6Core, QtNetwork, see also:
@@ -360,6 +359,7 @@ export LDFLAGS="$LDFLAGS $RPM_LD_FLAGS"
 export MAKEFLAGS="%{?_smp_mflags}"
 
 %cmake_qt6 \
+ -DCMAKE_INTERPROCEDURAL_OPTIMIZATION:BOOL=TRUE \
  -DQT_FEATURE_accessibility=ON \
  -DQT_FEATURE_fontconfig=ON \
  -DQT_FEATURE_glib=ON \
@@ -426,7 +426,7 @@ translationdir=%{_qt6_translationdir}
 
 Name: Qt6
 Description: Qt6 Configuration
-Version: 6.8.1
+Version: 6.9.0
 EOF
 
 # rpm macros
@@ -554,7 +554,6 @@ make check -k ||:
 %dir %{_qt6_plugindir}/styles/
 %{_qt6_plugindir}/networkinformation/libqglib.so
 %{_qt6_plugindir}/networkinformation/libqnetworkmanager.so
-%{_qt6_plugindir}/printsupport/libcupsprintersupport.so
 %{_qt6_plugindir}/sqldrivers/libqsqlite.so
 %{_qt6_plugindir}/tls/libqcertonlybackend.so
 %{_qt6_plugindir}/tls/libqopensslbackend.so
@@ -678,6 +677,8 @@ make check -k ||:
 %{_qt6_libdir}/cmake/Qt6/QtFileConfigure.txt.in
 %{_qt6_libdir}/cmake/Qt6/QtConfigureTimeExecutableCMakeLists.txt.in
 %{_qt6_libdir}/cmake/Qt6/QtSeparateDebugInfo.Info.plist.in
+%{_qt6_libdir}/cmake/Qt6/qt-internal-config.redo.in
+%{_qt6_libdir}/cmake/Qt6/qt-internal-config.redo.bat.in
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/COPYING-CMAKE-SCRIPTS
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules/*.cmake
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/modules/*.cmake
@@ -735,7 +736,6 @@ make check -k ||:
 %{_qt6_metatypesdir}/qt6xml_*_metatypes.json
 %{_qt6_libdir}/pkgconfig/*.pc
 %{_qt6_mkspecsdir}/*
-%exclude %{_qt6_mkspecsdir}/modules/qt_lib_*_private.pri
 ## private-devel globs
 %exclude %{_qt6_headerdir}/*/%{qt_version}/
 
@@ -766,7 +766,6 @@ make check -k ||:
 %{_qt6_metatypesdir}/qt6eglfskmsgbmsupportprivate_*_metatypes.json
 %{_qt6_metatypesdir}/qt6eglfskmssupportprivate_*_metatypes.json
 %{_qt6_metatypesdir}/qt6xcbqpaprivate_*_metatypes.json
-%{_qt6_mkspecsdir}/modules/qt_lib_*_private.pri
 %{_qt6_headerdir}/*/%{qt_version}/
 
 %files static
@@ -882,14 +881,18 @@ make check -k ||:
 %{_qt6_plugindir}/platforms/libqvnc.so
 %{_qt6_plugindir}/platforms/libqvkkhrdisplay.so
 %{_qt6_plugindir}/xcbglintegrations/libqxcb-glx-integration.so
+%{_qt6_plugindir}/printsupport/libcupsprintersupport.so
 # Platformthemes
 %{_qt6_plugindir}/platformthemes/libqxdgdesktopportal.so
 %{_qt6_plugindir}/platformthemes/libqgtk3.so
 
 
 %changelog
-* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+* Thu Dec 19 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1.1
 - rebuilt
+
+* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
+- new version
 
 * Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
 - new version

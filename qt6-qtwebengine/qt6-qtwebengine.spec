@@ -26,8 +26,8 @@
 
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
-Version: 6.8.1
-Release: 1%{?dist}.1
+Version: 6.9.0~beta1
+Release: 1%{?dist}
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
 # See also http://qt-project.org/doc/qt-5.0/qtdoc/licensing.html
@@ -76,6 +76,7 @@ BuildRequires: qt6-qtsvg-devel
 BuildRequires: qt6-qttools-static
 BuildRequires: qt6-qtquickcontrols2-devel
 BuildRequires: qt6-qtwebchannel-devel
+BuildRequires: qt6-qtwebsockets-devel
 # for examples?
 BuildRequires: ninja-build
 BuildRequires: bison
@@ -189,7 +190,7 @@ Requires: qt6-qtpdf%{?_isa} = %{version}-%{release}
 
 # Of course, Chromium itself is bundled. It cannot be unbundled because it is
 # not a library, but forked (modified) application code.
-Provides: bundled(chromium) = 118.0.5993.220
+Provides: bundled(chromium) = 126.0.6478.165
 
 # Bundled in src/3rdparty/chromium/third_party:
 # Check src/3rdparty/chromium/third_party/*/README.chromium for version numbers,
@@ -624,6 +625,9 @@ done
 %endif
 
 %changelog
+* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
+- new version
+
 * Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
 - rebuilt
 

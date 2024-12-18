@@ -1,11 +1,12 @@
+Submodule src/3rdparty 5268a3b75..375e78fc9:
 diff --git a/src/3rdparty/chromium/media/video/BUILD.gn b/src/3rdparty/chromium/media/video/BUILD.gn
-index ef5c9c6c0..7e439852d 100644
+index 0512640b261..934965fb2d6 100644
 --- a/src/3rdparty/chromium/media/video/BUILD.gn
 +++ b/src/3rdparty/chromium/media/video/BUILD.gn
 @@ -2,7 +2,17 @@
  # Use of this source code is governed by a BSD-style license that can be
  # found in the LICENSE file.
-
+ 
 +import("//build/config/linux/pkg_config.gni")
  import("//media/media_options.gni")
 +import("//third_party/webrtc/webrtc.gni")
@@ -17,7 +18,7 @@ index ef5c9c6c0..7e439852d 100644
 +    ]
 +  }
 +}
-
+ 
  source_set("video") {
    # Do not expand the visibility here without double-checking with OWNERS, this
 @@ -114,7 +124,12 @@ source_set("video") {
@@ -32,5 +33,5 @@ index ef5c9c6c0..7e439852d 100644
 +      deps += [ "//third_party/openh264:encoder" ]
 +    }
    }
-
+ 
    if (is_apple) {

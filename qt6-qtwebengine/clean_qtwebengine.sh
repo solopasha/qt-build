@@ -27,12 +27,14 @@ fi
 
 DIRNAME="qtwebengine-everywhere-src-$1"
 
-echo "removing $DIRNAME"
-rm -rf "$DIRNAME" || exit $?
+# echo "removing $DIRNAME"
+# rm -rf "$DIRNAME" || exit $?
 
 if [ -f "$DIRNAME.tar.xz" ] ; then
   echo "unpacking $DIRNAME.tar.xz"
   XZ_OPT="-T0" tar xJf "$DIRNAME.tar.xz" || exit $?
+elif [ -d "$DIRNAME" ] ; then
+  :
 elif [ -f "$DIRNAME.tar.bz2" ] ; then
   echo "unpacking $DIRNAME.tar.bz2"
   tar xjf "$DIRNAME.tar.bz2" || exit $?
@@ -55,13 +57,13 @@ else
 fi
 
 echo "running clean_ffmpeg.sh"
-./clean_ffmpeg.sh "$DIRNAME/src/3rdparty/chromium" || exit $?
+./clean_ffmpeg.sh "$DIRNAME/src/3rdparty/chromium" 1 || exit $?
 
 echo "ripping out openh264 sources, keeping just header files"
 find "$DIRNAME/src/3rdparty/chromium/third_party/openh264/src" -type f -not -name '*.h' -delete || exit $?
 
 echo "repacking as $DIRNAME-clean.tar.xz"
-XZ_OPT="-8 -T0" tar cJf "$DIRNAME-clean.tar.xz" "$DIRNAME" || exit $?
+XZ_OPT="-T0 -9" tar --owner 0 --group 0 --numeric-owner --exclude-vcs -cJf "$DIRNAME-clean.tar.xz" "$DIRNAME" || exit $?
 
 echo "removing $DIRNAME"
 rm -rf "$DIRNAME" || exit $?

@@ -6,13 +6,15 @@
 Summary: Qt6 - Wayland platform support and QtCompositor module
 Name:    qt6-%{qt_module}
 Version: 6.9.0~beta1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
 %qt_source
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
+
+Patch:  23071ad.diff
 
 # Upstream patches
 Patch: qtwayland-adwaita-improve-border-painting.patch
@@ -165,6 +167,9 @@ popd
 %endif
 
 %changelog
+* Sun Jan 12 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-2
+- pick commit
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

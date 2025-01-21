@@ -1,14 +1,18 @@
+%global commit0 977a8b4881e760640d9c549a79068e621be4b542
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
 
 %global qt_module qtimageformats
 
 Summary: Qt6 - QtImageFormats component
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -18,7 +22,7 @@ Patch0:  qtimageformats-fix-build.patch
 BuildRequires: cmake
 BuildRequires: gcc-c++
 BuildRequires: ninja-build
-BuildRequires: qt6-qtbase-devel >= %{version}
+BuildRequires: qt6-qtbase-devel
 BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
 BuildRequires: libtiff-devel
@@ -44,7 +48,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 rm -rv src/3rdparty
 
@@ -75,6 +79,10 @@ rm -rv src/3rdparty
 
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

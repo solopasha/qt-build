@@ -1,3 +1,7 @@
+%global commit0 59921babc266d8cf4232457feb31cf7ed13113f7
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
+
 %global qt_module qtspeech
 
 #global examples 1
@@ -6,7 +10,7 @@
 
 Summary: Qt6 - Speech component
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 # Code can be either LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only
@@ -14,15 +18,16 @@ Release: 1%{?dist}
 # Examples are under BSD-3-Clause
 License: (GPL-2.0-only OR LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0) AND BSD-3-Clause
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
 
 BuildRequires: gcc-c++
 BuildRequires: cmake
 BuildRequires: ninja-build
-BuildRequires: qt6-qtbase-devel >= %{version}
-BuildRequires: qt6-qtmultimedia-devel >= %{version}
-BuildRequires: qt6-qtdeclarative-devel >= %{version}
+BuildRequires: qt6-qtbase-devel
+BuildRequires: qt6-qtmultimedia-devel
+BuildRequires: qt6-qtdeclarative-devel
 BuildRequires: speech-dispatcher-devel >= 0.8
 %if %{with flite}
 BuildRequires: flite-devel
@@ -77,7 +82,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -105,8 +110,8 @@ popd
 
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{version_no_git}.spdx
 %license LICENSES/GPL* LICENSES/LGPL* LICENSES/BSD*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{version_no_git}.spdx
 %{_qt6_libdir}/libQt6TextToSpeech.so.6{,.*}
 %dir %{_qt6_plugindir}/texttospeech
 %{_qt6_plugindir}/texttospeech/libqtexttospeech_mock.so
@@ -135,6 +140,7 @@ popd
 %dir %{_qt6_libdir}/cmake/Qt6TextToSpeech
 %{_qt6_libdir}/cmake/Qt6TextToSpeech/Qt6QTextToSpeechMockPlugin*.cmake
 %{_qt6_libdir}/cmake/Qt6TextToSpeech/Qt6TextToSpeech*.cmake
+%{_qt6_libdir}/cmake/Qt6TextToSpeechPrivate/
 %{_qt6_libdir}/pkgconfig/Qt6TextToSpeech.pc
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_texttospeech*.pri
 %{_qt6_libdir}/qt6/modules/*.json
@@ -146,6 +152,10 @@ popd
 %endif
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

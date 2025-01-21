@@ -1,3 +1,6 @@
+%global commit0 f6082a961bec9947d29d279f55ca52530e69ea74
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
 
 %global qt_module qtwayland
 
@@ -5,21 +8,20 @@
 
 Summary: Qt6 - Wayland platform support and QtCompositor module
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
-Release: 2%{?dist}
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
-Patch:  23071ad.diff
-
 # Upstream patches
-Patch: qtwayland-adwaita-improve-border-painting.patch
 
 # Upstreamable patches
+Patch: rename.diff
 
 # filter qml provides
 %global __provides_exclude_from ^%{_qt6_archdatadir}/qml/.*\\.so$
@@ -27,7 +29,7 @@ Patch: qtwayland-adwaita-improve-border-painting.patch
 BuildRequires: gcc-c++
 BuildRequires: cmake
 BuildRequires: ninja-build
-BuildRequires: qt6-qtbase-devel >= %{version}
+BuildRequires: qt6-qtbase-devel
 BuildRequires: qt6-qtbase-static
 BuildRequires: qt6-qtsvg-devel
 BuildRequires: qt6-qtbase-private-devel
@@ -68,13 +70,13 @@ Requires: qt6-qtdeclarative-devel%{?_isa}
 %package examples
 Summary: Programming examples for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
-# BuildRequires: qt6-qtwayland-devel >= %{version}
+# BuildRequires: qt6-qtwayland-devel
 %description examples
 %{summary}.
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -167,6 +169,10 @@ popd
 %endif
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Sun Jan 12 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-2
 - pick commit
 

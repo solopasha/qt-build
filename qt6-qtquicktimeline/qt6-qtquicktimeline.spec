@@ -1,14 +1,18 @@
+%global commit0 1a3e950f808f512bc9cbcf34b24431617c710489
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
 
 %global qt_module qtquicktimeline
 
 Summary: Qt6 - QuickTimeline plugin
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -16,8 +20,8 @@ Url:     http://www.qt.io
 BuildRequires: cmake
 BuildRequires: gcc-c++
 BuildRequires: ninja-build
-BuildRequires: qt6-rpm-macros >= %{version}
-BuildRequires: qt6-qtbase-static >= %{version}
+BuildRequires: qt6-rpm-macros
+BuildRequires: qt6-qtbase-static
 BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
 BuildRequires: qt6-qtdeclarative-devel
@@ -36,7 +40,7 @@ Requires: qt6-qtdeclarative-devel%{?_isa}
 %{summary}.
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -67,6 +71,8 @@ Requires: qt6-qtdeclarative-devel%{?_isa}
 %{_qt6_libdir}/cmake/Qt6QuickTimeline/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6QuickTimelineBlendTrees/
 %{_qt6_libdir}/cmake/Qt6QuickTimelineBlendTrees/*.cmake
+%{_qt6_libdir}/cmake/Qt6QuickTimelineBlendTreesPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickTimelinePrivate/
 %{_qt6_libdir}/libQt6QuickTimeline.prl
 %{_qt6_libdir}/libQt6QuickTimeline.so
 %{_qt6_libdir}/libQt6QuickTimeline.prl
@@ -79,6 +85,10 @@ Requires: qt6-qtdeclarative-devel%{?_isa}
 %{_qt6_libdir}/pkgconfig/*.pc
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

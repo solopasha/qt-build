@@ -1,6 +1,6 @@
-Submodule src/3rdparty deb4119a4..5268a3b75:
+Submodule src/3rdparty 7e1ca3c50..cbe6f9743:
 diff --git a/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn b/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
-index f30411eddcf..277b440c9ea 100644
+index f30411eddcfb..277b440c9ea6 100644
 --- a/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
 +++ b/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
 @@ -3,9 +3,19 @@
@@ -37,7 +37,7 @@ index f30411eddcf..277b440c9ea 100644
  
    if (enable_libaom) {
 diff --git a/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn b/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn
-index 1c13a54568c..79063ef48f4 100644
+index 2f870757803d..1439b0f2f248 100644
 --- a/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn
 +++ b/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn
 @@ -2,12 +2,22 @@
@@ -63,7 +63,7 @@ index 1c13a54568c..79063ef48f4 100644
  
  blink_modules_sources("webcodecs") {
    sources = [
-@@ -120,7 +130,11 @@ blink_modules_sources("webcodecs") {
+@@ -122,7 +132,11 @@ blink_modules_sources("webcodecs") {
      deps += [ "//third_party/libvpx" ]
    }
    if (media_use_openh264) {

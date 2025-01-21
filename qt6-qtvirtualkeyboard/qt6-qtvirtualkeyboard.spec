@@ -1,3 +1,6 @@
+%global commit0 286b58c121c04a410a21629cb0bfadb302644c5f
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
 
 %global qt_module qtvirtualkeyboard
 
@@ -5,12 +8,13 @@
 
 Summary: Qt6 - VirtualKeyboard component
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -20,11 +24,11 @@ Url:     http://qt.io
 BuildRequires: cmake
 BuildRequires: gcc-c++
 BuildRequires: ninja-build
-BuildRequires: qt6-qtbase-devel >= %{version}
+BuildRequires: qt6-qtbase-devel
 BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
-BuildRequires: qt6-qtdeclarative-devel >= %{version}
-BuildRequires: qt6-qtsvg-devel >= %{version}
+BuildRequires: qt6-qtdeclarative-devel
+BuildRequires: qt6-qtsvg-devel
 BuildRequires: pkgconfig(xkbcommon)
 BuildRequires: openssl-devel
 BuildRequires: hunspell-devel
@@ -63,7 +67,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -111,6 +115,10 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/cmake/Qt6BundledTcime/Qt6BundledTcimeDependencies.cmake
 %{_qt6_libdir}/cmake/Qt6Gui/Qt6QVirtualKeyboardPlugin*.cmake
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
+%{_qt6_libdir}/cmake/Qt6HunspellInputMethodPrivate/
+%{_qt6_libdir}/cmake/Qt6VirtualKeyboardPrivate/
+%{_qt6_libdir}/cmake/Qt6VirtualKeyboardQmlPrivate/
+%{_qt6_libdir}/cmake/Qt6VirtualKeyboardSettingsPrivate/
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_hunspellinputmethod*.pri
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_virtualkeyboard*.pri
 %{_qt6_libdir}/qt6/modules/*.json
@@ -123,6 +131,10 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

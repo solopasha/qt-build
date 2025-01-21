@@ -1,15 +1,20 @@
+%global commit0 940ca26f50fa9c0fa49b7bba6cce2a12ebcba775
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
+
 %global qt_module qtwebview
 
 #global examples 1
 
 Summary: Qt6 - WebView component
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
 
 # FIXME use/update qt6_qtwebengine_arches
@@ -19,10 +24,10 @@ ExclusiveArch: aarch64 x86_64
 BuildRequires: gcc-c++
 BuildRequires: cmake
 BuildRequires: ninja-build
-BuildRequires: qt6-qtbase-devel >= %{version}
+BuildRequires: qt6-qtbase-devel
 BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
-BuildRequires: qt6-qtdeclarative-devel >= %{version}
+BuildRequires: qt6-qtdeclarative-devel
 BuildRequires: qt6-qtwebengine-devel
 BuildRequires: pkgconfig(xkbcommon) >= 0.4.1
 
@@ -48,7 +53,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -64,8 +69,8 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{version_no_git}.spdx
 %license LICENSES/GPL* LICENSES/LGPL*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{version_no_git}.spdx
 %{_qt6_libdir}/libQt6WebView.so.6{,.*}
 %{_qt6_libdir}/libQt6WebViewQuick.so.6{,.*}
 %{_qt6_qmldir}/QtWebView/
@@ -83,6 +88,8 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/cmake/Qt6WebView/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6WebViewQuick
 %{_qt6_libdir}/cmake/Qt6WebViewQuick/*.cmake
+%{_qt6_libdir}/cmake/Qt6WebViewPrivate/
+%{_qt6_libdir}/cmake/Qt6WebViewQuickPrivate/
 %{_qt6_libdir}/libQt6WebView.so
 %{_qt6_libdir}/libQt6WebView.prl
 %{_qt6_libdir}/libQt6WebViewQuick.so
@@ -100,6 +107,10 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

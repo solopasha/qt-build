@@ -1,3 +1,6 @@
+%global commit0 22a9da7cba5f1866a6e217f8b6394de20bf6c448
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
 
 %global qt_module qtquick3d
 
@@ -5,12 +8,13 @@
 
 Summary: Qt6 - Quick3D Libraries and utilities
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -19,8 +23,8 @@ Patch0:  qtquick3d-fix-build-with-gcc11.patch
 BuildRequires: cmake
 BuildRequires: gcc-c++
 BuildRequires: ninja-build
-BuildRequires: qt6-rpm-macros >= %{version}
-BuildRequires: qt6-qtbase-static >= %{version}
+BuildRequires: qt6-rpm-macros
+BuildRequires: qt6-qtbase-static
 BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
 BuildRequires: qt6-qtdeclarative-devel
@@ -49,14 +53,14 @@ Requires: qt6-qtdeclarative-devel%{?_isa}
 %package examples
 Summary: Programming examples for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
-# BuildRequires: qt6-qtquick3d-devel >= %{version}
+# BuildRequires: qt6-qtquick3d-devel
 %description examples
 %{summary}.
 %endif
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -89,7 +93,7 @@ mkdir %{buildroot}%{_bindir}
 pushd %{buildroot}%{_qt6_bindir}
 for i in * ; do
   case "${i}" in
-    balsam|meshdebug|shadergen|balsamui|instancer|shapegen|materialeditor)
+    balsam|meshdebug|shadergen|balsamui|instancer|materialeditor|shapegen)
       ln -v  ${i} %{buildroot}%{_bindir}/${i}-qt6
       ;;
     *)
@@ -115,8 +119,8 @@ popd
 %ldconfig_scriptlets
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/GPL*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_libdir}/libQt6Quick3D.so.6*
 %{_qt6_libdir}/libQt6Quick3DAssetImport.so.6*
 %{_qt6_libdir}/libQt6Quick3DAssetUtils.so.6*
@@ -130,6 +134,7 @@ popd
 %{_qt6_libdir}/libQt6Quick3DRuntimeRender.so.6*
 %{_qt6_libdir}/libQt6Quick3DUtils.so.6*
 %{_qt6_libdir}/libQt6Quick3DXr.so.6*
+%dir %{_qt6_plugindir}/assetimporters
 %{_qt6_plugindir}/assetimporters/*.so
 %{_qt6_qmldir}/QtQuick3D/
 
@@ -204,6 +209,10 @@ popd
 %endif
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

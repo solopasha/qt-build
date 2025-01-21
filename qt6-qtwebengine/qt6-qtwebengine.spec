@@ -1,3 +1,7 @@
+%global commit0 2ae0afcc331241c8ee7b53ef2ffbb9bfed7c969f
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
+
 %global qt_module qtwebengine
 
 # package-notes causes FTBFS (#2043178)
@@ -26,8 +30,8 @@
 
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
-Version: 6.9.0~beta1
-Release: 1%{?dist}
+Version: 6.9.0
+Release: 0.%{bumpver}.git%{shortcommit0}%{?dist}
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
 # See also http://qt-project.org/doc/qt-5.0/qtdoc/licensing.html
@@ -335,7 +339,7 @@ Summary: Example files for qt6-qtpdf
 %{summary}.
 
 %prep
-%autosetup -n %{qt_module}-everywhere-src-%{version_no_tilde} -p1 -a20
+%autosetup -n qtwebengine-everywhere-src-%{version_no_tilde} -p1 -a20
 
 sed -i -e 's/symbol_level=[[:digit:]]/symbol_level=1/g' cmake/Functions.cmake
 
@@ -567,6 +571,10 @@ done
 %{_qt6_libdir}/cmake/Qt6WebEngineCoreTools/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6WebEngineQuickDelegatesQml
 %{_qt6_libdir}/cmake/Qt6WebEngineQuickDelegatesQml/*.cmake
+%{_qt6_libdir}/cmake/Qt6WebEngineCorePrivate/
+%{_qt6_libdir}/cmake/Qt6WebEngineQuickDelegatesQmlPrivate/
+%{_qt6_libdir}/cmake/Qt6WebEngineQuickPrivate/
+%{_qt6_libdir}/cmake/Qt6WebEngineWidgetsPrivate/
 %{_qt6_libdir}/pkgconfig/Qt6WebEngineCore.pc
 %{_qt6_libdir}/pkgconfig/Qt6WebEngineQuick.pc
 %{_qt6_libdir}/pkgconfig/Qt6WebEngineQuickDelegatesQml.pc
@@ -584,6 +592,7 @@ done
 
 %files -n qt6-qtpdf
 %license LICENSE.*
+%{_qt6_archdatadir}/sbom/qtpdf-%{version_no_git}.spdx
 %{_qt6_libdir}/libQt6Pdf.so.*
 %{_qt6_libdir}/libQt6PdfQuick.so.*
 %{_qt6_libdir}/libQt6PdfWidgets.so.*
@@ -613,6 +622,9 @@ done
 %{_qt6_libdir}/cmake/Qt6PdfQuick/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6PdfWidgets
 %{_qt6_libdir}/cmake/Qt6PdfWidgets/*.cmake
+%{_qt6_libdir}/cmake/Qt6PdfPrivate/
+%{_qt6_libdir}/cmake/Qt6PdfQuickPrivate/
+%{_qt6_libdir}/cmake/Qt6PdfWidgetsPrivate/
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6Pdf*.cmake
 %{_qt6_libdir}/pkgconfig/Qt6Pdf.pc
 %{_qt6_libdir}/pkgconfig/Qt6PdfQuick.pc
@@ -625,6 +637,10 @@ done
 %endif
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Wed Jan 22 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

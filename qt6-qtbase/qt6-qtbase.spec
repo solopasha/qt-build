@@ -1,3 +1,7 @@
+%global commit0 3b5fcd4901a65a5acf2af740990a02d4ec5dcada
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
+
 # See http://bugzilla.redhat.com/223663
 %global multilib_archs x86_64 %{ix86} %{?mips} ppc64 ppc s390x s390 sparc64 sparcv9
 %global multilib_basearchs x86_64 %{?mips64} ppc64 s390x sparc64
@@ -42,12 +46,13 @@ BuildRequires: pkgconfig(libsystemd)
 
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
-Version: 6.9.0~beta1
-Release: 1%{?dist}.1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global  majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -201,6 +206,12 @@ Requires: %{name}-common = %{version}-%{release}
 %global ibase 1
 %endif
 
+Provides:      %{name} = %{majmin_ver_kf6}
+Provides:      %{name} = 6.8.1
+Provides:      %{name} = 6.9.0~beta1
+Provides:      %{name}%{?_isa} = %{majmin_ver_kf6}
+Provides:      %{name}%{?_isa} = 6.8.1
+Provides:      %{name}%{?_isa} = 6.9.0~beta1
 
 %description
 Qt is a software toolkit for developing applications.
@@ -324,7 +335,7 @@ Qt6 libraries used for drawing widgets and OpenGL items.
 
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 # move some bundled libs to ensure they're not accidentally used
 pushd src/3rdparty
@@ -359,7 +370,7 @@ export LDFLAGS="$LDFLAGS $RPM_LD_FLAGS"
 export MAKEFLAGS="%{?_smp_mflags}"
 
 %cmake_qt6 \
- -DCMAKE_INTERPROCEDURAL_OPTIMIZATION:BOOL=TRUE \
+ -DCMAKE_INTERPROCEDURAL_OPTIMIZATION:BOOL=ON \
  -DQT_FEATURE_accessibility=ON \
  -DQT_FEATURE_fontconfig=ON \
  -DQT_FEATURE_glib=ON \
@@ -435,7 +446,7 @@ install -p -m644 -D %{SOURCE10} \
 sed -i \
   -e "s|@@NAME@@|%{name}|g" \
   -e "s|@@EPOCH@@|%{?epoch}%{!?epoch:0}|g" \
-  -e "s|@@VERSION@@|%{version}|g" \
+  -e "s|@@VERSION@@|%{majmin_ver_kf6}|g" \
   -e "s|@@EVR@@|%{?epoch:%{epoch:}}%{version}-%{release}|g" \
   %{buildroot}%{_rpmmacrodir}/macros.qt6-qtbase
 
@@ -485,8 +496,6 @@ mkdir -p %{buildroot}%{_qt6_headerdir}/QtXcb
 install -m 644 src/plugins/platforms/xcb/*.h %{buildroot}%{_qt6_headerdir}/QtXcb/
 
 # Copied from OpenSUSE packages
-# CMake modules for plugins are not useful
-rm %{buildroot}%{_qt6_libdir}/cmake/*/*Plugin{Config,ConfigVersion,Targets*}.cmake
 
 # These files are only useful for the Qt continuous integration
 rm %{buildroot}%{_qt6_libexecdir}/ensure_pro_file.cmake
@@ -545,6 +554,7 @@ make check -k ||:
 %dir %{_qt6_plugindir}/generic/
 %dir %{_qt6_plugindir}/iconengines/
 %dir %{_qt6_plugindir}/imageformats/
+%dir %{_qt6_plugindir}/networkinformation/
 %dir %{_qt6_plugindir}/platforminputcontexts/
 %dir %{_qt6_plugindir}/platforms/
 %dir %{_qt6_plugindir}/platformthemes/
@@ -552,6 +562,7 @@ make check -k ||:
 %dir %{_qt6_plugindir}/script/
 %dir %{_qt6_plugindir}/sqldrivers/
 %dir %{_qt6_plugindir}/styles/
+%dir %{_qt6_plugindir}/tls/
 %{_qt6_plugindir}/networkinformation/libqglib.so
 %{_qt6_plugindir}/networkinformation/libqnetworkmanager.so
 %{_qt6_plugindir}/sqldrivers/libqsqlite.so
@@ -566,13 +577,18 @@ make check -k ||:
 
 %files devel
 %dir %{_qt6_libdir}/cmake/Qt6
+%dir %{_qt6_libdir}/cmake/Qt6/libexec
 %dir %{_qt6_libdir}/cmake/Qt6/platforms
 %dir %{_qt6_libdir}/cmake/Qt6/platforms/Platform
 %dir %{_qt6_libdir}/cmake/Qt6/config.tests
+%dir %{_qt6_libdir}/cmake/Qt6/3rdparty
 %dir %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules
+%dir %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules
+%dir %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/modules
 %dir %{_qt6_libdir}/cmake/Qt6/3rdparty/kwin
 %dir %{_qt6_libdir}/cmake/Qt6BuildInternals
 %dir %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests
+%dir %{_qt6_libdir}/cmake/Qt6BuildInternals/QtStandaloneTestTemplateProject
 %dir %{_qt6_libdir}/cmake/Qt6Concurrent
 %dir %{_qt6_libdir}/cmake/Qt6Core
 %dir %{_qt6_libdir}/cmake/Qt6CoreTools
@@ -746,6 +762,19 @@ make check -k ||:
 %dir %{_qt6_libdir}/cmake/Qt6EglFSDeviceIntegrationPrivate
 %dir %{_qt6_libdir}/cmake/Qt6EglFsKmsGbmSupportPrivate
 %dir %{_qt6_libdir}/cmake/Qt6EglFsKmsSupportPrivate
+%dir %{_qt6_libdir}/cmake/Qt6XcbQpaPrivate
+%{_qt6_libdir}/cmake/Qt6ConcurrentPrivate/
+%{_qt6_libdir}/cmake/Qt6CorePrivate/
+%{_qt6_libdir}/cmake/Qt6DBusPrivate/
+%{_qt6_libdir}/cmake/Qt6GuiPrivate/
+%{_qt6_libdir}/cmake/Qt6NetworkPrivate/
+%{_qt6_libdir}/cmake/Qt6OpenGLPrivate/
+%{_qt6_libdir}/cmake/Qt6OpenGLWidgetsPrivate/
+%{_qt6_libdir}/cmake/Qt6PrintSupportPrivate/
+%{_qt6_libdir}/cmake/Qt6SqlPrivate/
+%{_qt6_libdir}/cmake/Qt6TestPrivate/
+%{_qt6_libdir}/cmake/Qt6WidgetsPrivate/
+%{_qt6_libdir}/cmake/Qt6XmlPrivate/
 %{_qt6_libdir}/cmake/Qt6EglFSDeviceIntegrationPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6EglFsKmsGbmSupportPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6EglFsKmsSupportPrivate/*.cmake
@@ -871,6 +900,7 @@ make check -k ||:
 %{_qt6_plugindir}/egldeviceintegrations/libqeglfs-x11-integration.so
 %{_qt6_plugindir}/egldeviceintegrations/libqeglfs-kms-egldevice-integration.so
 %{_qt6_plugindir}/egldeviceintegrations/libqeglfs-emu-integration.so
+%dir %{_qt6_plugindir}/xcbglintegrations/
 %{_qt6_plugindir}/xcbglintegrations/libqxcb-egl-integration.so
 %endif
 # Platforms
@@ -888,6 +918,10 @@ make check -k ||:
 
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Thu Dec 19 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1.1
 - rebuilt
 

@@ -1,14 +1,18 @@
+%global commit0 e1268a78ae440dd5d68e30d932d00e181f005979
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
 
 %global qt_module qtshadertools
 
 Summary: Qt6 - Qt Shader Tools module builds on the SPIR-V Open Source Ecosystem
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global  majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -20,7 +24,7 @@ Url:     http://www.qt.io
 BuildRequires: gcc-c++
 BuildRequires: cmake
 BuildRequires: ninja-build
-BuildRequires: qt6-qtbase-devel >= %{version}
+BuildRequires: qt6-qtbase-devel
 BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
 BuildRequires: pkgconfig(xkbcommon) >= 0.4.1
@@ -32,12 +36,13 @@ BuildRequires: pkgconfig(xkbcommon) >= 0.4.1
 Summary: Development files for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: qt6-qtbase-devel%{?_isa}
+Requires: spirv-tools
 %description devel
 %{summary}.
 
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -80,8 +85,8 @@ popd
 %ldconfig_scriptlets
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/*
+%{_qt6_archdatadir}/sbom/qtshadertools-%{qt_version}.spdx
 %{_bindir}/qsb-qt6
 %{_qt6_bindir}/qsb
 %{_qt6_libdir}/libQt6ShaderTools.so.6*
@@ -98,10 +103,16 @@ popd
 %{_qt6_libdir}/cmake/Qt6ShaderTools/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6ShaderToolsTools/
 %{_qt6_libdir}/cmake/Qt6ShaderToolsTools/*.cmake
+%dir %{_qt6_libdir}/cmake/Qt6ShaderToolsPrivate/
+%{_qt6_libdir}/cmake/Qt6ShaderToolsPrivate/*.cmake
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/pkgconfig/Qt6ShaderTools.pc
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

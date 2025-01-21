@@ -1,8 +1,5 @@
 # SPDX-License-Identifier: MIT
 
-%_distro_extra_cflags -g1
-%_distro_extra_cxxflags -g1
-
 %_qt6_build_type RelWithDebInfo
 %_qt6_build_tool ninja
 
@@ -47,10 +44,6 @@
 
 %cmake_qt6 \
  %cmake -DCMAKE_BUILD_TYPE=%{_qt6_build_type} \\\
-        -DCMAKE_C_FLAGS_DEBUG=-g1 \\\
-        -DCMAKE_CXX_FLAGS_DEBUG=-g1 \\\
-        -DCMAKE_C_FLAGS_RELWITHDEBINFO="-O2 -g1 -DNDEBUG" \\\
-        -DCMAKE_CXX_FLAGS_RELWITHDEBINFO="-O2 -g1 -DNDEBUG" \\\
         -DCMAKE_INSTALL_PREFIX=%{_qt6_prefix} \\\
 %if "%_qt6_build_tool" == "ninja" \
         -GNinja \\\
@@ -73,3 +66,11 @@
         -DINSTALL_TRANSLATIONSDIR=%{_qt6_translationdir} \\\
         -DQT_DISABLE_RPATH=TRUE \\\
         -DCMAKE_MESSAGE_LOG_LEVEL=STATUS
+
+
+%qt_snapshot_changelog_entry %{lua:
+        assert(os.setlocale('C'))
+        local entry = "* "..os.date("%a %b %d %Y").." Qt snapshot - "..rpm.expand("%{?epoch:%{epoch}:}%{version}-%{release}").."\\n"..
+                      "- This is an automated snapshot build ".."%s".."\\n\\n"
+        return string.format(entry, "")
+}

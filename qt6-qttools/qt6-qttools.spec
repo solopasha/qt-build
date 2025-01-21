@@ -1,3 +1,7 @@
+%global commit0 3845c18278e3b6d8088032c64543ea169bd3e218
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
+
 %global qt_module qttools
 
 #global examples 1
@@ -6,12 +10,13 @@
 
 Summary: Qt6 - QtTool components
 Name:    qt6-qttools
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -37,11 +42,11 @@ BuildRequires: ninja-build
 BuildRequires: desktop-file-utils
 BuildRequires: /usr/bin/file
 BuildRequires: libappstream-glib
-BuildRequires: qt6-rpm-macros >= %{version}
+BuildRequires: qt6-rpm-macros
 BuildRequires: qt6-qtbase-private-devel
-BuildRequires: qt6-qtbase-static >= %{version}
-BuildRequires: qt6-qtdeclarative-static >= %{version}
-BuildRequires: qt6-qtdeclarative >= %{version}
+BuildRequires: qt6-qtbase-static
+BuildRequires: qt6-qtdeclarative-static
+BuildRequires: qt6-qtdeclarative
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
 BuildRequires: clang-devel llvm-devel
 BuildRequires: libzstd-devel
@@ -136,7 +141,7 @@ Requires: %{name}-common = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -315,7 +320,9 @@ popd
 %{_qt6_libdir}/libQt6UiTools.so
 %{_qt6_libdir}/cmake/Qt6/FindWrapLibClang.cmake
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtToolsTestsConfig.cmake
+%dir %{_qt6_libdir}/cmake/Qt6Designer
 %{_qt6_libdir}/cmake/Qt6Designer/*.cmake
+%dir %{_qt6_libdir}/cmake/Qt6DesignerComponentsPrivate
 %{_qt6_libdir}/cmake/Qt6DesignerComponentsPrivate/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6QDocCatchPrivate
 %{_qt6_libdir}/cmake/Qt6QDocCatchPrivate/*.cmake
@@ -336,6 +343,9 @@ popd
 %dir %{_qt6_libdir}/cmake/Qt6ToolsTools/
 %{_qt6_libdir}/cmake/Qt6ToolsTools/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6LinguistTools
+%{_qt6_libdir}/cmake/Qt6DesignerPrivate/
+%{_qt6_libdir}/cmake/Qt6HelpPrivate/
+%{_qt6_libdir}/cmake/Qt6UiToolsPrivate/
 %{_qt6_libdir}/cmake/Qt6UiTools/
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_qdoccatch_private.pri
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_qdoccatchconversions_private.pri
@@ -366,6 +376,10 @@ popd
 
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

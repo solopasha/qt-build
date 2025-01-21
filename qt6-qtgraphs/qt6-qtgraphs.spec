@@ -1,7 +1,11 @@
+%global commit0 a31c5b77bb206cb88c967cdbcf2662f709dae463
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
+
 %global        qt_module qtgraphs
 
 Name:          qt6-qtgraphs
-Version:       6.9.0~beta1
+Version:       6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release:       1%{?dist}
 
 #global examples 1
@@ -12,7 +16,8 @@ Release:       1%{?dist}
 Summary:       The Qt Graphs module enables you to visualize data in 3D
 License:       BSD-3-Clause AND GFDL-1.3-no-invariants-only AND GPL-3.0-only
 URL:           https://doc.qt.io/qt-6/qtgraphs-index.html
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 
 BuildRequires: gcc-c++
 BuildRequires: cmake
@@ -55,7 +60,7 @@ Requires:      %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 %build
 %cmake_qt6 \
@@ -96,6 +101,8 @@ popd
 %{_qt6_libdir}/cmake/Qt6Graphs/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6GraphsWidgets
 %{_qt6_libdir}/cmake/Qt6GraphsWidgets/*.cmake
+%{_qt6_libdir}/cmake/Qt6GraphsPrivate/
+%{_qt6_libdir}/cmake/Qt6GraphsWidgetsPrivate/
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6Graphsplugin*.cmake
 %{_qt6_libdir}/libQt6Graphs.so
 %{_qt6_libdir}/pkgconfig/Qt6Graphs*.pc
@@ -112,6 +119,10 @@ popd
 %endif
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

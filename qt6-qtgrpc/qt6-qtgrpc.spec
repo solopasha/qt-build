@@ -1,3 +1,6 @@
+%global commit0 d0964ce2ae7b1f025ad82d08e959a84d1a6bf42c
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
 
 %global qt_module qtgrpc
 
@@ -5,12 +8,13 @@
 
 Summary: Qt6 - Support for using gRPC and Protobuf
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global  majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -21,8 +25,8 @@ Url:     http://www.qt.io
 BuildRequires: gcc-c++
 BuildRequires: cmake
 BuildRequires: ninja-build
-BuildRequires: qt6-qtbase-devel >= %{version}
-BuildRequires: qt6-qtdeclarative-devel >= %{version}
+BuildRequires: qt6-qtbase-devel
+BuildRequires: qt6-qtdeclarative-devel
 BuildRequires: pkgconfig(grpc++)
 BuildRequires: pkgconfig(libprotobuf-c)
 BuildRequires: pkgconfig(protobuf)
@@ -55,7 +59,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -127,6 +131,13 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %dir %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
 %{_qt6_libdir}/cmake/Qt6ProtobufQuick/
+%{_qt6_libdir}/cmake/Qt6GrpcPrivate/
+%{_qt6_libdir}/cmake/Qt6GrpcQuickPrivate/
+%{_qt6_libdir}/cmake/Qt6ProtobufPrivate/
+%{_qt6_libdir}/cmake/Qt6ProtobufQtCoreTypesPrivate/
+%{_qt6_libdir}/cmake/Qt6ProtobufQtGuiTypesPrivate/
+%{_qt6_libdir}/cmake/Qt6ProtobufQuickPrivate/
+%{_qt6_libdir}/cmake/Qt6ProtobufWellKnownTypesPrivate/
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/pkgconfig/*.pc
@@ -139,6 +150,10 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

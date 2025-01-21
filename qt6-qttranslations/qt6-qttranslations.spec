@@ -1,13 +1,18 @@
+%global commit0 1669b11d1e437481aff185a0773c77e93de22a58
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
+
 %global qt_module qttranslations
 
 Summary: Qt6 - QtTranslations module
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -62,7 +67,7 @@ Provides: %{_qt6}-zh_TW = %{version}-%{release}
 
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -79,6 +84,7 @@ Provides: %{_qt6}-zh_TW = %{version}-%{release}
 
 %files
 %license LICENSES/*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_datadir}/translations/catalogs.json
 %lang(ar) %{_qt6_translationdir}/*_ar.qm
 %lang(bg) %{_qt6_translationdir}/*_bg.qm
@@ -118,6 +124,10 @@ Provides: %{_qt6}-zh_TW = %{version}-%{release}
 
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

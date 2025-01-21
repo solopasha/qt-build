@@ -1,3 +1,6 @@
+%global commit0 d92ddceaa35fae66fc13c012941005aa9dd5a158
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
 
 %global qt_module qtdeclarative
 
@@ -8,12 +11,13 @@
 
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global  majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -31,12 +35,12 @@ BuildRequires: cmake
 BuildRequires: gcc-c++
 BuildRequires: ninja-build
 BuildRequires: qt6-rpm-macros
-BuildRequires: qt6-qtbase-devel >= %{version}
+BuildRequires: qt6-qtbase-devel
 BuildRequires: qt6-qtbase-private-devel
 BuildRequires: qt6-qtbase-static
-BuildRequires: qt6-qtlanguageserver-devel >= %{version}
-BuildRequires: qt6-qtshadertools-devel >= %{version}
-BuildRequires: qt6-qtsvg-devel >= %{version}
+BuildRequires: qt6-qtlanguageserver-devel
+BuildRequires: qt6-qtshadertools-devel
+BuildRequires: qt6-qtsvg-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
 BuildRequires: python%{python3_pkgversion}
 BuildRequires: pkgconfig(xkbcommon) >= 0.4.1
@@ -80,13 +84,13 @@ Summary: Programming examples for %{name}
 Requires:  %{name}%{?_isa} = %{version}-%{release}
 Obsoletes: qt6-qtquickcontrols2-examples < 6.2.0~beta3-1
 Provides:  qt6-qtquickcontrols2-examples = %{version}-%{release}
-# BuildRequires: qt6-qtdeclarative-devel >= %{version}
+# BuildRequires: qt6-qtdeclarative-devel
 %description examples
 %{summary}.
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -139,9 +143,6 @@ for prl_file in libQt6*.prl ; do
 done
 popd
 
-# Copied from OpenSUSE packages
-# CMake modules for plugins are not useful
-rm %{buildroot}%{_qt6_libdir}/cmake/*/*Plugin{Config,ConfigVersion,Targets*}.cmake
 
 %check
 %if 0%{?tests}
@@ -540,6 +541,46 @@ make check -k -C tests ||:
 %{_qt6_metatypesdir}/qt6quickshapesprivate_relwithdebinfo_metatypes.json
 %{_qt6_metatypesdir}/qt6quickvectorimagegeneratorprivate_relwithdebinfo_metatypes.json
 %{_qt6_mkspecsdir}/modules/qt_lib_*_private.pri
+%{_qt6_libdir}/cmake/Qt6LabsAnimationPrivate/
+%{_qt6_libdir}/cmake/Qt6LabsFolderListModelPrivate/
+%{_qt6_libdir}/cmake/Qt6LabsPlatformPrivate/
+%{_qt6_libdir}/cmake/Qt6LabsQmlModelsPrivate/
+%{_qt6_libdir}/cmake/Qt6LabsSettingsPrivate/
+%{_qt6_libdir}/cmake/Qt6LabsSharedImagePrivate/
+%{_qt6_libdir}/cmake/Qt6LabsWavefrontMeshPrivate/
+%{_qt6_libdir}/cmake/Qt6QmlCompilerPrivate/
+%{_qt6_libdir}/cmake/Qt6QmlCorePrivate/
+%{_qt6_libdir}/cmake/Qt6QmlIntegrationPrivate/
+%{_qt6_libdir}/cmake/Qt6QmlLocalStoragePrivate/
+%{_qt6_libdir}/cmake/Qt6QmlMetaPrivate/
+%{_qt6_libdir}/cmake/Qt6QmlModelsPrivate/
+%{_qt6_libdir}/cmake/Qt6QmlNetworkPrivate/
+%{_qt6_libdir}/cmake/Qt6QmlPrivate/
+%{_qt6_libdir}/cmake/Qt6QmlWorkerScriptPrivate/
+%{_qt6_libdir}/cmake/Qt6QmlXmlListModelPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickControls2BasicPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickControls2BasicStyleImplPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickControls2FluentWinUI3StyleImplPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickControls2FusionPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickControls2FusionStyleImplPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickControls2ImaginePrivate/
+%{_qt6_libdir}/cmake/Qt6QuickControls2ImagineStyleImplPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickControls2ImplPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickControls2MaterialPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickControls2MaterialStyleImplPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickControls2Private/
+%{_qt6_libdir}/cmake/Qt6QuickControls2UniversalPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickControls2UniversalStyleImplPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickDialogs2Private/
+%{_qt6_libdir}/cmake/Qt6QuickDialogs2QuickImplPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickDialogs2UtilsPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickEffectsPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickLayoutsPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickTemplates2Private/
+%{_qt6_libdir}/cmake/Qt6QuickTestPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickVectorImagePrivate/
+%{_qt6_libdir}/cmake/Qt6QuickWidgetsPrivate/
 
 %files static
 %dir %{_qt6_archdatadir}/objects-*
@@ -624,6 +665,10 @@ make check -k -C tests ||:
 
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

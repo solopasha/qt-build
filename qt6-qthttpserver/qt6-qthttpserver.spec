@@ -1,28 +1,33 @@
+%global commit0 b9c2b8753325a2dfe5a8f2b57de7db9ac06ea30f
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
+
 %global qt_module qthttpserver
 
 #global examples 1
 
 Name:       qt6-qthttpserver
-Version:    6.9.0~beta1
+Version:    6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release:    1%{?dist}
 Summary:    Library to facilitate the creation of an http server with Qt
 
 License:    BSD-3-Clause AND GFDL-1.3-no-invariants-only AND GPL-3.0-only WITH Qt-GPL-exception-1.0
 URL:        http://qt-project.org/
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global     qt_version %(echo %{version} | cut -d~ -f1)
 
 BuildRequires:  qt6-rpm-macros
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  ninja-build
-BuildRequires:  cmake(Qt6BuildInternals) = %{version}
-BuildRequires:  cmake(Qt6Core) = %{version}
-BuildRequires:  qt6-qtbase-private-devel = %{version}
-BuildRequires:  cmake(Qt6Network) = %{version}
-BuildRequires:  cmake(Qt6Concurrent) = %{version}
-BuildRequires:  cmake(Qt6WebSockets) = %{version}
-BuildRequires:  cmake(Qt6Gui) = %{version}
+BuildRequires:  cmake(Qt6BuildInternals)
+BuildRequires:  cmake(Qt6Core)
+BuildRequires:  qt6-qtbase-private-devel
+BuildRequires:  cmake(Qt6Network)
+BuildRequires:  cmake(Qt6Concurrent)
+BuildRequires:  cmake(Qt6WebSockets)
+BuildRequires:  cmake(Qt6Gui)
 BuildRequires:  libxkbcommon-devel
 
 %description
@@ -45,7 +50,7 @@ to the usage of %{name}.
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -60,14 +65,15 @@ to the usage of %{name}.
 %cmake_install
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/*.txt
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_libdir}/libQt6HttpServer.so.6{,.*}
 
 %files devel
 %{_qt6_headerdir}/QtHttpServer/
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtHttpServerTestsConfig.cmake
 %{_qt6_libdir}/cmake/Qt6HttpServer/
+%{_qt6_libdir}/cmake/Qt6HttpServerPrivate/
 %{_qt6_libdir}/libQt6HttpServer.prl
 %{_qt6_libdir}/libQt6HttpServer.so
 %{_qt6_libdir}/pkgconfig/Qt6HttpServer.pc
@@ -82,6 +88,10 @@ to the usage of %{name}.
 %endif
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

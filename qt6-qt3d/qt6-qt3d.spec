@@ -1,15 +1,20 @@
+%global commit0 10942baa2481f0844c67f295af4da24b005a2e1e
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
+
 %global qt_module qt3d
 
 Summary: Qt6 - Qt3D QML bindings and C++ APIs
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 #global examples 1
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -18,8 +23,8 @@ Source1: qt3dcore-config-multilib_p.h
 BuildRequires: gcc-c++
 BuildRequires: cmake
 BuildRequires: ninja-build
-BuildRequires: qt6-rpm-macros >= %{version}
-BuildRequires: qt6-qtbase-static >= %{version}
+BuildRequires: qt6-rpm-macros
+BuildRequires: qt6-qtbase-static
 BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
 BuildRequires: qt6-qtdeclarative-devel
@@ -29,7 +34,7 @@ BuildRequires: qt6-qtimageformats
 BuildRequires: pkgconfig(assimp)
 %endif
 
-Requires: qt6-qtimageformats%{?_isa} >= %{version}
+Requires: qt6-qtimageformats%{?_isa} >= %{majmin_ver_kf6}
 
 %description
 Qt 3D provides functionality for near-realtime simulation systems with
@@ -51,7 +56,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -154,6 +159,19 @@ popd
 %{_qt6_libdir}/cmake/Qt63DRender/*.cmake
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
 %{_qt6_libdir}/cmake/Qt63DQuickScene3D/*.cmake
+%{_qt6_libdir}/cmake/Qt63DAnimationPrivate/
+%{_qt6_libdir}/cmake/Qt63DCorePrivate/
+%{_qt6_libdir}/cmake/Qt63DExtrasPrivate/
+%{_qt6_libdir}/cmake/Qt63DInputPrivate/
+%{_qt6_libdir}/cmake/Qt63DLogicPrivate/
+%{_qt6_libdir}/cmake/Qt63DQuickAnimationPrivate/
+%{_qt6_libdir}/cmake/Qt63DQuickExtrasPrivate/
+%{_qt6_libdir}/cmake/Qt63DQuickInputPrivate/
+%{_qt6_libdir}/cmake/Qt63DQuickPrivate/
+%{_qt6_libdir}/cmake/Qt63DQuickRenderPrivate/
+%{_qt6_libdir}/cmake/Qt63DQuickScene2DPrivate/
+%{_qt6_libdir}/cmake/Qt63DQuickScene3DPrivate/
+%{_qt6_libdir}/cmake/Qt63DRenderPrivate/
 %{_qt6_libdir}/libQt63DAnimation.prl
 %{_qt6_libdir}/libQt63DAnimation.so
 %{_qt6_libdir}/libQt63DCore.prl
@@ -191,6 +209,10 @@ popd
 
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

@@ -1,3 +1,6 @@
+%global commit0 d0ec02e70064c94ae63a5b501b99f55da9f45714
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
 
 %global qt_module qtremoteobjects
 
@@ -5,12 +8,13 @@
 
 Summary: Qt6 - Qt Remote Objects
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global  majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -19,7 +23,7 @@ BuildRequires: cmake
 BuildRequires: gcc-c++
 BuildRequires: ninja-build
 BuildRequires: qt6-rpm-macros
-BuildRequires: qt6-qtbase-devel >= %{version}
+BuildRequires: qt6-qtbase-devel
 BuildRequires: qt6-qtbase-private-devel
 #libQt6Core.so.6(Qt_5_PRIVATE_API)(64bit)
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
@@ -40,13 +44,13 @@ Requires: qt6-qtbase-devel%{?_isa}
 %package examples
 Summary: Programming examples for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
-# BuildRequires: qt6-qtremoteobjects-devel >= %{version}
+# BuildRequires: qt6-qtremoteobjects-devel
 %description examples
 %{summary}.
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -87,6 +91,9 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/cmake/Qt6RepParser/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6RemoteObjectsTools
 %{_qt6_libdir}/cmake/Qt6RemoteObjectsTools/*.cmake
+%{_qt6_libdir}/cmake/Qt6RemoteObjectsPrivate/
+%{_qt6_libdir}/cmake/Qt6RemoteObjectsQmlPrivate/
+%{_qt6_libdir}/cmake/Qt6RepParserPrivate
 %{_qt6_archdatadir}/mkspecs/features/*
 %{_qt6_archdatadir}/mkspecs/modules/*
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
@@ -100,6 +107,10 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

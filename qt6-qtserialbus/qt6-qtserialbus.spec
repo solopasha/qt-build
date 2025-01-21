@@ -1,3 +1,6 @@
+%global commit0 2c95bbf028372e58ea2ea5fe98da4d7737f593b0
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
 
 %global qt_module qtserialbus
 
@@ -5,12 +8,13 @@
 
 Summary: Qt6 - SerialBus component
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global  majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -23,11 +27,11 @@ BuildRequires: cmake
 BuildRequires: gcc-c++
 BuildRequires: ninja-build
 BuildRequires: qt6-rpm-macros
-BuildRequires: qt6-qtbase-devel >= %{version}
+BuildRequires: qt6-qtbase-devel
 BuildRequires: qt6-qtbase-private-devel
 #libQt6Core.so.6(Qt_5_PRIVATE_API)(64bit)
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
-BuildRequires: qt6-qtserialport-devel >= %{version}
+BuildRequires: qt6-qtserialport-devel
 
 BuildRequires: pkgconfig(xkbcommon) >= 0.5.0
 BuildRequires: openssl-devel
@@ -47,13 +51,13 @@ Requires: qt6-qtbase-devel%{?_isa}
 %package examples
 Summary: Programming examples for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
-# BuildRequires: qt6-qtserialbus-devel >= %{version}
+# BuildRequires: qt6-qtserialbus-devel
 %description examples
 %{summary}.
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -84,6 +88,8 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtSerialBusTestsConfig.cmake
 %dir %{_qt6_libdir}/cmake/Qt6SerialBus/
 %{_qt6_libdir}/cmake/Qt6SerialBus/*.cmake
+%dir %{_qt6_libdir}/cmake/Qt6SerialBusPrivate/
+%{_qt6_libdir}/cmake/Qt6SerialBusPrivate/*.cmake
 %{_qt6_archdatadir}/mkspecs/modules/*
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
@@ -96,6 +102,10 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

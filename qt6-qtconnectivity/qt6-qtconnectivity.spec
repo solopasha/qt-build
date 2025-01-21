@@ -1,3 +1,6 @@
+%global commit0 53b8c15fc8a751b244e0a9167e9e60dea41d18c5
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
 
 %global qt_module qtconnectivity
 
@@ -5,13 +8,14 @@
 
 Summary: Qt6 - Connectivity components
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 # See LICENSE.GPL3, respectively, for exception details
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
 %global  qt_version %(echo %{version} | cut -d~ -f1)
 
@@ -23,10 +27,10 @@ BuildRequires: cmake
 BuildRequires: gcc-c++
 BuildRequires: ninja-build
 BuildRequires: qt6-rpm-macros
-BuildRequires: qt6-qtbase-devel >= %{version}
-BuildRequires: qt6-qtbase-private-devel >= %{version}
+BuildRequires: qt6-qtbase-devel
+BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
-BuildRequires: qt6-qtdeclarative-devel >= %{version}
+BuildRequires: qt6-qtdeclarative-devel
 BuildRequires: pkgconfig(bluez)
 BuildRequires: pkgconfig(xkbcommon) >= 0.4.1
 BuildRequires: openssl-devel
@@ -50,7 +54,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -100,6 +104,8 @@ popd
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/*.cmake
 %{_qt6_libdir}/cmake/Qt6Bluetooth/*.cmake
 %{_qt6_libdir}/cmake/Qt6Nfc/*.cmake
+%{_qt6_libdir}/cmake/Qt6BluetoothPrivate/
+%{_qt6_libdir}/cmake/Qt6NfcPrivate/
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_bluetooth*.pri
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_nfc*.pri
 %{_qt6_libdir}/qt6/modules/*.json
@@ -112,6 +118,10 @@ popd
 %endif
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

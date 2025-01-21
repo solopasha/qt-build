@@ -1,3 +1,7 @@
+%global commit0 99daa79547b76e67a15e8774b87d68ec9689b7d0
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global bumpver 1
+
 %global qt_module qtmultimedia
 
 %global gst 0.10
@@ -15,13 +19,16 @@
 
 Summary: Qt6 - Multimedia support
 Name:    qt6-%{qt_module}
-Version: 6.9.0~beta1
+Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
-%qt_source
+# Generated with ../.copr/Makefile
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global  qt_version %(echo %{version} | cut -d~ -f1)
+
+Patch: rename.diff
 
 # filter plugin/qml provides
 %global __provides_exclude_from ^(%{_qt6_archdatadir}/qml/.*\\.so|%{_qt6_plugindir}/.*\\.so)$
@@ -33,12 +40,12 @@ BuildRequires: gcc-toolset-13
 %endif
 BuildRequires: ninja-build
 BuildRequires: qt6-rpm-macros
-BuildRequires: qt6-qtbase-devel >= %{version}
+BuildRequires: qt6-qtbase-devel
 BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
-BuildRequires: qt6-qtdeclarative-devel >= %{version}
-BuildRequires: qt6-qtshadertools-devel >= %{version}
-BuildRequires: qt6-qtquick3d-devel >= %{version}
+BuildRequires: qt6-qtdeclarative-devel
+BuildRequires: qt6-qtshadertools-devel
+BuildRequires: qt6-qtquick3d-devel
 BuildRequires: pkgconfig(alsa)
 %if "%{?gst}" == "0.10"
 BuildRequires: pkgconfig(gstreamer-interfaces-0.10)
@@ -54,12 +61,12 @@ BuildRequires: pkgconfig(libpulse) pkgconfig(libpulse-mainloop-glib)
 %if %{with ffmpeg}
 BuildRequires: ffmpeg-free-devel
 BuildRequires: libavcodec-free-devel
-BuildRequires: libavformat-free-devel
 BuildRequires: libavutil-free-devel
 BuildRequires: libswresample-free-devel
+BuildRequires: libavformat-free-devel
 BuildRequires: libswscale-free-devel
-BuildRequires: pipewire-devel
 BuildRequires: pkgconfig(libva) pkgconfig(libva-drm)
+BuildRequires: pkgconfig(libpipewire-0.3)
 %endif
 BuildRequires: pkgconfig(xrandr)
 BuildRequires: pkgconfig(xv)
@@ -90,13 +97,13 @@ Requires: pkgconfig(libpulse-mainloop-glib)
 %package examples
 Summary: Programming examples for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
-# BuildRequires: qt6-qtmultimedia-devel >= %{version}
+# BuildRequires: qt6-qtmultimedia-devel
 %description examples
 %{summary}.
 %endif
 
 %prep
-%autosetup -n %{sourcerootdir} -p1
+%autosetup -C -p1
 
 
 %build
@@ -130,8 +137,8 @@ popd
 %ldconfig_scriptlets
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_libdir}/libQt6Multimedia.so.6*
 %{_qt6_libdir}/libQt6MultimediaQuick.so.6*
 %{_qt6_libdir}/libQt6MultimediaWidgets.so.6*
@@ -183,6 +190,9 @@ popd
 %{_qt6_libdir}/cmake/Qt6SpatialAudio/*cmake
 %dir %{_qt6_libdir}/cmake/Qt6Quick3DSpatialAudioPrivate
 %{_qt6_libdir}/cmake/Qt6Quick3DSpatialAudioPrivate/*cmake
+%{_qt6_libdir}/cmake/Qt6MultimediaPrivate/
+%{_qt6_libdir}/cmake/Qt6MultimediaWidgetsPrivate/
+%{_qt6_libdir}/cmake/Qt6SpatialAudioPrivate/
 %dir %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
 %{_qt6_libdir}/cmake/Qt6QGstreamerMediaPluginImplPrivate/
@@ -200,6 +210,10 @@ popd
 
 
 %changelog
+%{?qt_snapshot_changelog_entry}
+* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
+- new version
+
 * Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
 - new version
 

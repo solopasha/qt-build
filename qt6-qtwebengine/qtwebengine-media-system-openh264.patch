@@ -1,6 +1,6 @@
-Submodule src/3rdparty 5268a3b75..375e78fc9:
+Submodule src/3rdparty cbe6f9743..5a0111e52:
 diff --git a/src/3rdparty/chromium/media/video/BUILD.gn b/src/3rdparty/chromium/media/video/BUILD.gn
-index 0512640b261..934965fb2d6 100644
+index a3141d955df9..830e15d59ccd 100644
 --- a/src/3rdparty/chromium/media/video/BUILD.gn
 +++ b/src/3rdparty/chromium/media/video/BUILD.gn
 @@ -2,7 +2,17 @@
@@ -21,7 +21,7 @@ index 0512640b261..934965fb2d6 100644
  
  source_set("video") {
    # Do not expand the visibility here without double-checking with OWNERS, this
-@@ -114,7 +124,12 @@ source_set("video") {
+@@ -79,7 +89,12 @@ source_set("video") {
        "openh264_video_encoder.cc",
        "openh264_video_encoder.h",
      ]

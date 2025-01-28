@@ -1,4 +1,4 @@
-Submodule src/3rdparty cbe6f9743..5a0111e52:
+Submodule src/3rdparty 05cd29148..a184a812a:
 diff --git a/src/3rdparty/chromium/media/video/BUILD.gn b/src/3rdparty/chromium/media/video/BUILD.gn
 index a3141d955df9..830e15d59ccd 100644
 --- a/src/3rdparty/chromium/media/video/BUILD.gn

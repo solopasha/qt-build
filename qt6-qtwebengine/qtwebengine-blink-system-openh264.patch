@@ -1,4 +1,4 @@
-Submodule src/3rdparty 7e1ca3c50..cbe6f9743:
+Submodule src/3rdparty 8e38c6d31..05cd29148:
 diff --git a/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn b/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
 index f30411eddcfb..277b440c9ea6 100644
 --- a/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn

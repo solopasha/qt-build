@@ -1,6 +1,6 @@
-%global commit0 99daa79547b76e67a15e8774b87d68ec9689b7d0
+%global commit0 006c915a70d360386e5dfc1713954687d7bc19c8
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 1
+%global bumpver 2
 
 %global qt_module qtmultimedia
 
@@ -27,8 +27,6 @@ Url:     http://www.qt.io
 # Generated with ../.copr/Makefile
 Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global  qt_version %(echo %{version} | cut -d~ -f1)
-
-Patch: rename.diff
 
 # filter plugin/qml provides
 %global __provides_exclude_from ^(%{_qt6_archdatadir}/qml/.*\\.so|%{_qt6_plugindir}/.*\\.so)$

@@ -1,6 +1,6 @@
-%global commit0 f6082a961bec9947d29d279f55ca52530e69ea74
+%global commit0 1538f2597b10938dace32ef89e55937c2c4fb394
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 1
+%global bumpver 2
 
 %global qt_module qtwayland
 
@@ -21,7 +21,6 @@ Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 # Upstream patches
 
 # Upstreamable patches
-Patch: rename.diff
 
 # filter qml provides
 %global __provides_exclude_from ^%{_qt6_archdatadir}/qml/.*\\.so$

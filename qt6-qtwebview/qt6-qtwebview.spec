@@ -1,6 +1,6 @@
-%global commit0 940ca26f50fa9c0fa49b7bba6cce2a12ebcba775
+%global commit0 4aef8a30ce928f075ddb9e622f6441aad953ad55
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 1
+%global bumpver 2
 
 %global qt_module qtwebview
 

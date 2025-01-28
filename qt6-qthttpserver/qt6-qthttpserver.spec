@@ -1,6 +1,6 @@
-%global commit0 b9c2b8753325a2dfe5a8f2b57de7db9ac06ea30f
+%global commit0 a0986c7a83b28ea3e812ef1583a52b0aaa953bdf
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 1
+%global bumpver 2
 
 %global qt_module qthttpserver
 

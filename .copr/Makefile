@@ -22,7 +22,9 @@ ifdef commit
 else
 	git clone --recursive --depth 1 --shallow-submodules --branch v$(pkg_ver_no_tilde) https://code.qt.io/qt/$(qt_module).git $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)
 endif
+ifneq ($(specfile),qt6-qtwebchannel.spec)
 	find -maxdepth 2 -type d \( -name 'tests' -o -name 'examples' \) -exec rm -rf '{}' \;
+endif
 
 %spec: FORCE
 	XZ_OPT="-T0 -9" tar --owner 0 --group 0 --numeric-owner --exclude-vcs -cJf $(qt_module)-everywhere-src-$(pkg_ver_no_tilde).tar.xz $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)

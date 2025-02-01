@@ -1,6 +1,6 @@
-%global commit0 edd09e1ec4df080deee3977e010b39e3ed140471
+%global commit0 19ac27ebf38885d2c7e8956e5ed64050b5165224
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 3
 
 %global qt_module qtwebengine
 
@@ -438,12 +438,6 @@ rm -fv Qt6WebEngineCore.la
 popd
 
 mkdir -p %{buildroot}%{_qtwebengine_dictionaries_dir}
-
-# adjust cmake dep(s) to allow for using the same Qt6 that was used to build it
-# using the lesser of %%version, %%_qt6_version
-%global lesser_version $(echo -e "%{version}\\n%{_qt6_version}" | sort -V | head -1)
-sed -i -e "s|%{version} \${_Qt6WebEngine|%{lesser_version} \${_Qt6WebEngine|" \
-  %{buildroot}%{_qt6_libdir}/cmake/Qt6WebEngine*/Qt6WebEngine*Config.cmake
 
 
 %if 0%{?rhel} && 0%{?rhel} < 10

@@ -1,6 +1,6 @@
-%global commit0 bfa23b1f73dcb7bab8d503662aeb76efaf852d4f
+%global commit0 312103ae6e864a21f43f4d468225d50ac9c07086
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 3
 
 %global qt_module qtdeclarative
 
@@ -65,10 +65,7 @@ Requires:  %{name}%{?_isa} = %{version}-%{release}
 Requires:  qt6-qtbase-devel%{?_isa}
 Obsoletes: qt6-qtquickcontrols2-devel < 6.2.0~beta3-1
 Provides:  qt6-qtquickcontrols2-devel = %{version}-%{release}
-# rhbz#2330219
-# Require qt6-qtbase-private-devel until this is fixed upstream or a better
-# workaround is found.
-Requires: (qt6-qtbase-private-devel if cmake >= 3.31.0)
+Requires:  qt6-qtbase-private-devel
 %description devel
 %{summary}.
 

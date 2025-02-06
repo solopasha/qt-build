@@ -1,4 +1,4 @@
-Submodule src/3rdparty e4b285617..8e38c6d31:
+Submodule src/3rdparty 71353f2c2..8f0628173:
 diff --git a/src/3rdparty/chromium/third_party/webrtc/webrtc.gni b/src/3rdparty/chromium/third_party/webrtc/webrtc.gni
 index 66ed8434ff05..1bc73070d395 100644
 --- a/src/3rdparty/chromium/third_party/webrtc/webrtc.gni

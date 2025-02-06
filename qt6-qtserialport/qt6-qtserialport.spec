@@ -1,6 +1,6 @@
-%global commit0 38727920291ad3801db1f20468cfc8f9a60fcb55
+%global commit0 acfa5f78e56ed7b5b1b94d750f3adeffa7ca48ce
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 3
+%global bumpver 4
 
 %global qt_module qtserialport
 

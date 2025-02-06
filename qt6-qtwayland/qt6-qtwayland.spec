@@ -1,6 +1,6 @@
 %global commit0 304bf0ef6d4ef7669a99c3754c6cb799ec7da8a1
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 3
+%global bumpver 4
 
 %global qt_module qtwayland
 

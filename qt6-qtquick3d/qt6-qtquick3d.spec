@@ -1,6 +1,6 @@
-%global commit0 0e3761f8dcde58ada5331692afa75c7961a5cd38
+%global commit0 0cd47d08519974eb8b10e0898b341d9bee68ec84
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 3
+%global bumpver 4
 
 %global qt_module qtquick3d
 

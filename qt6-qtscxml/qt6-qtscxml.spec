@@ -85,6 +85,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_headerdir}/QtScxmlQml/
 %{_qt6_headerdir}/QtStateMachineQml
 %{_qt6_headerdir}/QtStateMachine/
+%{_qt6_headerdir}/QtScxmlGlobal/
 %{_qt6_libdir}/libQt6Scxml.so
 %{_qt6_libdir}/libQt6Scxml.prl
 %{_qt6_libdir}/libQt6ScxmlQml.prl
@@ -104,6 +105,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/cmake/Qt6StateMachine/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6StateMachineQml/
 %{_qt6_libdir}/cmake/Qt6StateMachineQml/*.cmake
+%{_qt6_libdir}/cmake/Qt6ScxmlGlobal/
 %{_qt6_libdir}/cmake/Qt6ScxmlPrivate/
 %{_qt6_libdir}/cmake/Qt6ScxmlQmlPrivate/
 %{_qt6_libdir}/cmake/Qt6StateMachinePrivate/

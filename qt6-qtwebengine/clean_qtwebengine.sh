@@ -63,7 +63,7 @@ echo "ripping out openh264 sources, keeping just header files"
 find "$DIRNAME/src/3rdparty/chromium/third_party/openh264/src" -type f -not -name '*.h' -delete || exit $?
 
 echo "repacking as $DIRNAME-clean.tar.xz"
-XZ_OPT="-T0 -9" tar --owner 0 --group 0 --numeric-owner --exclude-vcs -cJf "$DIRNAME-clean.tar.xz" "$DIRNAME" || exit $?
+XZ_OPT="-T0 -e9" tar --owner 0 --group 0 --numeric-owner --exclude-vcs -cJf "$DIRNAME-clean.tar.xz" "$DIRNAME" || exit $?
 
 echo "removing $DIRNAME"
 rm -rf "$DIRNAME" || exit $?

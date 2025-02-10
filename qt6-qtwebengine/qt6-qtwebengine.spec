@@ -2,6 +2,8 @@
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global bumpver 6
 
+%global _default_patch_fuzz 2
+
 %global qt_module qtwebengine
 
 # package-notes causes FTBFS (#2043178)
@@ -161,7 +163,8 @@ BuildRequires: pkgconfig(zlib)
 ## requires libxml2 built with icu support
 #BuildRequires: pkgconfig(libxslt) pkgconfig(libxml-2.0)
 BuildRequires: perl-interpreter
-BuildRequires: %{__python3}
+BuildRequires: python3-devel
+BuildRequires: python3dist(spdx-tools)
 BuildRequires: python3-html5lib
 BuildRequires: pkgconfig(vpx) >= 1.8.0
 BuildRequires: pkgconfig(libavcodec)

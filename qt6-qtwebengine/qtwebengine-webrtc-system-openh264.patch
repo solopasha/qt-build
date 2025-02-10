@@ -1,6 +1,6 @@
-Submodule src/3rdparty 71353f2c2..8f0628173:
+Submodule src/3rdparty 502be5593..be892c84a:
 diff --git a/src/3rdparty/chromium/third_party/webrtc/webrtc.gni b/src/3rdparty/chromium/third_party/webrtc/webrtc.gni
-index 66ed8434ff05..1bc73070d395 100644
+index 66ed8434ff052..1bc73070d395e 100644
 --- a/src/3rdparty/chromium/third_party/webrtc/webrtc.gni
 +++ b/src/3rdparty/chromium/third_party/webrtc/webrtc.gni
 @@ -196,6 +196,9 @@ declare_args() {
@@ -14,12 +14,12 @@ index 66ed8434ff05..1bc73070d395 100644
    rtc_use_absl_mutex = false
  
 diff --git a/src/core/CMakeLists.txt b/src/core/CMakeLists.txt
-index f65567cc7..f5c914179 100644
+index 9a36d722f..caf2621de 100644
 --- a/src/core/CMakeLists.txt
 +++ b/src/core/CMakeLists.txt
-@@ -451,6 +451,10 @@ foreach(arch ${archs})
-                 libyuv_use_sme=false # FIXME: arch not supported on our old CI gcc.
-                 libyuv_use_neon=false # FIXME: udot instruction not working on our old CI gcc.
+@@ -448,6 +448,10 @@ foreach(arch ${archs})
+                 use_bluez=false
+                 is_cfi=false
                  use_ozone=true
 +                media_use_openh264=true
 +                rtc_use_h264=true

@@ -1,6 +1,6 @@
-Submodule src/3rdparty 8f0628173..0d67f5aca:
+Submodule src/3rdparty be892c84a..995230a77:
 diff --git a/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn b/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
-index f30411eddcfb..277b440c9ea6 100644
+index f30411eddcfb7..277b440c9ea6d 100644
 --- a/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
 +++ b/src/3rdparty/chromium/third_party/blink/renderer/modules/mediarecorder/BUILD.gn
 @@ -3,9 +3,19 @@
@@ -37,7 +37,7 @@ index f30411eddcfb..277b440c9ea6 100644
  
    if (enable_libaom) {
 diff --git a/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn b/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn
-index 2f870757803d..1439b0f2f248 100644
+index 2f870757803d9..1439b0f2f248c 100644
 --- a/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn
 +++ b/src/3rdparty/chromium/third_party/blink/renderer/modules/webcodecs/BUILD.gn
 @@ -2,12 +2,22 @@

@@ -408,7 +408,8 @@ export NINJA_PATH=%{__ninja}
   -DFEATURE_webengine_webrtc:BOOL=ON \
   -DFEATURE_webengine_webrtc_pipewire:BOOL=ON \
   -DQT_BUILD_EXAMPLES:BOOL=%{?examples:ON}%{!?examples:OFF} \
-  -DQT_INSTALL_EXAMPLES_SOURCES=%{?examples:ON}%{!?examples:OFF}
+  -DQT_INSTALL_EXAMPLES_SOURCES=%{?examples:ON}%{!?examples:OFF} \
+  -DQT_GENERATE_SBOM:BOOL=OFF
 
 %cmake_build
 
@@ -460,7 +461,6 @@ done
 
 %files
 %license LICENSE.*
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{version_no_git}.spdx
 %{_qt6_libdir}/libQt6WebEngineCore.so.*
 %{_qt6_libdir}/libQt6WebEngineQuick.so.*
 %{_qt6_libdir}/libQt6WebEngineQuickDelegatesQml.so.*
@@ -589,7 +589,6 @@ done
 
 %files -n qt6-qtpdf
 %license LICENSE.*
-%{_qt6_archdatadir}/sbom/qtpdf-%{version_no_git}.spdx
 %{_qt6_libdir}/libQt6Pdf.so.*
 %{_qt6_libdir}/libQt6PdfQuick.so.*
 %{_qt6_libdir}/libQt6PdfWidgets.so.*

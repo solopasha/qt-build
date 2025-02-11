@@ -92,6 +92,7 @@ popd
 
 %files devel
 %{_qt6_headerdir}/QtBluetooth/
+%{_qt6_headerdir}/QtConnectivity/
 %{_qt6_libdir}/libQt6Bluetooth.so
 %{_qt6_libdir}/libQt6Bluetooth.prl
 %{_qt6_headerdir}/QtNfc/
@@ -106,8 +107,10 @@ popd
 %{_qt6_libdir}/cmake/Qt6Nfc/*.cmake
 %{_qt6_libdir}/cmake/Qt6BluetoothPrivate/
 %{_qt6_libdir}/cmake/Qt6NfcPrivate/
+%{_qt6_libdir}/cmake/Qt6Connectivity/
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_bluetooth*.pri
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_nfc*.pri
+%{_qt6_archdatadir}/mkspecs/modules/qt_lib_connectivity_private.pri
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/pkgconfig/*.pc

@@ -1,8 +1,9 @@
-%global commit0 b7de6dd280ad5a98b506787f6a1897b47f8ed91a
+%global commit0 06072d1aacbab2de190538efd4ede0fc39f4a3b1
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 6
+%global bumpver 7
 
 %global _default_patch_fuzz 2
+%global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 
 %global qt_module qtwebengine
 

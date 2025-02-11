@@ -1,7 +1,8 @@
 %global commit0 72c17d332d7ca8f033129d740c68d655c756e0d0
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 5
+%global bumpver 6
 
+%global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 %global qt_module qtlocation
 
 #global examples 1

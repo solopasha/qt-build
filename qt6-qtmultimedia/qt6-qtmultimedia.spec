@@ -1,6 +1,6 @@
-%global commit0 55a813ff2f102fbe770c517d926babb5354919b3
+%global commit0 983bf76c7971383c87927c85d19d03e851065825
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 5
+%global bumpver 6
 
 %global qt_module qtmultimedia
 
@@ -109,7 +109,6 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 . /opt/rh/gcc-toolset-13/enable
 %endif
 %cmake_qt6 \
-  -DQT_FEATURE_alsa=ON \
   -DQT_BUILD_EXAMPLES:BOOL=%{?examples:ON}%{!?examples:OFF} \
   -DQT_INSTALL_EXAMPLES_SOURCES=%{?examples:ON}%{!?examples:OFF}
 

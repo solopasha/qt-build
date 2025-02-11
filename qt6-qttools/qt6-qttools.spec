@@ -1,6 +1,6 @@
-%global commit0 95f336236d15bd29c1634ddd4e28de78f9b631de
+%global commit0 dfcd4d17ccf5d23dfe8408acccca32f30fb49ee9
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 5
+%global bumpver 6
 
 %global qt_module qttools
 

@@ -1,6 +1,6 @@
-%global commit0 a63b5ce14dd3ced3c799d1063031a42afeb4379d
+%global commit0 57d2b7703a768ad145d09695e8180d61e8ff738c
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 5
+%global bumpver 6
 
 %global qt_module qtimageformats
 
@@ -54,7 +54,7 @@ rm -rv src/3rdparty
 
 
 %build
-%cmake_qt6 -DQT_FEATURE_mng=ON
+%cmake_qt6 -DFEATURE_mng=ON
 
 %cmake_build
 

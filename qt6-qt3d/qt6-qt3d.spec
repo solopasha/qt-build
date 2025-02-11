@@ -1,7 +1,8 @@
 %global commit0 b6df3e11131cef2b5ba213617cdac67cf8229ed1
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 5
+%global bumpver 6
 
+%global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 %global qt_module qt3d
 
 Summary: Qt6 - Qt3D QML bindings and C++ APIs

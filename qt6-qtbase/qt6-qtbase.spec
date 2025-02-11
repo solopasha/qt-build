@@ -1,6 +1,6 @@
-%global commit0 43eb0dbd38e74158e7eb36a28cb416b357445d6b
+%global commit0 288ef3479eb261f8afa15c4c0f28bdd0fed59982
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 5
+%global bumpver 6
 
 # See http://bugzilla.redhat.com/223663
 %global multilib_archs x86_64 %{ix86} %{?mips} ppc64 ppc s390x s390 sparc64 sparcv9
@@ -373,35 +373,35 @@ export MAKEFLAGS="%{?_smp_mflags}"
 
 %cmake_qt6 \
  -DCMAKE_INTERPROCEDURAL_OPTIMIZATION:BOOL=ON \
- -DQT_FEATURE_accessibility=ON \
- -DQT_FEATURE_fontconfig=ON \
- -DQT_FEATURE_glib=ON \
- -DQT_FEATURE_sse2=%{?no_sse2:OFF}%{!?no_sse2:ON} \
- -DQT_FEATURE_icu=ON \
- -DQT_FEATURE_enable_new_dtags=ON \
- -DQT_FEATURE_emojisegmenter=ON \
- -DQT_FEATURE_journald=%{?journald:ON}%{!?journald:OFF} \
- -DQT_FEATURE_openssl_linked=ON \
- -DQT_FEATURE_openssl_hash=ON \
- -DQT_FEATURE_libproxy=ON \
- -DQT_FEATURE_sctp=ON \
- -DQT_FEATURE_separate_debug_info=OFF \
- -DQT_FEATURE_reduce_relocations=OFF \
- -DQT_FEATURE_relocatable=OFF \
- -DQT_FEATURE_system_jpeg=ON \
- -DQT_FEATURE_system_png=ON \
- -DQT_FEATURE_system_zlib=ON \
- %{?ibase:-DQT_FEATURE_sql_ibase=ON} \
- -DQT_FEATURE_sql_odbc=ON \
- -DQT_FEATURE_sql_mysql=ON \
- -DQT_FEATURE_sql_psql=ON \
- -DQT_FEATURE_sql_sqlite=ON \
- -DQT_FEATURE_rpath=OFF \
- -DQT_FEATURE_zstd=ON \
- -DQT_FEATURE_elf_private_full_version=ON \
- %{?dbus_linked:-DQT_FEATURE_dbus_linked=ON} \
- %{?pcre:-DQT_FEATURE_system_pcre2=ON} \
- %{?sqlite:-DQT_FEATURE_system_sqlite=ON} \
+ -DFEATURE_accessibility=ON \
+ -DFEATURE_fontconfig=ON \
+ -DFEATURE_glib=ON \
+ -DFEATURE_sse2=%{?no_sse2:OFF}%{!?no_sse2:ON} \
+ -DFEATURE_icu=ON \
+ -DFEATURE_enable_new_dtags=ON \
+ -DFEATURE_emojisegmenter=ON \
+ -DFEATURE_journald=%{?journald:ON}%{!?journald:OFF} \
+ -DFEATURE_openssl_linked=ON \
+ -DFEATURE_openssl_hash=ON \
+ -DFEATURE_libproxy=ON \
+ -DFEATURE_sctp=ON \
+ -DFEATURE_separate_debug_info=OFF \
+ -DFEATURE_reduce_relocations=OFF \
+ -DFEATURE_relocatable=OFF \
+ -DFEATURE_system_jpeg=ON \
+ -DFEATURE_system_png=ON \
+ -DFEATURE_system_zlib=ON \
+ %{?ibase:-DFEATURE_sql_ibase=ON} \
+ -DFEATURE_sql_odbc=ON \
+ -DFEATURE_sql_mysql=ON \
+ -DFEATURE_sql_psql=ON \
+ -DFEATURE_sql_sqlite=ON \
+ -DFEATURE_rpath=OFF \
+ -DFEATURE_zstd=ON \
+ -DFEATURE_elf_private_full_version=ON \
+ %{?dbus_linked:-DFEATURE_dbus_linked=ON} \
+ %{?pcre:-DFEATURE_system_pcre2=ON} \
+ %{?sqlite:-DFEATURE_system_sqlite=ON} \
  -DBUILD_SHARED_LIBS=ON \
  -DQT_BUILD_EXAMPLES=%{?examples:ON}%{!?examples:OFF} \
  -DQT_INSTALL_EXAMPLES_SOURCES=%{?examples:ON}%{!?examples:OFF} \

@@ -1,7 +1,7 @@
 Name: qt6
 # This version MUST remain in sync with Qt6 versions!
 Version: 6.9.0~1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Qt6 meta package
 License: GPL-3.0-only
 URL:     https://getfedora.org/
@@ -211,6 +211,9 @@ echo "- Qt6 devel meta package" > %{buildroot}%{_docdir}/qt6-devel/README
 
 
 %changelog
+* Tue Feb 11 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~1-2
+- rebuilt
+
 * Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
 - new version
 

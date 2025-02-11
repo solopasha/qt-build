@@ -45,6 +45,8 @@
 %cmake_qt6 \
  %cmake -DCMAKE_BUILD_TYPE=%{_qt6_build_type} \\\
         -DCMAKE_INSTALL_PREFIX=%{_qt6_prefix} \\\
+        -DCMAKE_C_FLAGS_RELWITHDEBINFO="-DNDEBUG" \\\
+        -DCMAKE_CXX_FLAGS_RELWITHDEBINFO="-DNDEBUG" \\\
 %if "%_qt6_build_tool" == "ninja" \
         -GNinja \\\
 %else \

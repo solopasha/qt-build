@@ -27,7 +27,7 @@ ifneq ($(specfile),qt6-qtwebchannel.spec)
 endif
 
 %spec: FORCE
-	XZ_OPT="-T0 -9" tar --owner 0 --group 0 --numeric-owner --exclude-vcs -cJf $(qt_module)-everywhere-src-$(pkg_ver_no_tilde).tar.xz $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)
+	XZ_OPT="-T0 -e9" tar --owner 0 --group 0 --numeric-owner --exclude-vcs -cJf $(qt_module)-everywhere-src-$(pkg_ver_no_tilde).tar.xz $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)
 
 FORCE: ;
 

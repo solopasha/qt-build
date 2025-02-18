@@ -1,6 +1,6 @@
-%global commit0 a27b7f53e32fa114ddba79dea27384218bde4642
+%global commit0 b6d77ea909cb2d0c8e64d53e3042bf98312c8455
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 7
+%global bumpver 8
 
 %global qt_module qtmultimedia
 

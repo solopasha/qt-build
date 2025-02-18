@@ -1,6 +1,6 @@
-%global commit0 3901385cf3ad3715dbac3b982b68237b8017cc12
+%global commit0 18920c46b4fe49684822dcca69748160c6012cf2
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 7
+%global bumpver 8
 
 %global qt_module qtnetworkauth
 

@@ -158,6 +158,7 @@ popd
 %{_qt6_headerdir}/QtQuick3DSpatialAudio/
 %{_qt6_headerdir}/QtSpatialAudio/
 %{_qt6_headerdir}/QtMultimediaTestLib/
+%{_qt6_headerdir}/QtQFFmpegMediaPluginImpl/
 %{_qt6_libdir}/libQt6BundledResonanceAudio.a
 %{_qt6_libdir}/libQt6Multimedia.prl
 %{_qt6_libdir}/libQt6Multimedia.so
@@ -173,6 +174,8 @@ popd
 %{_qt6_libdir}/libQt6SpatialAudio.so
 %{_qt6_libdir}/libQt6MultimediaTestLib.prl
 %{_qt6_libdir}/libQt6MultimediaTestLib.a
+%{_qt6_libdir}/libQt6QFFmpegMediaPluginImpl.prl
+%{_qt6_libdir}/libQt6QFFmpegMediaPluginImpl.a
 %{_qt6_libdir}/cmake/Qt6/*.cmake
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6BundledResonanceAudio/
@@ -194,6 +197,7 @@ popd
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
 %{_qt6_libdir}/cmake/Qt6QGstreamerMediaPluginImplPrivate/
 %{_qt6_libdir}/cmake/Qt6MultimediaTestLibPrivate/
+%{_qt6_libdir}/cmake/Qt6QFFmpegMediaPluginImplPrivate/
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json

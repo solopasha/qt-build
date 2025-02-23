@@ -1,6 +1,6 @@
-%global commit0 28b1056309a766803b6c1f7c0cf0c8348fd5e465
+%global commit0 9b2de27789b219949cff7d2a2c45b6469dd671f1
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 8
+%global bumpver 9
 
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 %global qt_module qtlocation

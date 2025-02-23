@@ -1,6 +1,6 @@
-%global commit0 6ab8ebc298b24b97a343e5e3e445d0284ddef165
+%global commit0 3d9a497c8c5ebf3628488aef0505983c48dc099d
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 8
+%global bumpver 9
 
 %global qt_module qtvirtualkeyboard
 

@@ -1,6 +1,6 @@
-%global commit0 785856462536b74b61f897bd08b9ccf96874354b
+%global commit0 853f6508e3f66f0a1d1a6a1260967b5e06f761fe
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 12
+%global bumpver 13
 
 %global _default_patch_fuzz 2
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
@@ -57,9 +57,6 @@ Source10: macros.qt6-qtwebengine
 Source20: https://src.fedoraproject.org/lookaside/pkgs/qt6-qtwebengine/pulseaudio-12.2-headers.tar.gz/sha512/a5a9bcbb16030b3bc83cc0cc8f5e7f90e0723d3e83258a5c77eacb32eaa267118a73fa7814fbcc99a24e4907916a2b371ebb6dedc4f45541c3acf6c834fd35be/pulseaudio-12.2-headers.tar.gz
 
 Patch2:  qtwebengine-link-pipewire.patch
-
-## Upstream patches:
-Patch3: 54a756b84e0b7a1104f9b336a1253fe36c573f56.patch
 
 Patch81: qtwebengine-use-openh264.patch
 
@@ -196,7 +193,7 @@ Requires: qt6-qtpdf%{?_isa} = %{version}-%{release}
 
 # Of course, Chromium itself is bundled. It cannot be unbundled because it is
 # not a library, but forked (modified) application code.
-Provides: bundled(chromium) = 126.0.6478.165
+Provides: bundled(chromium) = 130.0.6723.192
 
 # Bundled in src/3rdparty/chromium/third_party:
 # Check src/3rdparty/chromium/third_party/*/README.chromium for version numbers,

@@ -1,6 +1,6 @@
 %global commit0 785856462536b74b61f897bd08b9ccf96874354b
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 11
+%global bumpver 12
 
 %global _default_patch_fuzz 2
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
@@ -59,11 +59,9 @@ Source20: https://src.fedoraproject.org/lookaside/pkgs/qt6-qtwebengine/pulseaudi
 Patch2:  qtwebengine-link-pipewire.patch
 
 ## Upstream patches:
+Patch3: 54a756b84e0b7a1104f9b336a1253fe36c573f56.patch
 
-## Upstreamable patches:
-Patch110: qtwebengine-webrtc-system-openh264.patch
-Patch111: qtwebengine-blink-system-openh264.patch
-Patch112: qtwebengine-media-system-openh264.patch
+Patch81: qtwebengine-use-openh264.patch
 
 # handled by qt6-srpm-macros, which defines %%qt6_qtwebengine_arches
 # FIXME use/update qt6_qtwebengine_arches
@@ -369,6 +367,9 @@ ln -s /usr/lib/python%{python3_version}/site-packages/six.py src/3rdparty/chromi
 
 # copy the Chromium license so it is installed with the appropriate name
 cp -p src/3rdparty/chromium/LICENSE LICENSE.Chromium
+
+# Use system OpenH264
+src/3rdparty/chromium/build/linux/unbundle/replace_gn_files.py --system-libraries openh264
 
 # consider doing this as part of the tarball creation step instead?  rdieter
 # fix/workaround

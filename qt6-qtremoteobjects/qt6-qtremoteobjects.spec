@@ -1,6 +1,6 @@
-%global commit0 ee4197007083169022b0c20b7ed7e24cdf81b797
+%global commit0 c73e28655e45ebad9b06f2e5d344b8e511520138
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 9
+%global bumpver 10
 
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 %global qt_module qtremoteobjects

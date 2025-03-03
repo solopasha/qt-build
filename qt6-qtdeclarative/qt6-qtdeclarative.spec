@@ -1,6 +1,6 @@
-%global commit0 01e72964e2b8917e8c103bedce1b2fcc0ddc1395
+%global commit0 8d9accdbfa05319d28f2a3fb1ab7c729a38aca14
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 9
+%global bumpver 10
 
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 

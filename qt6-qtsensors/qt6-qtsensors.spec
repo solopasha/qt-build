@@ -1,6 +1,6 @@
-%global commit0 8e03cb271a2aaec66d81cb7555f25575050968e8
+%global commit0 562eea02c70f27ea098a9378126ce97bd99f2151
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 9
+%global bumpver 10
 
 %global qt_module qtsensors
 

@@ -1,6 +1,6 @@
-%global commit0 23c6f16f787ec0c063833801194857d1fe860ddf
+%global commit0 1fe169316c84ed4ce08351e8215a904e6e05cecc
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 9
+%global bumpver 10
 
 %global qt_module qtwebsockets
 

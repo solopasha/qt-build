@@ -1,6 +1,6 @@
-%global commit0 fab3e958daa6083ff01055dd019239edef621747
+%global commit0 a234b472d7bab8eda218ff5644ccee8b2011ee60
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 10
+%global bumpver 11
 
 # See http://bugzilla.redhat.com/223663
 %global multilib_archs x86_64 %{ix86} %{?mips} ppc64 ppc s390x s390 sparc64 sparcv9
@@ -728,6 +728,7 @@ make check -k ||:
 %{_qt6_libdir}/cmake/Qt6Widgets/*.cmake
 %{_qt6_libdir}/cmake/Qt6WidgetsTools/*.cmake
 %{_qt6_libdir}/cmake/Qt6Xml/*.cmake
+%{_qt6_libdir}/cmake/Qt6TestInternalsPrivate/
 %{_qt6_descriptionsdir}/Concurrent.json
 %{_qt6_descriptionsdir}/Core.json
 %{_qt6_descriptionsdir}/DBus.json
@@ -740,6 +741,7 @@ make check -k ||:
 %{_qt6_descriptionsdir}/Test.json
 %{_qt6_descriptionsdir}/Widgets.json
 %{_qt6_descriptionsdir}/Xml.json
+%{_qt6_descriptionsdir}/TestInternalsPrivate.json
 %{_qt6_metatypesdir}/qt6concurrent_*_metatypes.json
 %{_qt6_metatypesdir}/qt6core_*_metatypes.json
 %{_qt6_metatypesdir}/qt6dbus_*_metatypes.json

@@ -1,6 +1,6 @@
-%global commit0 ea986b6c4a2d8b6538880a3b12f7bcbf703217d7
+%global commit0 87803dca30173d655d490ad201643ff279746e8f
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 10
+%global bumpver 11
 
 %global debug_package %{nil}
 %global qt_module qtlanguageserver

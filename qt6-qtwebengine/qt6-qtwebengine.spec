@@ -1,6 +1,6 @@
-%global commit0 a2f46f7c22f5320f48bc130466fdbb7cb3f54e23
+%global commit0 4b9be7f5f9211b354fca2b7393f829bf6e82208d
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 14
+%global bumpver 15
 
 %global _default_patch_fuzz 2
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')

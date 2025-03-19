@@ -1,6 +1,6 @@
 %global commit0 53e49eef4ee995ff657bf14030c2d48a67358eb7
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 11
+%global bumpver 12
 
 %global qt_module qtimageformats
 

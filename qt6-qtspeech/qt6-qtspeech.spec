@@ -1,6 +1,6 @@
 %global commit0 c6b66dcd81bee269511783ed21a062f21df6a771
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 11
+%global bumpver 12
 
 %global qt_module qtspeech
 

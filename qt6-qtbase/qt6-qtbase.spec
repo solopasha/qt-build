@@ -1,6 +1,6 @@
-%global commit0 54555755f8780e4e7c665a1502309da9fa807066
+%global commit0 457a8631546b430195bdb164af5cb8e09858cf7d
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 12
+%global bumpver 13
 
 # See http://bugzilla.redhat.com/223663
 %global multilib_archs x86_64 %{ix86} %{?mips} ppc64 ppc s390x s390 sparc64 sparcv9

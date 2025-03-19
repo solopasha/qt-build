@@ -1,6 +1,6 @@
 %global commit0 bd59fd244997f721e8b49be0daf6188a1cf05687
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 11
+%global bumpver 12
 
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 %global qt_module qtquick3dphysics

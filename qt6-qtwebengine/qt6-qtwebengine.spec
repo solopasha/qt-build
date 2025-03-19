@@ -57,6 +57,7 @@ Source10: macros.qt6-qtwebengine
 Source20: https://src.fedoraproject.org/lookaside/pkgs/qt6-qtwebengine/pulseaudio-12.2-headers.tar.gz/sha512/a5a9bcbb16030b3bc83cc0cc8f5e7f90e0723d3e83258a5c77eacb32eaa267118a73fa7814fbcc99a24e4907916a2b371ebb6dedc4f45541c3acf6c834fd35be/pulseaudio-12.2-headers.tar.gz
 
 Patch2:  qtwebengine-link-pipewire.patch
+Patch3:  pipewire.patch
 
 Patch81: qtwebengine-use-openh264.patch
 

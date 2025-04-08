@@ -116,6 +116,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 %install
 %cmake_install
+rm %{buildroot}%{_qt6_archdatadir}/mkspecs/features/ios/add_ios_ffmpeg_libraries.prf
 
 ## .prl/.la file love
 # nuke .prl reference(s) to %%buildroot, excessive (.la-like) libs

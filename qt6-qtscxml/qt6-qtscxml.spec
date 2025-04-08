@@ -104,7 +104,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/cmake/Qt6StateMachine/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6StateMachineQml/
 %{_qt6_libdir}/cmake/Qt6StateMachineQml/*.cmake
-%{_qt6_libdir}/cmake/Qt6ScxmlGlobal/
+%{_qt6_libdir}/cmake/Qt6ScxmlGlobalPrivate/
 %{_qt6_libdir}/cmake/Qt6ScxmlPrivate/
 %{_qt6_libdir}/cmake/Qt6ScxmlQmlPrivate/
 %{_qt6_libdir}/cmake/Qt6StateMachinePrivate/

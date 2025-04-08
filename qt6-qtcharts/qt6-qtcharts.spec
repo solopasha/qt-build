@@ -1,6 +1,6 @@
-%global commit0 5d475b433ea053e68cbfccbe0b09bf538fc22a94
+%global commit0 8449bf546aa7ee7534bf3f277336032614016724
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 12
+%global bumpver 1
 
 %global qt_module qtcharts
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - Charts component
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -16,7 +16,6 @@ Url:     http://www.qt.io
 # Generated with ../.copr/Makefile
 Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
-%global  qt_version %(echo %{version} | cut -d~ -f1)
 
 
 BuildRequires: cmake

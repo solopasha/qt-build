@@ -1,6 +1,6 @@
-%global commit0 12ad325289f11a6b4f6979b5ac9956d7a10eaf70
+%global commit0 8b7ab9e28f3b3f9aad7d0313e536b749bccc3818
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 12
+%global bumpver 1
 
 %global qt_module qtwebchannel
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - WebChannel component
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -16,7 +16,6 @@ Url:     http://qt.io
 # Generated with ../.copr/Makefile
 Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global  majmin %(echo %{version} | cut -d. -f1-2)
-%global  qt_version %(echo %{version} | cut -d~ -f1)
 
 
 BuildRequires: cmake

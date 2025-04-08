@@ -1,6 +1,6 @@
-%global commit0 6c5e13162d913ba0075cbd978cfe0c7bc9f21faf
+%global commit0 9985c5e2ea0c8f27d407841c834e65be1a16f7a8
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 12
+%global bumpver 1
 
 %global qt_module qtpositioning
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - Positioning component
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -16,7 +16,6 @@ Url:     http://www.qt.io
 # Generated with ../.copr/Makefile
 Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global  majmin %(echo %{version} | cut -d. -f1-2)
-%global  qt_version %(echo %{version} | cut -d~ -f1)
 
 # filter plugin/qml provides
 %global __provides_exclude_from ^(%{_qt6_archdatadir}/qml/.*\\.so|%{_qt6_plugindir}/.*\\.so)$

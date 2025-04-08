@@ -1,6 +1,6 @@
-%global commit0 4c5f7da1c23b7b93cd2a71120f73d5f78710666b
+%global commit0 2889a6136cca7f7dfb8250c64c105b878129c8c6
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 18
+%global bumpver 19
 
 %global _default_patch_fuzz 2
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
@@ -34,7 +34,7 @@
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
 Version: 6.9.0
-Release: 0.%{bumpver}.git%{shortcommit0}%{?dist}
+Release: 10.%{bumpver}.git%{shortcommit0}%{?dist}
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
 # See also http://qt-project.org/doc/qt-5.0/qtdoc/licensing.html

@@ -1,17 +1,16 @@
-%global commit0 c77ca2c79854711e77950ec364b5ed00d1bfddf9
+%global commit0 96f30bfe5dec37d42cf4ee64eb9fbe5ee3db5cbb
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 12
+%global bumpver 1
 
 %global        qt_module qtgraphs
 
 Name:          qt6-qtgraphs
-Version:       6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version:       6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
 Release:       1%{?dist}
 
 #global examples 1
 
 %global        majmin %(echo %{version} | cut -d. -f1-2)
-%global        qt_version %(echo %{version} | cut -d~ -f1)
 
 Summary:       The Qt Graphs module enables you to visualize data in 3D
 License:       BSD-3-Clause AND GFDL-1.3-no-invariants-only AND GPL-3.0-only

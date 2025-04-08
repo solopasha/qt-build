@@ -1,13 +1,13 @@
-%global commit0 324e3e327ba223b9ee71e2960a8acaf8e8180381
+%global commit0 c6524736fdd8ef595ad4fd8aca025a7e1ee3a7f0
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 12
+%global bumpver 1
 
 %global qt_module qthttpserver
 
 #global examples 1
 
 Name:       qt6-qthttpserver
-Version:    6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version:    6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
 Release:    1%{?dist}
 Summary:    Library to facilitate the creation of an http server with Qt
 
@@ -15,7 +15,6 @@ License:    BSD-3-Clause AND GFDL-1.3-no-invariants-only AND GPL-3.0-only WITH Q
 URL:        http://qt-project.org/
 # Generated with ../.copr/Makefile
 Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
-%global     qt_version %(echo %{version} | cut -d~ -f1)
 
 BuildRequires:  qt6-rpm-macros
 BuildRequires:  cmake

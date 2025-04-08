@@ -1,6 +1,6 @@
-%global commit0 2a90b7fbc7051ede49b2a941a99d7cc826c07ea1
+%global commit0 9ddf4518344d2f01b3f49c2a517713d39f03589f
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 12
+%global bumpver 1
 
 %global qt_module qtconnectivity
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - Connectivity components
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 # See LICENSE.GPL3, respectively, for exception details
@@ -17,7 +17,6 @@ Url:     http://qt.io
 # Generated with ../.copr/Makefile
 Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
-%global  qt_version %(echo %{version} | cut -d~ -f1)
 
 
 # filter qml provides

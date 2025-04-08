@@ -16,7 +16,7 @@ prepare:
 	dnf install -y --nodocs --setopt=install_weak_deps=0 rpmdevtools git-core
 
 ifdef commit
-	git clone --recursive --single-branch --branch $(pkg_ver_maj_min).0 https://code.qt.io/qt/$(qt_module).git $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)
+	git clone --recursive --single-branch --branch $(pkg_ver_maj_min) https://code.qt.io/qt/$(qt_module).git $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)
 	git -C $(qt_module)-everywhere-src-$(pkg_ver_no_tilde) reset --hard $(commit)
 	git -C $(qt_module)-everywhere-src-$(pkg_ver_no_tilde) submodule update --recursive
 else

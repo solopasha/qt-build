@@ -1,4 +1,4 @@
-.PHONY: prepare srpm qt6-qtwebengine.spec
+.PHONY: prepare clone srpm qt6-qtwebengine.spec
 specfile = $(notdir $(spec))
 qt_module != sed -n 's/%global[[:space:]]\+\bqt_module\b[[:space:]]\+\(.*\)/\1/p' $(specfile)
 commit != sed -n 's/%global[[:space:]]\+\bcommit0\b[[:space:]]\+\(.*\)/\1/p' $(specfile)
@@ -15,6 +15,7 @@ prepare:
 				qt6-srpm-macros
 	dnf install -y --nodocs --setopt=install_weak_deps=0 rpmdevtools git-core
 
+clone:
 ifdef commit
 	git clone --recursive --single-branch --branch $(pkg_ver_maj_min) https://code.qt.io/qt/$(qt_module).git $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)
 	git -C $(qt_module)-everywhere-src-$(pkg_ver_no_tilde) reset --hard $(commit)
@@ -26,12 +27,10 @@ ifneq ($(specfile),qt6-qtwebchannel.spec)
 	find -maxdepth 2 -type d \( -name 'tests' -o -name 'examples' \) -exec rm -rf '{}' \;
 endif
 
-%spec: FORCE
+%spec: clone
 	XZ_OPT="-T0 -e9" tar --owner 0 --group 0 --numeric-owner --exclude-vcs -cJf $(qt_module)-everywhere-src-$(pkg_ver_no_tilde).tar.xz $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)
 
-FORCE: ;
-
-qt6-qtwebengine.spec:
+qt6-qtwebengine.spec: clone
 	./clean_qtwebengine.sh $(pkg_ver_no_tilde)
 
 srpm: prepare $(specfile)

@@ -1,6 +1,6 @@
-%global commit0 06f6a29ee30a36d6786b43e18b4ef6fbbc79657f
+%global commit0 f395c3f90f7a9182f3a52955da9f1f4c0b66cefb
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 1
+%global bumpver 2
 
 %global qt_module qtquicktimeline
 

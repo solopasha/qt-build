@@ -1,6 +1,6 @@
-%global commit0 541d53f28dfb23ed5822ae3a7c03f2098ee4ddf9
+%global commit0 06a41125b43e46554d1389323461bbbc85fb8669
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 1
+%global bumpver 2
 
 # See http://bugzilla.redhat.com/223663
 %global multilib_archs x86_64 %{ix86} %{?mips} ppc64 ppc s390x s390 sparc64 sparcv9
@@ -208,6 +208,7 @@ Requires: %{name}-common = %{version}-%{release}
 Provides:      %{name} = %{majmin_ver_kf6}
 Provides:      %{name} = 6.8.1
 Provides:      %{name} = 6.8.2
+Provides:      %{name} = 6.9.0~
 Provides:      %{name} = 6.9.0~beta1
 Provides:      %{name}%{?_isa} = %{majmin_ver_kf6}
 Provides:      %{name}%{?_isa} = 6.8.1

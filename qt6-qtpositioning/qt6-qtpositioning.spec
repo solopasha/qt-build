@@ -1,6 +1,6 @@
-%global commit0 1657389945d5152c31dec2220d16eca63e437ab4
+%global commit0 e7a2852a8a001829db44e4c8d83ee8e98800f0c6
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qtpositioning
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - Positioning component
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

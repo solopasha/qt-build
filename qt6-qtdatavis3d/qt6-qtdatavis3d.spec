@@ -1,6 +1,6 @@
-%global commit0 3be6a60d1cd9c54381a0b78bc237f447a9fd5e44
+%global commit0 64627d13c57ed8c8abdf9d5070e90b10e46447df
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qtdatavis3d
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - Qt Data Visualization component
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0

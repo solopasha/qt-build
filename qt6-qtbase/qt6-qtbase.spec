@@ -1,6 +1,6 @@
-%global commit0 06a41125b43e46554d1389323461bbbc85fb8669
+%global commit0 2ad23cd72d5f122f88ce95792a4323d639c27d25
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 # See http://bugzilla.redhat.com/223663
 %global multilib_archs x86_64 %{ix86} %{?mips} ppc64 ppc s390x s390 sparc64 sparcv9
@@ -46,7 +46,7 @@ BuildRequires: pkgconfig(libsystemd)
 
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -91,15 +91,6 @@ Patch56: qtbase-mysql.patch
 
 # fix FTBFS against libglvnd-1.3.4+
 Patch58: qtbase-libglvnd.patch
-
-# Bug 1954359 - Many emoji don't show up in Qt apps because qt does not handle 'emoji' font family
-# FIXME: this change seems to completely break font rendering for some people
-# Patch60: qtbase-cache-emoji-font.patch
-
-%if 0%{?fedora} && 0%{?fedora} < 39
-# Latest QGnomePlatform needs to be specified to be used
-Patch100: qtbase-use-qgnomeplatform-as-default-platform-theme-on-gnome.patch
-%endif
 
 ## upstream patches
 
@@ -169,7 +160,6 @@ BuildRequires: pkgconfig(xkeyboard-config)
 %global vulkan 1
 BuildRequires: pkgconfig(vulkan)
 %global egl 1
-BuildRequires: mesa-libEGL-devel
 BuildRequires: pkgconfig(egl)
 BuildRequires: pkgconfig(gbm)
 BuildRequires: pkgconfig(libglvnd)
@@ -206,14 +196,9 @@ Requires: %{name}-common = %{version}-%{release}
 %endif
 
 Provides:      %{name} = %{majmin_ver_kf6}
-Provides:      %{name} = 6.8.1
-Provides:      %{name} = 6.8.2
-Provides:      %{name} = 6.9.0~
-Provides:      %{name} = 6.9.0~beta1
+Provides:      %{name} = 6.9.0
 Provides:      %{name}%{?_isa} = %{majmin_ver_kf6}
-Provides:      %{name}%{?_isa} = 6.8.1
-Provides:      %{name}%{?_isa} = 6.8.2
-Provides:      %{name}%{?_isa} = 6.9.0~beta1
+Provides:      %{name}%{?_isa} = 6.9.0
 
 %description
 Qt is a software toolkit for developing applications.
@@ -235,7 +220,7 @@ Summary: Development files for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: %{name}-gui%{?_isa}
 %if 0%{?egl}
-Requires: libEGL-devel
+Requires: pkgconfig(egl)
 %endif
 Requires: pkgconfig(gl)
 %if 0%{?vulkan}
@@ -439,7 +424,7 @@ translationdir=%{_qt6_translationdir}
 
 Name: Qt6
 Description: Qt6 Configuration
-Version: 6.9.0
+Version: 6.9.1
 EOF
 
 # rpm macros

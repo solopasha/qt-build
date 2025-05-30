@@ -1,6 +1,6 @@
-%global commit0 565f19a8911278b64c1055e163917ba48899f334
+%global commit0 94fcdf86af308edfcac53103ac2db1e99c852d73
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qtwebchannel
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - WebChannel component
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

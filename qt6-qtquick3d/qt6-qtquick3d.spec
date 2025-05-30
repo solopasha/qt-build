@@ -1,6 +1,6 @@
-%global commit0 4c360f4469de9e191120515fb2a0a972a3f6f523
+%global commit0 9dbdffb662559841b284df117c6360b0e8e587c8
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 %global qt_module qtquick3d
@@ -9,7 +9,7 @@
 
 Summary: Qt6 - Quick3D Libraries and utilities
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

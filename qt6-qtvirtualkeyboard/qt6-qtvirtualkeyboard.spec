@@ -1,6 +1,6 @@
-%global commit0 35d4ed3b29c53feb289418c366220c0fb8786283
+%global commit0 43f60b17037210e259aa91318342db2774d2c131
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qtvirtualkeyboard
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - VirtualKeyboard component
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0

@@ -1,12 +1,12 @@
-%global commit0 e5afa80b6dead8fb6734ae041c39a2b13f84365a
+%global commit0 71d0613351606ad48bd207e6f1a15e256ab64e16
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qtimageformats
 
 Summary: Qt6 - QtImageFormats component
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

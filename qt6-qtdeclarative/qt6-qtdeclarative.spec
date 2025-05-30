@@ -1,6 +1,6 @@
-%global commit0 9d330e3c9a52a7db7b7ba322466c3d06caa03fcc
+%global commit0 1e6adc3d5f1f4cbbb77b41911395782dff43cccd
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 3
+%global bumpver 1
 
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 
@@ -13,7 +13,7 @@
 
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

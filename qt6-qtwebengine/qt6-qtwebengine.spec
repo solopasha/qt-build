@@ -1,6 +1,6 @@
-%global commit0 998a2a0a3d1ccd4d9b099d6533c893e936d2c52f
+%global commit0 d0012809afa1ca30210948d281f48fbc7160fc0c
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 20
+%global bumpver 1
 
 %global _default_patch_fuzz 2
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
@@ -33,8 +33,8 @@
 
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
-Version: 6.9.0
-Release: 10.%{bumpver}.git%{shortcommit0}%{?dist}
+Version: 6.9.1
+Release: 0.%{bumpver}.git%{shortcommit0}%{?dist}
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
 # See also http://qt-project.org/doc/qt-5.0/qtdoc/licensing.html
@@ -57,7 +57,6 @@ Source10: macros.qt6-qtwebengine
 Source20: https://src.fedoraproject.org/lookaside/pkgs/qt6-qtwebengine/pulseaudio-12.2-headers.tar.gz/sha512/a5a9bcbb16030b3bc83cc0cc8f5e7f90e0723d3e83258a5c77eacb32eaa267118a73fa7814fbcc99a24e4907916a2b371ebb6dedc4f45541c3acf6c834fd35be/pulseaudio-12.2-headers.tar.gz
 
 Patch2:  qtwebengine-link-pipewire.patch
-Patch3:  pipewire.patch
 
 Patch81: qtwebengine-use-openh264.patch
 

@@ -1,12 +1,12 @@
-%global commit0 707c4e476e6cc02f79fdb16b2a96537d0e4b5a63
+%global commit0 7a90611fb6fc7656974587ff4b36e5fc886a7e48
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qttranslations
 
 Summary: Qt6 - QtTranslations module
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -103,7 +103,7 @@ Provides: %{_qt6}-zh_TW = %{version}-%{release}
 %lang(hr) %{_qt6_translationdir}/*_hr.qm
 %lang(it) %{_qt6_translationdir}/*_it.qm
 %lang(ja) %{_qt6_translationdir}/*_ja.qm
-%lang(ko) %{_qt6_translationdir}/*_ka.qm
+%lang(ka) %{_qt6_translationdir}/*_ka.qm
 %lang(ko) %{_qt6_translationdir}/*_ko.qm
 %lang(lt) %{_qt6_translationdir}/*_lt.qm
 %lang(lv) %{_qt6_translationdir}/*_lv.qm

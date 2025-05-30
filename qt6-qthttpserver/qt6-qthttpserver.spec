@@ -1,13 +1,13 @@
-%global commit0 c6524736fdd8ef595ad4fd8aca025a7e1ee3a7f0
+%global commit0 4d43e233bce4d94d4c0ccd3410124cb91ea7f43a
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qthttpserver
 
 #global examples 1
 
 Name:       qt6-qthttpserver
-Version:    6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version:    6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release:    1%{?dist}
 Summary:    Library to facilitate the creation of an http server with Qt
 

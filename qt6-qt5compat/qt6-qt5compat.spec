@@ -1,6 +1,6 @@
-%global commit0 782b9536c2003ddf81d58907b90c5af2be06c989
+%global commit0 b2d590d595ae5fa2945f028bc7389e81309cf6c6
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qt5compat
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - Qt 5 Compatibility Libraries
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

@@ -1,6 +1,6 @@
-%global commit0 546cac5ea7620e5b0dc919c9bcd3cbc196bef099
+%global commit0 407d7cbb55139b598519e858107bb361a674e5c3
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qtnetworkauth
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - NetworkAuth component
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0

@@ -1,6 +1,6 @@
-%global commit0 509aa2933a4e5aba132fc5c407c5d06faa24a4d8
+%global commit0 aa161382a9e346f8f7159ac003eddda6a928d967
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qtserialbus
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - SerialBus component
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

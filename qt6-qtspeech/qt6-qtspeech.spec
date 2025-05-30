@@ -1,6 +1,6 @@
-%global commit0 49235e440cb05efea5bb95f3b44af2603d0b2b47
+%global commit0 b097fe8e5d3de28962f69ad032a10b68dfe116a3
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qtspeech
 
@@ -10,7 +10,7 @@
 
 Summary: Qt6 - Speech component
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 # Code can be either LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only

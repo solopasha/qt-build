@@ -1,6 +1,6 @@
-%global commit0 c937b0547204d3d990370f10fb7a907da9319087
+%global commit0 eac4588150968e3cdfcee06a4ccfa5aec4c4b938
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qtsvg
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - Support for rendering and displaying SVG
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

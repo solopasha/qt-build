@@ -1,6 +1,6 @@
-%global commit0 106be3198c32447d67c71d9c7320bc78ab60bda2
+%global commit0 ca75c684e7e96081114e82e88109f2528b51be31
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qtsensors
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - Sensors component
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details

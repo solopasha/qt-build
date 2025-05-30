@@ -1,11 +1,11 @@
-%global commit0 96f30bfe5dec37d42cf4ee64eb9fbe5ee3db5cbb
+%global commit0 0e849b494cbe8128ecec6d7079bd9d0171ae56c0
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global        qt_module qtgraphs
 
 Name:          qt6-qtgraphs
-Version:       6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version:       6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release:       1%{?dist}
 
 #global examples 1

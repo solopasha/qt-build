@@ -9,7 +9,7 @@ outdir ?= $(shell pwd)
 
 prepare:
 	dnf distro-sync --nodocs -y --setopt=install_weak_deps=0 --repo=qt6-test \
-				--repofrompath 'qt6-test,https://download.copr.fedorainfracloud.org/results/solopasha/qt6-test/fedora-41-x86_64/devel/' \
+				--repofrompath 'qt6-test,https://download.copr.fedorainfracloud.org/results/solopasha/qt6-test/fedora-42-x86_64/devel/' \
 				--setopt='qt6-test.gpgcheck=1' \
 				--setopt='qt6-test.gpgkey=https://download.copr.fedorainfracloud.org/results/solopasha/qt6-test/pubkey.gpg' \
 				qt6-srpm-macros
@@ -17,7 +17,7 @@ prepare:
 
 clone:
 ifdef commit
-	git clone --recursive --single-branch --branch $(pkg_ver_maj_min) https://code.qt.io/qt/$(qt_module).git $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)
+	git clone --recursive --single-branch --branch $(pkg_ver_maj_min).1 https://code.qt.io/qt/$(qt_module).git $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)
 	git -C $(qt_module)-everywhere-src-$(pkg_ver_no_tilde) reset --hard $(commit)
 	git -C $(qt_module)-everywhere-src-$(pkg_ver_no_tilde) submodule update --recursive
 else

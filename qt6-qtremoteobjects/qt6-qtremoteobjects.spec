@@ -1,6 +1,6 @@
-%global commit0 8e9a5a3f15b83a7a9ed0580a623ec72a5c2683f2
+%global commit0 d75e657ef98ed4f66e9336140d60685419920652
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 %global qt_module qtremoteobjects
@@ -9,7 +9,7 @@
 
 Summary: Qt6 - Qt Remote Objects
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

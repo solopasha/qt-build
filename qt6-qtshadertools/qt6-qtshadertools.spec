@@ -1,12 +1,12 @@
-%global commit0 4d991e3fb5b50bbae39b688a3fa63eff180bfbf0
+%global commit0 661130571df1a19bd10dd7705fe689cfde835dad
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qtshadertools
 
 Summary: Qt6 - Qt Shader Tools module builds on the SPIR-V Open Source Ecosystem
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

@@ -1,12 +1,12 @@
-%global commit0 2974f0f7f9bdcc7e2edb936e06e61327e7cca76f
+%global commit0 9d58c6e5041a734640a61cb67b8dfab7564b478a
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qtlottie
 
 Summary: Qt6 - Lottie Animation
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0

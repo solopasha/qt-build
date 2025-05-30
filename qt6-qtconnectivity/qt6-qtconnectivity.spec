@@ -1,6 +1,6 @@
-%global commit0 117e71bc93266ee5a12d2b8ac9ef6c7d8b319605
+%global commit0 eaa05d542497455d7f88ff72d2f6122895931d34
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global qt_module qtconnectivity
 
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - Connectivity components
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 # See LICENSE.GPL3, respectively, for exception details

@@ -1,6 +1,6 @@
-%global commit0 ab5582880c1e657c715d0b32d6d862c254245ae6
+%global commit0 5fbd1770198970eaf5f1cb7ac01ee226832b5157
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global bumpver 2
+%global bumpver 1
 
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 %global qt_module qtlocation
@@ -9,7 +9,7 @@
 
 Summary: Qt6 - Location Libraries
 Name:    qt6-%{qt_module}
-Version: 6.9.0%{?bumpver:^%{bumpver}.git%{shortcommit0}}
+Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 # Rest of the licenses are for Qt code in src/location and src/plugins

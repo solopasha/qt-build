@@ -13,8 +13,8 @@
 
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
-Release: 1%{?dist}
+Version: 6.9.1
+Release: 1.1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -27,6 +27,7 @@ Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 Source5: qv4global_p-multilib.h
 
 ## upstream patches
+Patch:   672e6777e8e6a8fd86c7877075e7a8aa0ea0a31a.patch
 ## upstreamable patches
 
 # filter qml provides

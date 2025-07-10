@@ -14,7 +14,7 @@
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
 Version: 6.9.1
-Release: 1.1%{?dist}
+Release: 2.1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -28,6 +28,7 @@ Source5: qv4global_p-multilib.h
 
 ## upstream patches
 Patch:   672e6777e8e6a8fd86c7877075e7a8aa0ea0a31a.patch
+Patch:   qtdeclarative-cmake-do-not-automatically-link-against-qmlprivate.patch
 ## upstreamable patches
 
 # filter qml provides

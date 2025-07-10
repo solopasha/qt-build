@@ -1,0 +1,50 @@
+From 3b0dab39d047cfc676a75915ce606cbd4d43a83d Mon Sep 17 00:00:00 2001
+From: Alexandru Croitor <alexandru.croitor@qt.io>
+Date: Mon, 27 Jan 2025 11:20:12 +0100
+Subject: [PATCH] CMake: Do not automatically link against Qt6::QmlPrivate
+
+Generally, QML modules should not require private API. It might have
+been the case that generated code (by e.g. qmlcachegen) included private
+headers, but this is no longer the case.
+
+This might break code using the commercial only qmslc in direct mode
+(which might need private Qt headers), but the general advise has been
+to explicitly link against the private module when doing so (and it is
+already necessary for other Qt modules, like Quick).
+
+[ChangeLog][Important Behavior Change][QtQml] QML modules created by
+qt_add_qml_module no longer link against the Qt6::QmlPrivate target by
+default. Modules that intentionally use private API must now explicitly
+link against it.
+
+Original-patch-by: Alexandru Croitor <alexandru.croitor@qt.io>
+Task-number: QTBUG-87776
+Change-Id: I8c4c32673d88bb4d976d65ab10a0dc39f5e49596
+Reviewed-by: Ulf Hermann <ulf.hermann@qt.io>
+Reviewed-by: Alexandru Croitor <alexandru.croitor@qt.io>
+---
+ src/qml/Qt6QmlMacros.cmake | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/qml/Qt6QmlMacros.cmake b/src/qml/Qt6QmlMacros.cmake
+index fae94d6b..325d5767 100644
+--- a/src/qml/Qt6QmlMacros.cmake
++++ b/src/qml/Qt6QmlMacros.cmake
+@@ -1695,7 +1695,7 @@ function(_qt_internal_target_enable_qmlcachegen target qmlcachegen)
+     # TODO: Probably need to reject ${target} being an object library as unsupported
+     target_sources(${target} PRIVATE "${qmlcache_loader_cpp}")
+     target_link_libraries(${target} PRIVATE
+-        ${QT_CMAKE_EXPORT_NAMESPACE}::QmlPrivate
++        ${QT_CMAKE_EXPORT_NAMESPACE}::Qml
+         ${QT_CMAKE_EXPORT_NAMESPACE}::Core
+     )
+ endfunction()
+@@ -3902,7 +3902,7 @@ function(_qt_internal_qml_type_registration target)
+     endif()
+ 
+     target_include_directories(${effective_target} PRIVATE
+-        $<TARGET_PROPERTY:${QT_CMAKE_EXPORT_NAMESPACE}::QmlPrivate,INTERFACE_INCLUDE_DIRECTORIES>
++        $<TARGET_PROPERTY:${QT_CMAKE_EXPORT_NAMESPACE}::Qml,INTERFACE_INCLUDE_DIRECTORIES>
+     )
+ endfunction()
+ 

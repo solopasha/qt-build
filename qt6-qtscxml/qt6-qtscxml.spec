@@ -1,5 +1,5 @@
-%global commit0 7b3f42a7c4a1ec1c62791f7995eb4dbf957ca68b
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 4833af184405e90fead25b381a2824d8b8908ea0
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global qt_module qtscxml
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - ScXml component
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

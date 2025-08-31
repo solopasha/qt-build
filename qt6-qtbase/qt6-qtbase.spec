@@ -1,5 +1,5 @@
-%global commit0 2ad23cd72d5f122f88ce95792a4323d639c27d25
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 cb2f50decba37fb92802af3b16d184239d857353
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 # See http://bugzilla.redhat.com/223663
@@ -46,7 +46,7 @@ BuildRequires: pkgconfig(libsystemd)
 
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -197,8 +197,12 @@ Requires: %{name}-common = %{version}-%{release}
 
 Provides:      %{name} = %{majmin_ver_kf6}
 Provides:      %{name} = 6.9.0
+Provides:      %{name} = 6.9.1
+Provides:      %{name} = 6.9.2
 Provides:      %{name}%{?_isa} = %{majmin_ver_kf6}
 Provides:      %{name}%{?_isa} = 6.9.0
+Provides:      %{name}%{?_isa} = 6.9.1
+Provides:      %{name}%{?_isa} = 6.9.2
 
 %description
 Qt is a software toolkit for developing applications.
@@ -424,7 +428,7 @@ translationdir=%{_qt6_translationdir}
 
 Name: Qt6
 Description: Qt6 Configuration
-Version: 6.9.1
+Version: 6.10.0
 EOF
 
 # rpm macros
@@ -495,7 +499,9 @@ rm -r %{buildroot}%{_qt6_libdir}/cmake/Qt6ExamplesAssetDownloaderPrivate
 rm -r %{buildroot}%{_qt6_headerdir}/QtExamplesAssetDownloader
 rm %{buildroot}%{_qt6_descriptionsdir}/ExamplesAssetDownloaderPrivate.json
 rm %{buildroot}%{_qt6_libdir}/libQt6ExamplesAssetDownloader.*
-rm %{buildroot}%{_qt6_libdir}/qt6/metatypes/qt6examplesassetdownloaderprivate_*_metatypes.json
+rm %{buildroot}%{_qt6_libdir}/qt6/metatypes/qt6examplesassetdownloaderprivate_*metatypes.json
+
+rm -r %{buildroot}%{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/*.patch
 
 # This is only for Apple platforms and has a python2 dep
 rm -r %{buildroot}%{_qt6_mkspecsdir}/features/uikit
@@ -626,6 +632,7 @@ make check -k ||:
 %{_qt6_libexecdir}/qvkgen
 %{_qt6_libexecdir}/rcc
 %{_qt6_libexecdir}/uic
+%{_qt6_libexecdir}/qtwaylandscanner
 %{_qt6_headerdir}/QtConcurrent/
 %{_qt6_headerdir}/QtCore/
 %{_qt6_headerdir}/QtDBus/
@@ -639,6 +646,9 @@ make check -k ||:
 %{_qt6_headerdir}/QtWidgets/
 %{_qt6_headerdir}/QtXcb/
 %{_qt6_headerdir}/QtXml/
+%{_qt6_headerdir}/QtWaylandClient/
+%{_qt6_headerdir}/QtWaylandGlobal/
+%{_qt6_headerdir}/QtWlShellIntegration/
 %{_qt6_libdir}/libQt6Concurrent.prl
 %{_qt6_libdir}/libQt6Concurrent.so
 %{_qt6_libdir}/libQt6Core.prl
@@ -665,6 +675,10 @@ make check -k ||:
 %{_qt6_libdir}/libQt6XcbQpa.so
 %{_qt6_libdir}/libQt6Xml.prl
 %{_qt6_libdir}/libQt6Xml.so
+%{_qt6_libdir}/libQt6WaylandClient.prl
+%{_qt6_libdir}/libQt6WaylandClient.so
+%{_qt6_libdir}/libQt6WlShellIntegration.prl
+%{_qt6_libdir}/libQt6WlShellIntegration.so
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/REUSE.toml
 %{_qt6_libdir}/cmake/Qt6/3rdparty/kwin/REUSE.toml
 %{_qt6_libdir}/cmake/Qt6/*.h.in
@@ -686,8 +700,6 @@ make check -k ||:
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules/*.cmake
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/modules/*.cmake
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/qt_attribution.json
-%{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/0001-ECMEnableSanitizers.cmake-fix-GCC-s-note-variable-tr.patch
-%{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/0002-ECMEnableSanitizers.cmake-replace-tabs-with-spaces.patch
 %{_qt6_libdir}/cmake/Qt6/3rdparty/kwin/COPYING-CMAKE-SCRIPTS
 %{_qt6_libdir}/cmake/Qt6/3rdparty/kwin/*.cmake
 %{_qt6_libdir}/cmake/Qt6/3rdparty/kwin/qt_attribution.json
@@ -716,6 +728,8 @@ make check -k ||:
 %{_qt6_libdir}/cmake/Qt6WidgetsTools/*.cmake
 %{_qt6_libdir}/cmake/Qt6Xml/*.cmake
 %{_qt6_libdir}/cmake/Qt6TestInternalsPrivate/
+%{_qt6_libdir}/cmake/Qt6WaylandClient/
+%{_qt6_libdir}/cmake/Qt6WaylandScannerTools/
 %{_qt6_descriptionsdir}/Concurrent.json
 %{_qt6_descriptionsdir}/Core.json
 %{_qt6_descriptionsdir}/DBus.json
@@ -729,20 +743,23 @@ make check -k ||:
 %{_qt6_descriptionsdir}/Widgets.json
 %{_qt6_descriptionsdir}/Xml.json
 %{_qt6_descriptionsdir}/TestInternalsPrivate.json
-%{_qt6_metatypesdir}/qt6concurrent_*_metatypes.json
-%{_qt6_metatypesdir}/qt6core_*_metatypes.json
-%{_qt6_metatypesdir}/qt6dbus_*_metatypes.json
-%{_qt6_metatypesdir}/qt6gui_*_metatypes.json
-%{_qt6_metatypesdir}/qt6network_*_metatypes.json
-%{_qt6_metatypesdir}/qt6opengl_*_metatypes.json
-%{_qt6_metatypesdir}/qt6openglwidgets_*_metatypes.json
-%{_qt6_metatypesdir}/qt6printsupport_*_metatypes.json
-%{_qt6_metatypesdir}/qt6sql_*_metatypes.json
-%{_qt6_metatypesdir}/qt6test_*_metatypes.json
-%{_qt6_metatypesdir}/qt6widgets_*_metatypes.json
-%{_qt6_metatypesdir}/qt6xml_*_metatypes.json
+%{_qt6_descriptionsdir}/WaylandClient.json
+%{_qt6_metatypesdir}/qt6concurrent_*metatypes.json
+%{_qt6_metatypesdir}/qt6core_*metatypes.json
+%{_qt6_metatypesdir}/qt6dbus_*metatypes.json
+%{_qt6_metatypesdir}/qt6gui_*metatypes.json
+%{_qt6_metatypesdir}/qt6network_*metatypes.json
+%{_qt6_metatypesdir}/qt6opengl_*metatypes.json
+%{_qt6_metatypesdir}/qt6openglwidgets_*metatypes.json
+%{_qt6_metatypesdir}/qt6printsupport_*metatypes.json
+%{_qt6_metatypesdir}/qt6sql_*metatypes.json
+%{_qt6_metatypesdir}/qt6test_*metatypes.json
+%{_qt6_metatypesdir}/qt6widgets_*metatypes.json
+%{_qt6_metatypesdir}/qt6xml_*metatypes.json
+%{_qt6_metatypesdir}/qt6waylandclient_metatypes.json
 %{_qt6_libdir}/pkgconfig/*.pc
 %{_qt6_mkspecsdir}/*
+%{_qt6_datadir}/wayland/
 ## private-devel globs
 %exclude %{_qt6_headerdir}/*/%{qt_version}/
 
@@ -750,26 +767,23 @@ make check -k ||:
 %{_qt6_headerdir}/QtEglFSDeviceIntegration
 %{_qt6_headerdir}/QtEglFsKmsGbmSupport
 %{_qt6_headerdir}/QtEglFsKmsSupport
-%dir %{_qt6_libdir}/cmake/Qt6EglFSDeviceIntegrationPrivate
-%dir %{_qt6_libdir}/cmake/Qt6EglFsKmsGbmSupportPrivate
-%dir %{_qt6_libdir}/cmake/Qt6EglFsKmsSupportPrivate
-%dir %{_qt6_libdir}/cmake/Qt6XcbQpaPrivate
-%{_qt6_libdir}/cmake/Qt6ConcurrentPrivate/
 %{_qt6_libdir}/cmake/Qt6CorePrivate/
 %{_qt6_libdir}/cmake/Qt6DBusPrivate/
 %{_qt6_libdir}/cmake/Qt6GuiPrivate/
 %{_qt6_libdir}/cmake/Qt6NetworkPrivate/
 %{_qt6_libdir}/cmake/Qt6OpenGLPrivate/
-%{_qt6_libdir}/cmake/Qt6OpenGLWidgetsPrivate/
 %{_qt6_libdir}/cmake/Qt6PrintSupportPrivate/
 %{_qt6_libdir}/cmake/Qt6SqlPrivate/
 %{_qt6_libdir}/cmake/Qt6TestPrivate/
 %{_qt6_libdir}/cmake/Qt6WidgetsPrivate/
 %{_qt6_libdir}/cmake/Qt6XmlPrivate/
-%{_qt6_libdir}/cmake/Qt6EglFSDeviceIntegrationPrivate/*.cmake
-%{_qt6_libdir}/cmake/Qt6EglFsKmsGbmSupportPrivate/*.cmake
-%{_qt6_libdir}/cmake/Qt6EglFsKmsSupportPrivate/*.cmake
-%{_qt6_libdir}/cmake/Qt6XcbQpaPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6WaylandClientPrivate/
+%{_qt6_libdir}/cmake/Qt6WaylandGlobalPrivate/
+%{_qt6_libdir}/cmake/Qt6WlShellIntegrationPrivate/
+%{_qt6_libdir}/cmake/Qt6EglFSDeviceIntegrationPrivate/
+%{_qt6_libdir}/cmake/Qt6EglFsKmsGbmSupportPrivate/
+%{_qt6_libdir}/cmake/Qt6EglFsKmsSupportPrivate/
+%{_qt6_libdir}/cmake/Qt6XcbQpaPrivate/
 %if 0%{?egl}
 %{_qt6_libdir}/libQt6EglFsKmsSupport.prl
 %{_qt6_libdir}/libQt6EglFsKmsSupport.so
@@ -782,10 +796,13 @@ make check -k ||:
 %{_qt6_descriptionsdir}/EglFsKmsGbmSupportPrivate.json
 %{_qt6_descriptionsdir}/EglFsKmsSupportPrivate.json
 %{_qt6_descriptionsdir}/XcbQpaPrivate.json
-%{_qt6_metatypesdir}/qt6eglfsdeviceintegrationprivate_*_metatypes.json
-%{_qt6_metatypesdir}/qt6eglfskmsgbmsupportprivate_*_metatypes.json
-%{_qt6_metatypesdir}/qt6eglfskmssupportprivate_*_metatypes.json
-%{_qt6_metatypesdir}/qt6xcbqpaprivate_*_metatypes.json
+%{_qt6_descriptionsdir}/WaylandGlobalPrivate.json
+%{_qt6_descriptionsdir}/WlShellIntegrationPrivate.json
+%{_qt6_metatypesdir}/qt6eglfsdeviceintegrationprivate_*metatypes.json
+%{_qt6_metatypesdir}/qt6eglfskmsgbmsupportprivate_*metatypes.json
+%{_qt6_metatypesdir}/qt6eglfskmssupportprivate_*metatypes.json
+%{_qt6_metatypesdir}/qt6xcbqpaprivate_*metatypes.json
+%{_qt6_metatypesdir}/qt6wlshellintegrationprivate_metatypes.json
 %{_qt6_headerdir}/*/%{qt_version}/
 
 %files static
@@ -797,35 +814,35 @@ make check -k ||:
 %{_qt6_descriptionsdir}/ExampleIconsPrivate.json
 %dir %{_qt6_archdatadir}/objects-*
 %{_qt6_archdatadir}/objects-*/ExampleIconsPrivate_resources_1/
-%{_qt6_metatypesdir}/qt6exampleiconsprivate_*_metatypes.json
 %dir %{_qt6_libdir}/cmake/Qt6DeviceDiscoverySupportPrivate
 %{_qt6_libdir}/cmake/Qt6DeviceDiscoverySupportPrivate/*.cmake
 %{_qt6_headerdir}/QtDeviceDiscoverySupport
 %{_qt6_libdir}/libQt6DeviceDiscoverySupport.*a
 %{_qt6_libdir}/libQt6DeviceDiscoverySupport.prl
 %{_qt6_descriptionsdir}/DeviceDiscoverySupportPrivate.json
-%{_qt6_metatypesdir}/qt6devicediscoverysupportprivate_*_metatypes.json
 %dir %{_qt6_libdir}/cmake/Qt6FbSupportPrivate
 %{_qt6_libdir}/cmake/Qt6FbSupportPrivate/*.cmake
 %{_qt6_headerdir}/QtFbSupport
 %{_qt6_libdir}/libQt6FbSupport.*a
 %{_qt6_libdir}/libQt6FbSupport.prl
 %{_qt6_descriptionsdir}/FbSupportPrivate.json
-%{_qt6_metatypesdir}/qt6fbsupportprivate_*_metatypes.json
 %dir %{_qt6_libdir}/cmake/Qt6InputSupportPrivate
 %{_qt6_libdir}/cmake/Qt6InputSupportPrivate/*.cmake
 %{_qt6_headerdir}/QtInputSupport
 %{_qt6_libdir}/libQt6InputSupport.*a
 %{_qt6_libdir}/libQt6InputSupport.prl
 %{_qt6_descriptionsdir}/InputSupportPrivate.json
-%{_qt6_metatypesdir}/qt6inputsupportprivate_*_metatypes.json
 %dir %{_qt6_libdir}/cmake/Qt6KmsSupportPrivate
 %{_qt6_libdir}/cmake/Qt6KmsSupportPrivate/*.cmake
 %{_qt6_headerdir}/QtKmsSupport
 %{_qt6_libdir}/libQt6KmsSupport.*a
 %{_qt6_libdir}/libQt6KmsSupport.prl
 %{_qt6_descriptionsdir}/KmsSupportPrivate.json
-%{_qt6_metatypesdir}/qt6kmssupportprivate_*_metatypes.json
+%{_qt6_metatypesdir}/qt6exampleiconsprivate_*metatypes.json
+%{_qt6_metatypesdir}/qt6devicediscoverysupportprivate_*metatypes.json
+%{_qt6_metatypesdir}/qt6fbsupportprivate_*metatypes.json
+%{_qt6_metatypesdir}/qt6inputsupportprivate_*metatypes.json
+%{_qt6_metatypesdir}/qt6kmssupportprivate_*metatypes.json
 
 %if 0%{?examples}
 %files examples
@@ -862,6 +879,8 @@ make check -k ||:
 %{_qt6_libdir}/libQt6PrintSupport.so.6*
 %{_qt6_libdir}/libQt6Widgets.so.6*
 %{_qt6_libdir}/libQt6XcbQpa.so.6*
+%{_qt6_libdir}/libQt6WaylandClient.so.6*
+%{_qt6_libdir}/libQt6WlShellIntegration.so.6*
 # Generic
 %{_qt6_plugindir}/generic/libqevdevkeyboardplugin.so
 %{_qt6_plugindir}/generic/libqevdevmouseplugin.so
@@ -901,8 +920,12 @@ make check -k ||:
 %{_qt6_plugindir}/platforms/libqxcb.so
 %{_qt6_plugindir}/platforms/libqvnc.so
 %{_qt6_plugindir}/platforms/libqvkkhrdisplay.so
+%{_qt6_plugindir}/platforms/libqwayland.so
 %{_qt6_plugindir}/xcbglintegrations/libqxcb-glx-integration.so
 %{_qt6_plugindir}/printsupport/libcupsprintersupport.so
+%{_qt6_plugindir}/wayland-decoration-client/
+%{_qt6_plugindir}/wayland-graphics-integration-client/
+%{_qt6_plugindir}/wayland-shell-integration/
 # Platformthemes
 %{_qt6_plugindir}/platformthemes/libqxdgdesktopportal.so
 %{_qt6_plugindir}/platformthemes/libqgtk3.so

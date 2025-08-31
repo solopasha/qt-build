@@ -1,11 +1,11 @@
-%global commit0 0e849b494cbe8128ecec6d7079bd9d0171ae56c0
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 faf9ce2a158ada8f8b930a07b1a5c5634b577627
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global        qt_module qtgraphs
 
 Name:          qt6-qtgraphs
-Version:       6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version:       6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release:       1%{?dist}
 
 #global examples 1
@@ -88,18 +88,14 @@ popd
 %{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_libdir}/libQt6Graphs.so.6*
 %{_qt6_libdir}/libQt6GraphsWidgets.so.6*
-%{_qt6_libdir}/qt6/metatypes/qt6graphs_relwithdebinfo_metatypes.json
-%{_qt6_libdir}/qt6/modules/Graphs.json
-%{_qt6_qmldir}/QtGraphs
+%{_qt6_qmldir}/QtGraphs/
 
 %files devel
-%{_qt6_headerdir}/QtGraphs
-%{_qt6_headerdir}/QtGraphsWidgets
+%{_qt6_headerdir}/QtGraphs/
+%{_qt6_headerdir}/QtGraphsWidgets/
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtGraphsTestsConfig.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Graphs
-%{_qt6_libdir}/cmake/Qt6Graphs/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6GraphsWidgets
-%{_qt6_libdir}/cmake/Qt6GraphsWidgets/*.cmake
+%{_qt6_libdir}/cmake/Qt6Graphs/
+%{_qt6_libdir}/cmake/Qt6GraphsWidgets/
 %{_qt6_libdir}/cmake/Qt6GraphsPrivate/
 %{_qt6_libdir}/cmake/Qt6GraphsWidgetsPrivate/
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6Graphsplugin*.cmake

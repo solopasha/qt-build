@@ -1,5 +1,5 @@
-%global commit0 4873612ba6fb866e9e9468fe989e1cb2d9e0f496
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 d329b7d583a0edbba61a8aaa9693a797f126bd8a
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global qt_module qtgrpc
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - Support for using gRPC and Protobuf
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

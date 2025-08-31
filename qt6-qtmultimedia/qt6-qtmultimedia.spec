@@ -1,5 +1,5 @@
-%global commit0 26624e5522b7dfff2f9082705fa8278868fa2983
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 16ace7ec3c189202257e5ef0d29fc447ad408a9d
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global qt_module qtmultimedia
@@ -19,7 +19,7 @@
 
 Summary: Qt6 - Multimedia support
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

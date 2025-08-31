@@ -1,5 +1,5 @@
-%global commit0 b097fe8e5d3de28962f69ad032a10b68dfe116a3
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 bfa9109aea178cc16a3fb7f5f2e66f41d809c9bd
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global qt_module qtspeech
@@ -10,7 +10,7 @@
 
 Summary: Qt6 - Speech component
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 # Code can be either LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only
@@ -70,6 +70,10 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 Summary: Development files for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: qt6-qtbase-devel%{?_isa}
+%if %{with flite}
+Requires: qt6-qtspeech-flite
+%endif
+Requires: qt6-qtspeech-speechd
 %description devel
 %{summary}.
 

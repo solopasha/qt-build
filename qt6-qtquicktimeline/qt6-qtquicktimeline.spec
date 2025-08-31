@@ -1,12 +1,12 @@
-%global commit0 410381aa0b4d3f810a4c3d737c15315010ad9831
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 183b66a17904fe0d94dc71da4b409732a5630625
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global qt_module qtquicktimeline
 
 Summary: Qt6 - QuickTimeline plugin
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0

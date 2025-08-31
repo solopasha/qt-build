@@ -1,4 +1,4 @@
-.PHONY: prepare clone srpm qt6-qtwebengine.spec
+.PHONY: prepare clone srpm
 specfile = $(notdir $(spec))
 qt_module != sed -n 's/%global[[:space:]]\+\bqt_module\b[[:space:]]\+\(.*\)/\1/p' $(specfile)
 commit != sed -n 's/%global[[:space:]]\+\bcommit0\b[[:space:]]\+\(.*\)/\1/p' $(specfile)
@@ -17,7 +17,7 @@ prepare:
 
 clone:
 ifdef commit
-	git clone --recursive --single-branch --branch $(pkg_ver_maj_min).1 https://code.qt.io/qt/$(qt_module).git $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)
+	git clone --recursive --single-branch --branch $(pkg_ver_maj_min) https://code.qt.io/qt/$(qt_module).git $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)
 	git -C $(qt_module)-everywhere-src-$(pkg_ver_no_tilde) reset --hard $(commit)
 	git -C $(qt_module)-everywhere-src-$(pkg_ver_no_tilde) submodule update --recursive
 else
@@ -29,9 +29,6 @@ endif
 
 %spec: clone
 	XZ_OPT="-T0 -e9" tar --owner 0 --group 0 --numeric-owner --exclude-vcs -cJf $(qt_module)-everywhere-src-$(pkg_ver_no_tilde).tar.xz $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)
-
-qt6-qtwebengine.spec: clone
-	./clean_qtwebengine.sh $(pkg_ver_no_tilde)
 
 srpm: prepare $(specfile)
 	rpmbuild -bs --define "_sourcedir ${PWD}" --define "_specdir ${PWD}" \

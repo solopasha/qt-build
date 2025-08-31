@@ -1,5 +1,5 @@
-%global commit0 9dbdffb662559841b284df117c6360b0e8e587c8
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 dbb4012206f319166b1db09d197b96836916993a
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
@@ -9,7 +9,7 @@
 
 Summary: Qt6 - Quick3D Libraries and utilities
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -146,6 +146,7 @@ popd
 %{_bindir}/shadergen-qt6
 %{_bindir}/shapegen-qt6
 %{_bindir}/materialeditor-qt6
+%{_bindir}/lightmapviewer
 %{_qt6_bindir}/balsam
 %{_qt6_bindir}/balsamui
 %{_qt6_bindir}/instancer
@@ -153,6 +154,7 @@ popd
 %{_qt6_bindir}/shadergen
 %{_qt6_bindir}/shapegen
 %{_qt6_bindir}/materialeditor
+%{_qt6_bindir}/lightmapviewer
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_includedir}/QtQuick3D*/

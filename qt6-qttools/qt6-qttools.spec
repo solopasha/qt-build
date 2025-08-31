@@ -1,5 +1,5 @@
-%global commit0 9e8f157b49c78c05abf8fa87da21e04cdf09780c
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 55cc1558f435101fe4530040f47e65525ca9cbb2
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global qt_module qttools
@@ -10,7 +10,7 @@
 
 Summary: Qt6 - QtTool components
 Name:    qt6-qttools
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

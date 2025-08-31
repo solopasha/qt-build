@@ -1,5 +1,5 @@
-%global commit0 62de51b8840dc62b960087bd504f8107dc86e46a
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 901e5a6799eff7376200d3f3dbf22ea127496127
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
@@ -9,7 +9,7 @@
 
 Summary: Qt6 - Quick3D Physics Libraries and utilities
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0

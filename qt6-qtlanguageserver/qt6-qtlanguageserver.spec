@@ -1,5 +1,5 @@
-%global commit0 d02a0dbc958d2380f97717b81166b8faf32e16a1
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 f4d0a62bcd126f896ad3ba8c87644b98a822cd21
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global debug_package %{nil}
@@ -7,7 +7,7 @@
 
 Summary: Qt6 - LanguageServer component
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0

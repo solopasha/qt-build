@@ -1,5 +1,5 @@
-%global commit0 aed12a0013dffe3e0cd564fb23e83299affda941
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 f781fa4b069eb57bc386dd89a6300427d17a9cfe
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global qt_module qtwebsockets
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - WebSockets component
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0

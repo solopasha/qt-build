@@ -1,5 +1,5 @@
-%global commit0 43f60b17037210e259aa91318342db2774d2c131
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 a39c84efe550cc72445dc4789bf0b3a64046c0d4
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global qt_module qtvirtualkeyboard
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - VirtualKeyboard component
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -109,9 +109,6 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/cmake/Qt6VirtualKeyboardSettings/
 %{_qt6_libdir}/cmake/Qt6VirtualKeyboardQml/
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtVirtualKeyboardTestsConfig.cmake
-%{_qt6_libdir}/cmake/Qt6BundledOpenwnn/Qt6BundledOpenwnnDependencies.cmake
-%{_qt6_libdir}/cmake/Qt6BundledPinyin/Qt6BundledPinyinDependencies.cmake
-%{_qt6_libdir}/cmake/Qt6BundledTcime/Qt6BundledTcimeDependencies.cmake
 %{_qt6_libdir}/cmake/Qt6Gui/Qt6QVirtualKeyboardPlugin*.cmake
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
 %{_qt6_libdir}/cmake/Qt6HunspellInputMethodPrivate/

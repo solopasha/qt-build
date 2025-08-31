@@ -1,5 +1,5 @@
-%global commit0 6ea3114440f44b6b0ba94c1514631c86ca3062b8
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 3d5c3914757b51d102121df5eb6fe0f3d3739f69
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global qt_module qtwebview
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - WebView component
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -78,16 +78,13 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_plugindir}/webview/libqtwebview_webengine.so
 
 %files devel
-%dir %{_qt6_headerdir}/QtWebView
-%{_qt6_headerdir}/QtWebView/*
-%dir %{_qt6_headerdir}/QtWebViewQuick
-%{_qt6_headerdir}/QtWebViewQuick/*
+%{_qt6_headerdir}/QtWebView/
+%{_qt6_headerdir}/QtWebViewQuick/
+%{_qt6_libdir}/cmake/Qt6/FindWebView2.cmake
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtWebViewTestsConfig.cmake
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6WebView
-%{_qt6_libdir}/cmake/Qt6WebView/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6WebViewQuick
-%{_qt6_libdir}/cmake/Qt6WebViewQuick/*.cmake
+%{_qt6_libdir}/cmake/Qt6WebView/
+%{_qt6_libdir}/cmake/Qt6WebViewQuick/
 %{_qt6_libdir}/cmake/Qt6WebViewPrivate/
 %{_qt6_libdir}/cmake/Qt6WebViewQuickPrivate/
 %{_qt6_libdir}/libQt6WebView.so

@@ -1,8 +1,6 @@
-%global commit0 1e6adc3d5f1f4cbbb77b41911395782dff43cccd
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 1b1cbd9c81b025a164078ed87f84379127cffd33
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
-
-%global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 
 %global qt_module qtdeclarative
 
@@ -13,8 +11,8 @@
 
 Summary: Qt6 - QtDeclarative component
 Name:    qt6-%{qt_module}
-Version: 6.9.1
-Release: 2.1%{?dist}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -27,8 +25,6 @@ Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 Source5: qv4global_p-multilib.h
 
 ## upstream patches
-Patch:   672e6777e8e6a8fd86c7877075e7a8aa0ea0a31a.patch
-Patch:   qtdeclarative-cmake-do-not-automatically-link-against-qmlprivate.patch
 ## upstreamable patches
 
 # filter qml provides
@@ -204,6 +200,9 @@ make check -k -C tests ||:
 %{_qt6_libdir}/libQt6QuickVectorImage.so.6*
 %{_qt6_libdir}/libQt6QuickVectorImageGenerator.so.6*
 %{_qt6_libdir}/libQt6QuickWidgets.so.6*
+%{_qt6_libdir}/libQt6LabsSynchronizer.so.6*
+%{_qt6_libdir}/libQt6QuickShapesDesignHelpers.so.6*
+%{_qt6_libdir}/libQt6QuickVectorImageHelpers.so.6*
 %{_qt6_plugindir}/qmltooling/
 %{_qt6_plugindir}/qmllint/
 %{_qt6_plugindir}/qmlls/
@@ -306,6 +305,8 @@ make check -k -C tests ||:
 %{_qt6_headerdir}/QtQuickVectorImageGenerator/
 %{_qt6_headerdir}/QtQuickWidgets/
 %{_qt6_headerdir}/QtQmlFormat/
+%{_qt6_headerdir}/QtQuickShapesDesignHelpers/
+%{_qt6_headerdir}/QtQuickVectorImageHelpers/
 %{_qt6_libdir}/libQt6Labs*.prl
 %{_qt6_libdir}/libQt6Labs*.so
 %{_qt6_libdir}/libQt6Qml.prl
@@ -364,6 +365,10 @@ make check -k -C tests ||:
 %{_qt6_libdir}/libQt6QuickVectorImageGenerator.so
 %{_qt6_libdir}/libQt6QuickWidgets.prl
 %{_qt6_libdir}/libQt6QuickWidgets.so
+%{_qt6_libdir}/libQt6QuickShapesDesignHelpers.prl
+%{_qt6_libdir}/libQt6QuickShapesDesignHelpers.so
+%{_qt6_libdir}/libQt6QuickVectorImageHelpers.prl
+%{_qt6_libdir}/libQt6QuickVectorImageHelpers.so
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtDeclarativeTestsConfig.cmake
 %{_qt6_libdir}/cmake/Qt6LabsAnimation/*.cmake
 %{_qt6_libdir}/cmake/Qt6LabsFolderListModel/*.cmake
@@ -444,31 +449,31 @@ make check -k -C tests ||:
 %{_qt6_descriptionsdir}/QuickTest.json
 %{_qt6_descriptionsdir}/QuickVectorImage.json
 %{_qt6_descriptionsdir}/QuickWidgets.json
-%{_qt6_metatypesdir}/qt6labs*_metatypes.json
-%{_qt6_metatypesdir}/qt6qml_*_metatypes.json
-%{_qt6_metatypesdir}/qt6qmlcompiler_*_metatypes.json
-%{_qt6_metatypesdir}/qt6qmlcore_relwithdebinfo_metatypes.json
-%{_qt6_metatypesdir}/qt6qmllocalstorage_relwithdebinfo_metatypes.json
-%{_qt6_metatypesdir}/qt6qmlmeta_relwithdebinfo_metatypes.json
-%{_qt6_metatypesdir}/qt6qmlmodels_relwithdebinfo_metatypes.json
-%{_qt6_metatypesdir}/qt6qmlnetwork_relwithdebinfo_metatypes.json
-%{_qt6_metatypesdir}/qt6qmlworkerscript_relwithdebinfo_metatypes.json
-%{_qt6_metatypesdir}/qt6qmlxmllistmodel_relwithdebinfo_metatypes.json
+%{_qt6_metatypesdir}/qt6labs*metatypes.json
+%{_qt6_metatypesdir}/qt6qml_*metatypes.json
+%{_qt6_metatypesdir}/qt6qmlcompiler_*metatypes.json
+%{_qt6_metatypesdir}/qt6qmlcore_metatypes.json
+%{_qt6_metatypesdir}/qt6qmllocalstorage_metatypes.json
+%{_qt6_metatypesdir}/qt6qmlmeta_metatypes.json
+%{_qt6_metatypesdir}/qt6qmlmodels_metatypes.json
+%{_qt6_metatypesdir}/qt6qmlnetwork_metatypes.json
+%{_qt6_metatypesdir}/qt6qmlworkerscript_metatypes.json
+%{_qt6_metatypesdir}/qt6qmlxmllistmodel_metatypes.json
 %{_qt6_metatypesdir}/qt6quick*impl*_metatypes.json
-%{_qt6_metatypesdir}/qt6quick_*_metatypes.json
+%{_qt6_metatypesdir}/qt6quick_*metatypes.json
 %{_qt6_metatypesdir}/qt6quickcontrols2_*.json
-%{_qt6_metatypesdir}/qt6quickcontrols2basic_*_metatypes.json
-%{_qt6_metatypesdir}/qt6quickcontrols2fusion_*_metatypes.json
-%{_qt6_metatypesdir}/qt6quickcontrols2imagine_*_metatypes.json
-%{_qt6_metatypesdir}/qt6quickcontrols2material_*_metatypes.json
-%{_qt6_metatypesdir}/qt6quickcontrols2universal_*_metatypes.json
+%{_qt6_metatypesdir}/qt6quickcontrols2basic_*metatypes.json
+%{_qt6_metatypesdir}/qt6quickcontrols2fusion_*metatypes.json
+%{_qt6_metatypesdir}/qt6quickcontrols2imagine_*metatypes.json
+%{_qt6_metatypesdir}/qt6quickcontrols2material_*metatypes.json
+%{_qt6_metatypesdir}/qt6quickcontrols2universal_*metatypes.json
 %{_qt6_metatypesdir}/qt6quickdialogs2_*.json
-%{_qt6_metatypesdir}/qt6quickdialogs2utils_relwithdebinfo_metatypes.json
-%{_qt6_metatypesdir}/qt6quicklayouts_relwithdebinfo_metatypes.json
-%{_qt6_metatypesdir}/qt6quicktest_*_metatypes.json
-%{_qt6_metatypesdir}/qt6quicktemplates2_relwithdebinfo_metatypes.json
-%{_qt6_metatypesdir}/qt6quickvectorimage_relwithdebinfo_metatypes.json
-%{_qt6_metatypesdir}/qt6quickwidgets_*_metatypes.json
+%{_qt6_metatypesdir}/qt6quickdialogs2utils_metatypes.json
+%{_qt6_metatypesdir}/qt6quicklayouts_metatypes.json
+%{_qt6_metatypesdir}/qt6quicktest_*metatypes.json
+%{_qt6_metatypesdir}/qt6quicktemplates2_metatypes.json
+%{_qt6_metatypesdir}/qt6quickvectorimage_metatypes.json
+%{_qt6_metatypesdir}/qt6quickwidgets_*metatypes.json
 %{_qt6_mkspecsdir}/modules/qt_lib_labs*.pri
 %{_qt6_mkspecsdir}/modules/qt_lib_qml.pri
 %{_qt6_mkspecsdir}/modules/qt_lib_qmlcompiler.pri
@@ -523,6 +528,7 @@ make check -k -C tests ||:
 %{_qt6_libdir}/pkgconfig/Qt6QuickVectorImage.pc
 %{_qt6_libdir}/pkgconfig/Qt6QuickWidgets.pc
 %{_qt6_libdir}/pkgconfig/Qt6QuickEffects.pc
+%{_qt6_libdir}/pkgconfig/Qt6QuickVectorImageHelpers.pc
 # FIXME:
 # This (slit to -private-devel) didn't work out because of rhbz#2330219
 # Might be something to consider in the future.
@@ -537,10 +543,15 @@ make check -k -C tests ||:
 %{_qt6_descriptionsdir}/QuickParticlesPrivate.json
 %{_qt6_descriptionsdir}/QuickShapesPrivate.json
 %{_qt6_descriptionsdir}/QuickVectorImageGeneratorPrivate.json
-%{_qt6_metatypesdir}/qt6quickparticlesprivate_relwithdebinfo_metatypes.json
-%{_qt6_metatypesdir}/qt6quickshapesprivate_relwithdebinfo_metatypes.json
-%{_qt6_metatypesdir}/qt6quickvectorimagegeneratorprivate_relwithdebinfo_metatypes.json
+%{_qt6_descriptionsdir}/QuickShapesDesignHelpersPrivate.json
+%{_qt6_descriptionsdir}/QuickVectorImageHelpers.json
+%{_qt6_metatypesdir}/qt6quickparticlesprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6quickshapesprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6quickvectorimagegeneratorprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6quickshapesdesignhelpersprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6quickvectorimagehelpers_metatypes.json
 %{_qt6_mkspecsdir}/modules/qt_lib_*_private.pri
+%{_qt6_mkspecsdir}/modules/qt_lib_quickvectorimagehelpers.pri
 %{_qt6_libdir}/cmake/Qt6LabsAnimationPrivate/
 %{_qt6_libdir}/cmake/Qt6LabsFolderListModelPrivate/
 %{_qt6_libdir}/cmake/Qt6LabsPlatformPrivate/
@@ -550,7 +561,6 @@ make check -k -C tests ||:
 %{_qt6_libdir}/cmake/Qt6LabsWavefrontMeshPrivate/
 %{_qt6_libdir}/cmake/Qt6QmlCompilerPrivate/
 %{_qt6_libdir}/cmake/Qt6QmlCorePrivate/
-%{_qt6_libdir}/cmake/Qt6QmlIntegrationPrivate/
 %{_qt6_libdir}/cmake/Qt6QmlLocalStoragePrivate/
 %{_qt6_libdir}/cmake/Qt6QmlMetaPrivate/
 %{_qt6_libdir}/cmake/Qt6QmlModelsPrivate/
@@ -564,7 +574,6 @@ make check -k -C tests ||:
 %{_qt6_libdir}/cmake/Qt6QuickControls2FusionPrivate/
 %{_qt6_libdir}/cmake/Qt6QuickControls2FusionStyleImplPrivate/
 %{_qt6_libdir}/cmake/Qt6QuickControls2ImaginePrivate/
-%{_qt6_libdir}/cmake/Qt6QuickControls2ImagineStyleImplPrivate/
 %{_qt6_libdir}/cmake/Qt6QuickControls2ImplPrivate/
 %{_qt6_libdir}/cmake/Qt6QuickControls2MaterialPrivate/
 %{_qt6_libdir}/cmake/Qt6QuickControls2MaterialStyleImplPrivate/
@@ -581,6 +590,11 @@ make check -k -C tests ||:
 %{_qt6_libdir}/cmake/Qt6QuickTestPrivate/
 %{_qt6_libdir}/cmake/Qt6QuickVectorImagePrivate/
 %{_qt6_libdir}/cmake/Qt6QuickWidgetsPrivate/
+%{_qt6_libdir}/cmake/Qt6LabsSynchronizer/
+%{_qt6_libdir}/cmake/Qt6LabsSynchronizerPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickShapesDesignHelpersPrivate/
+%{_qt6_libdir}/cmake/Qt6QuickVectorImageHelpers/
+%{_qt6_libdir}/cmake/Qt6QuickVectorImageHelpersPrivate/
 
 %files static
 %dir %{_qt6_archdatadir}/objects-*
@@ -636,16 +650,16 @@ make check -k -C tests ||:
 %{_qt6_descriptionsdir}/QuickTestUtilsPrivate.json
 %{_qt6_descriptionsdir}/QmlFormatPrivate.json
 %{_qt6_descriptionsdir}/QuickEffects.json
-%{_qt6_metatypesdir}/qt6packetprotocolprivate_*_metatypes.json
-%{_qt6_metatypesdir}/qt6qmldebugprivate_*_metatypes.json
-%{_qt6_metatypesdir}/qt6qmldomprivate_*_metatypes.json
-%{_qt6_metatypesdir}/qt6qmllsprivate_*_metatypes.json
-%{_qt6_metatypesdir}/qt6qmltoolingsettingsprivate_*_metatypes.json
-%{_qt6_metatypesdir}/qt6qmltyperegistrarprivate_*_metatypes.json
-%{_qt6_metatypesdir}/qt6quickcontrolstestutilsprivate_*_metatypes.json
-%{_qt6_metatypesdir}/qt6quicktestutilsprivate_*_metatypes.json
-%{_qt6_metatypesdir}/qt6qmlformatprivate_relwithdebinfo_metatypes.json
-%{_qt6_metatypesdir}/qt6quickeffects_relwithdebinfo_metatypes.json
+%{_qt6_metatypesdir}/qt6packetprotocolprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6qmldebugprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6qmldomprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6qmllsprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6qmltoolingsettingsprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6qmltyperegistrarprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6quickcontrolstestutilsprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6quicktestutilsprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6qmlformatprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6quickeffects_metatypes.json
 # FIXME:
 # Same to qtbase, we probably cannot have mkspecs separate from -devel
 #{_qt6_mkspecsdir}/modules/qt_lib_packetprotocol_private.pri

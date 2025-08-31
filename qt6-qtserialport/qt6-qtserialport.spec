@@ -1,5 +1,5 @@
-%global commit0 9d313746c779d6c22e61b594e694b51150700d09
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 39dc0a645cb50f35cfcd1722cc7ab73a8ff1a82a
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global qt_module qtserialport
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - SerialPort component
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details

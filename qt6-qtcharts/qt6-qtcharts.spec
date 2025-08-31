@@ -1,5 +1,5 @@
-%global commit0 77fd99a12cb5d905186ea4bac0f49a797bffc953
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 9d8ba0eaa4ff3fc5a8c956eca396018ce30d574b
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global qt_module qtcharts
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - Charts component
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0

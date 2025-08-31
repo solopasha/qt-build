@@ -1,5 +1,5 @@
-%global commit0 eac4588150968e3cdfcee06a4ccfa5aec4c4b938
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 0c9257a1cd92092b49297c48be663fa5d4881e83
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global qt_module qtsvg
@@ -8,7 +8,7 @@
 
 Summary: Qt6 - Support for rendering and displaying SVG
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -16,7 +16,6 @@ Url:     http://www.qt.io
 # Generated with ../.copr/Makefile
 Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
-
 
 # filter plugin provides
 %global __provides_exclude_from ^%{_qt6_plugindir}/.*\\.so$
@@ -103,8 +102,6 @@ popd
 %{_qt6_libdir}/cmake/Qt6SvgWidgets/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6SvgPrivate/
 %{_qt6_libdir}/cmake/Qt6SvgPrivate/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6SvgWidgetsPrivate/
-%{_qt6_libdir}/cmake/Qt6SvgWidgetsPrivate/*.cmake
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/pkgconfig/*.pc

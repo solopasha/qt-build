@@ -1,5 +1,5 @@
-%global commit0 4d43e233bce4d94d4c0ccd3410124cb91ea7f43a
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 071f4ecda2547a5ba87d8b1e28fc4bdf7f8e36bf
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global qt_module qthttpserver
@@ -7,7 +7,7 @@
 #global examples 1
 
 Name:       qt6-qthttpserver
-Version:    6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version:    6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release:    1%{?dist}
 Summary:    Library to facilitate the creation of an http server with Qt
 
@@ -76,7 +76,7 @@ to the usage of %{name}.
 %{_qt6_libdir}/libQt6HttpServer.prl
 %{_qt6_libdir}/libQt6HttpServer.so
 %{_qt6_libdir}/pkgconfig/Qt6HttpServer.pc
-%{_qt6_libdir}/qt6/metatypes/qt6httpserver_relwithdebinfo_metatypes.json
+%{_qt6_libdir}/qt6/metatypes/qt6httpserver_metatypes.json
 %{_qt6_libdir}/qt6/mkspecs/modules/qt_lib_httpserver.pri
 %{_qt6_libdir}/qt6/mkspecs/modules/qt_lib_httpserver_private.pri
 %{_qt6_libdir}/qt6/modules/HttpServer.json

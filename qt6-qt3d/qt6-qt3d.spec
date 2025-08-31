@@ -1,5 +1,5 @@
-%global commit0 5b76808e8902778af69bb008909f2a2229be8643
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 dcfac22cfd4bafcbd34314617ab1b227ec893587
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
@@ -7,7 +7,7 @@
 
 Summary: Qt6 - Qt3D QML bindings and C++ APIs
 Name:    qt6-%{qt_module}
-Version: 6.9.1%{?bumpver:~%{bumpver}.git%{shortcommit0}}
+Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
 Release: 1%{?dist}
 
 #global examples 1

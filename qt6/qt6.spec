@@ -1,6 +1,6 @@
 Name: qt6
 # This version MUST remain in sync with Qt6 versions!
-Version: 6.9.1~1
+Version: 6.10.0~1
 Release: 1%{?dist}
 Summary: Qt6 meta package
 License: GPL-3.0-only
@@ -211,6 +211,9 @@ echo "- Qt6 devel meta package" > %{buildroot}%{_docdir}/qt6-devel/README
 
 
 %changelog
+* Sun Aug 31 2025 Pavel Solovev <daron439@gmail.com> - 6.10.0~1-1
+- new version
+
 * Fri May 30 2025 Pavel Solovev <daron439@gmail.com> - 6.9.1~1-1
 - new version
 

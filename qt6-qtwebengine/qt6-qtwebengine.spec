@@ -1,5 +1,5 @@
-%global commit0 d0012809afa1ca30210948d281f48fbc7160fc0c
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit0 bc26db5c7ca7a1ef728796dc99e33f63d2dca949
+%global shortcommit0 %{sub %{commit0} 1 7}
 %global bumpver 1
 
 %global _default_patch_fuzz 2
@@ -33,7 +33,7 @@
 
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
-Version: 6.9.1
+Version: 6.10.0
 Release: 0.%{bumpver}.git%{shortcommit0}%{?dist}
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
@@ -41,15 +41,7 @@ Release: 0.%{bumpver}.git%{shortcommit0}%{?dist}
 # The other licenses are from Chromium and the code it bundles
 License: (LGPLv2 with exceptions or GPLv3 with exceptions) and BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
 URL:     http://www.qt.io
-# cleaned tarball with patent-encumbered codecs removed from the bundled FFmpeg
-# ./qtwebengine-release.sh
-# ./clean_qtwebengine.sh 6.4.1
-Source0: qtwebengine-everywhere-src-%{version_no_tilde}-clean.tar.xz
-
-# cleanup scripts used above
-Source2: clean_qtwebengine.sh
-Source3: clean_ffmpeg.sh
-Source4: get_free_ffmpeg_source_files.py
+Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 # macros
 Source10: macros.qt6-qtwebengine
 
@@ -368,6 +360,8 @@ cp -p src/3rdparty/chromium/LICENSE LICENSE.Chromium
 # Use system OpenH264
 src/3rdparty/chromium/build/linux/unbundle/replace_gn_files.py --system-libraries openh264
 
+src/3rdparty/chromium/build/linux/unbundle/replace_gn_files.py --system-libraries ffmpeg
+
 # consider doing this as part of the tarball creation step instead?  rdieter
 # fix/workaround
 # fatal error: QtWebEngineCore/qtwebenginecoreglobal.h: No such file or directory
@@ -568,7 +562,6 @@ done
 %dir %{_qt6_libdir}/cmake/Qt6WebEngineQuickDelegatesQml
 %{_qt6_libdir}/cmake/Qt6WebEngineQuickDelegatesQml/*.cmake
 %{_qt6_libdir}/cmake/Qt6WebEngineCorePrivate/
-%{_qt6_libdir}/cmake/Qt6WebEngineQuickDelegatesQmlPrivate/
 %{_qt6_libdir}/cmake/Qt6WebEngineQuickPrivate/
 %{_qt6_libdir}/cmake/Qt6WebEngineWidgetsPrivate/
 %{_qt6_libdir}/pkgconfig/Qt6WebEngineCore.pc

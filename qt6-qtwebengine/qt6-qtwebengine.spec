@@ -450,8 +450,8 @@ done
 
 %files
 %license LICENSE.*
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.%{chromium_version}.spdx
-%{_qt6_archdatadir}/sbom/qtpdf-%{qt_version}.%{chromium_version}.spdx
+%{_qt6_archdatadir}/sbom/%{qt_module}-*.spdx*
+%{_qt6_archdatadir}/sbom/qtpdf-*.spdx*
 %{_qt6_libdir}/libQt6WebEngineCore.so.*
 %{_qt6_libdir}/libQt6WebEngineQuick.so.*
 %{_qt6_libdir}/libQt6WebEngineQuickDelegatesQml.so.*

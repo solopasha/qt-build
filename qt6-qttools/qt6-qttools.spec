@@ -1,6 +1,3 @@
-%global commit0 55cc1558f435101fe4530040f47e65525ca9cbb2
-%global shortcommit0 %{sub %{commit0} 1 7}
-%global bumpver 1
 
 %global qt_module qttools
 
@@ -10,20 +7,14 @@
 
 Summary: Qt6 - QtTool components
 Name:    qt6-qttools
-Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
-Release: 1%{?dist}
+Version: 6.12.1
+Release: 1%{?dist}.1
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
 # Generated with ../.copr/Makefile
 Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
-
-# help lrelease/lupdate use/prefer qmake-qt6
-# https://bugzilla.redhat.com/show_bug.cgi?id=1009893
-Patch1: qttools-run-qttools-with-qt6-suffix.patch
-
-## upstream patches
 
 Source20: assistant.desktop
 Source21: designer.desktop
@@ -154,6 +145,9 @@ Requires: %{name}-common = %{version}-%{release}
 %install
 %cmake_install
 
+# Remove build artifact not shipped by any other Qt6 package
+rm -rf %{buildroot}%{_qt6_archdatadir}/objects-RelWithDebInfo
+
 # Add desktop files, --vendor=... helps avoid possible conflicts with qt3/qt4
 desktop-file-install \
   --dir=%{buildroot}%{_datadir}/applications \
@@ -183,8 +177,8 @@ mkdir %{buildroot}%{_bindir}
 pushd %{buildroot}%{_qt6_bindir}
 for i in * ; do
   case "${i}" in
-   assistant|designer|lconvert|linguist|lrelease|lupdate|pixeltool| \
-   qcollectiongenerator|qdbus|qdbusviewer|qhelpconverter|qhelpgenerator| \
+   assistant|designer|lcheck|lconvert|linguist|lrelease|lrelease-pro|ltext2id|lupdate|lupdate-pro|pixeltool| \
+   qdbus|qdbusviewer| \
    qtplugininfo|qdistancefieldgenerator|qdoc|qtdiag)
       ln -v  ${i} %{buildroot}%{_bindir}/${i}-qt6
       ln -sv ${i} ${i}-qt6
@@ -195,6 +189,7 @@ for i in * ; do
   esac
 done
 popd
+
 
 
 ## .prl/.la file love
@@ -276,15 +271,16 @@ popd
 %{_datadir}/applications/*linguist.desktop
 %{_datadir}/icons/hicolor/*/apps/linguist*.*
 # linguist friends
+%{_bindir}/lcheck*
 %{_bindir}/lconvert*
 %{_bindir}/lrelease*
+%{_bindir}/ltext2id*
 %{_bindir}/lupdate*
+%{_qt6_bindir}/lcheck*
 %{_qt6_bindir}/lconvert*
 %{_qt6_bindir}/lrelease*
+%{_qt6_bindir}/ltext2id*
 %{_qt6_bindir}/lupdate*
-%{_qt6_libexecdir}/lprodump*
-%{_qt6_libexecdir}/lrelease*
-%{_qt6_libexecdir}/lupdate*
 %if 0%{?metainfo}
 %{_metainfodir}/io.qt.Linguist.metainfo.xml
 %endif
@@ -317,35 +313,37 @@ popd
 %{_qt6_libdir}/libQt6Designer*.so
 %{_qt6_libdir}/libQt6Help.so
 %{_qt6_libdir}/libQt6UiTools.so
+%dir %{_qt6_libdir}/cmake/Qt6Designer
+%dir %{_qt6_libdir}/cmake/Qt6DesignerComponentsPrivate
+%dir %{_qt6_libdir}/cmake/Qt6DesignerPrivate
+%dir %{_qt6_libdir}/cmake/Qt6Help/
+%dir %{_qt6_libdir}/cmake/Qt6HelpPrivate
+%dir %{_qt6_libdir}/cmake/Qt6Linguist
+%dir %{_qt6_libdir}/cmake/Qt6LinguistTools
+%dir %{_qt6_libdir}/cmake/Qt6QDocCatchConversionsPrivate
+%dir %{_qt6_libdir}/cmake/Qt6QDocCatchGeneratorsPrivate
+%dir %{_qt6_libdir}/cmake/Qt6QDocCatchPrivate
+%dir %{_qt6_libdir}/cmake/Qt6Tools/
+%dir %{_qt6_libdir}/cmake/Qt6ToolsTools/
+%dir %{_qt6_libdir}/cmake/Qt6UiPlugin/
+%dir %{_qt6_libdir}/cmake/Qt6UiToolsPrivate
 %{_qt6_libdir}/cmake/Qt6/FindWrapLibClang.cmake
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtToolsTestsConfig.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Designer
 %{_qt6_libdir}/cmake/Qt6Designer/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6DesignerComponentsPrivate
 %{_qt6_libdir}/cmake/Qt6DesignerComponentsPrivate/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6QDocCatchPrivate
-%{_qt6_libdir}/cmake/Qt6QDocCatchPrivate/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6QDocCatchConversionsPrivate
-%{_qt6_libdir}/cmake/Qt6QDocCatchConversionsPrivate/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6QDocCatchGeneratorsPrivate
-%{_qt6_libdir}/cmake/Qt6QDocCatchGeneratorsPrivate/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Help/
+%{_qt6_libdir}/cmake/Qt6DesignerPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6Help/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Linguist
+%{_qt6_libdir}/cmake/Qt6HelpPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6Linguist/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6LinguistTools
 %{_qt6_libdir}/cmake/Qt6LinguistTools/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6UiPlugin/
-%{_qt6_libdir}/cmake/Qt6UiPlugin/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Tools/
+%{_qt6_libdir}/cmake/Qt6QDocCatchConversionsPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6QDocCatchGeneratorsPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6QDocCatchPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6Tools/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6ToolsTools/
 %{_qt6_libdir}/cmake/Qt6ToolsTools/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6LinguistTools
-%{_qt6_libdir}/cmake/Qt6DesignerPrivate/
-%{_qt6_libdir}/cmake/Qt6HelpPrivate/
-%{_qt6_libdir}/cmake/Qt6UiToolsPrivate/
+%{_qt6_libdir}/cmake/Qt6UiPlugin/*.cmake
 %{_qt6_libdir}/cmake/Qt6UiTools/
+%{_qt6_libdir}/cmake/Qt6UiToolsPrivate/*.cmake
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_qdoccatch_private.pri
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_qdoccatchconversions_private.pri
 %{_qt6_archdatadir}/mkspecs/modules/qt_lib_qdoccatchgenerators_private.pri
@@ -375,33 +373,95 @@ popd
 
 
 %changelog
-%{?qt_snapshot_changelog_entry}
-* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
-- new version
-
-* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
-- new version
-
-* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1.1
 - rebuilt
 
-* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
-- new version
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1
+- Update to 6.12.1
 
-* Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
-- new version
+* Mon Oct 19 2026 Jan Grulich <jgrulich@redhat.com> - 6.12.0-1
+- 6.12.0
 
-* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
-- new version
+* Tue Oct 06 2026 Yaakov Selkowitz <yselkowi@redhat.com> - 6.11.2-2
+- Rebuild (LLVM-23)
 
-* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
-- new version
+* Fri Aug 21 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.2-1
+- 6.11.2
 
-* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
-- new version
+* Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.11.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
 
-* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
-- new version
+* Tue May 12 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.1-1
+- Update to 6.11.1
+
+* Fri Apr 17 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.0-2
+- Fix lrelease-pro/lupdate-pro conflict with qt5-linguist by adding -qt6 suffix
+
+* Mon Apr 13 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.0-1
+- 6.11.0
+
+* Thu Apr 09 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.3-2
+- Fix Clang 22 support
+
+* Tue Mar 31 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.3-1
+- 6.10.3
+
+* Fri Feb 27 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.2-2
+- Rebuild (LLVM-22)
+
+* Mon Feb 09 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.2-1
+- 6.10.2
+
+* Sat Jan 17 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.10.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Thu Nov 20 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.1-1
+- 6.10.1
+
+* Tue Oct 07 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0-1
+- 6.10.0
+
+* Thu Sep 25 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0~rc-1
+- 6.10.0 RC
+
+* Thu Aug 28 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.2-1
+- 6.9.2
+
+* Fri Jul 25 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.9.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
+
+* Mon Jun 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.1-1
+- 6.9.1
+
+* Wed Apr 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0-1
+- 6.9.0
+
+* Mon Mar 24 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0~rc-1
+- 6.9.0 RC
+
+* Sun Mar 09 2025 Yaakov Selkowitz <yselkowi@redhat.com> - 6.8.2-2
+- Rebuilt for LLVM 20
+
+* Fri Jan 31 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-1
+- 6.8.2
+
+* Sat Jan 18 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.8.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
+
+* Thu Jan 09 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.1-3
+- Fix directory ownership
+
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
+- 6.8.1
+
+* Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
+
+* Tue Oct 01 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 6.7.2-4
+- Rebuilt for LLVM 19
 
 * Mon Jul 22 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 6.7.2-3
 - Add appstream data for apps

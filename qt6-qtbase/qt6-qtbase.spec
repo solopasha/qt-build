@@ -1,6 +1,3 @@
-%global commit0 cb2f50decba37fb92802af3b16d184239d857353
-%global shortcommit0 %{sub %{commit0} 1 7}
-%global bumpver 1
 
 # See http://bugzilla.redhat.com/223663
 %global multilib_archs x86_64 %{ix86} %{?mips} ppc64 ppc s390x s390 sparc64 sparcv9
@@ -46,8 +43,8 @@ BuildRequires: pkgconfig(libsystemd)
 
 Name:    qt6-qtbase
 Summary: Qt6 - QtBase components
-Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
-Release: 1%{?dist}
+Version: 6.12.1
+Release: 2%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://qt-project.org/
@@ -145,6 +142,7 @@ BuildRequires: pkgconfig(glib-2.0)
 BuildRequires: pkgconfig(gtk+-3.0)
 BuildRequires: pkgconfig(libproxy-1.0)
 BuildRequires: pkgconfig(libsctp)
+BuildRequires: pkgconfig(liburing)
 # xcb-sm
 BuildRequires: pkgconfig(ice) pkgconfig(sm)
 BuildRequires: pkgconfig(libpng)
@@ -163,7 +161,13 @@ BuildRequires: pkgconfig(vulkan)
 BuildRequires: pkgconfig(egl)
 BuildRequires: pkgconfig(gbm)
 BuildRequires: pkgconfig(libglvnd)
+BuildRequires: pkgconfig(xrender)
 BuildRequires: pkgconfig(x11)
+BuildRequires: pkgconfig(wayland-scanner)
+BuildRequires: pkgconfig(wayland-server)
+BuildRequires: pkgconfig(wayland-client)
+BuildRequires: pkgconfig(wayland-cursor)
+BuildRequires: pkgconfig(wayland-egl)
 
 %global sqlite 1
 BuildRequires: pkgconfig(sqlite3) >= 3.7
@@ -196,13 +200,9 @@ Requires: %{name}-common = %{version}-%{release}
 %endif
 
 Provides:      %{name} = %{majmin_ver_kf6}
-Provides:      %{name} = 6.9.0
-Provides:      %{name} = 6.9.1
-Provides:      %{name} = 6.9.2
+Provides:      %{name} = 6.11.2
 Provides:      %{name}%{?_isa} = %{majmin_ver_kf6}
-Provides:      %{name}%{?_isa} = 6.9.0
-Provides:      %{name}%{?_isa} = 6.9.1
-Provides:      %{name}%{?_isa} = 6.9.2
+Provides:      %{name}%{?_isa} = 6.11.2
 
 %description
 Qt is a software toolkit for developing applications.
@@ -232,6 +232,11 @@ Requires: pkgconfig(vulkan)
 %endif
 # Optional dev dependency of Qt6::Gui
 Requires: pkgconfig(xkbcommon)
+# for Qt6::WaylandClient
+Requires: pkgconfig(wayland-server)
+Requires: pkgconfig(wayland-client)
+Requires: pkgconfig(wayland-cursor)
+Requires: pkgconfig(wayland-egl)
 Requires: qt6-rpm-macros
 %if 0%{?use_clang}
 Requires: clang >= 3.7.0
@@ -311,7 +316,6 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 Summary: Qt6 GUI-related libraries
 Requires: %{name}%{?_isa} = %{version}-%{release}
 Recommends: mesa-dri-drivers%{?_isa}
-Recommends: qt6-qtwayland%{?_isa}
 # Required for some locales: https://pagure.io/fedora-kde/SIG/issue/311
 Recommends: qt6-qttranslations
 Obsoletes: adwaita-qt6 < 1.4.3
@@ -428,7 +432,7 @@ translationdir=%{_qt6_translationdir}
 
 Name: Qt6
 Description: Qt6 Configuration
-Version: 6.10.0
+Version: 6.12.1
 EOF
 
 # rpm macros
@@ -489,18 +493,9 @@ install -m 644 src/plugins/platforms/xcb/*.h %{buildroot}%{_qt6_headerdir}/QtXcb
 # Copied from OpenSUSE packages
 
 # These files are only useful for the Qt continuous integration
-rm %{buildroot}%{_qt6_libexecdir}/ensure_pro_file.cmake
 rm %{buildroot}%{_qt6_libexecdir}/qt-android-runner.py
-rm %{buildroot}%{_qt6_libexecdir}/qt-testrunner.py
-rm %{buildroot}%{_qt6_libexecdir}/sanitizer-testrunner.py
 
-# Not useful for desktop installs
-rm -r %{buildroot}%{_qt6_libdir}/cmake/Qt6ExamplesAssetDownloaderPrivate
-rm -r %{buildroot}%{_qt6_headerdir}/QtExamplesAssetDownloader
-rm %{buildroot}%{_qt6_descriptionsdir}/ExamplesAssetDownloaderPrivate.json
-rm %{buildroot}%{_qt6_libdir}/libQt6ExamplesAssetDownloader.*
-rm %{buildroot}%{_qt6_libdir}/qt6/metatypes/qt6examplesassetdownloaderprivate_*metatypes.json
-
+# These shouldn't be probably installed
 rm -r %{buildroot}%{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/*.patch
 
 # This is only for Apple platforms and has a python2 dep
@@ -556,6 +551,7 @@ make check -k ||:
 %dir %{_qt6_plugindir}/sqldrivers/
 %dir %{_qt6_plugindir}/styles/
 %dir %{_qt6_plugindir}/tls/
+%{_qt6_plugindir}/networkinformation/libqconnman.so
 %{_qt6_plugindir}/networkinformation/libqglib.so
 %{_qt6_plugindir}/networkinformation/libqnetworkmanager.so
 %{_qt6_plugindir}/sqldrivers/libqsqlite.so
@@ -596,12 +592,22 @@ make check -k ||:
 %dir %{_qt6_libdir}/cmake/Qt6PrintSupport
 %dir %{_qt6_libdir}/cmake/Qt6Sql
 %dir %{_qt6_libdir}/cmake/Qt6Test
+%dir %{_qt6_libdir}/cmake/Qt6WaylandClient/
+%dir %{_qt6_libdir}/cmake/Qt6WaylandClientPrivate
+%dir %{_qt6_libdir}/cmake/Qt6WaylandGlobalPrivate/
+%dir %{_qt6_libdir}/cmake/Qt6WaylandScannerTools/
+%dir %{_qt6_libdir}/cmake/Qt6WlShellIntegrationPrivate/
 %dir %{_qt6_libdir}/cmake/Qt6Widgets
 %dir %{_qt6_libdir}/cmake/Qt6WidgetsTools
 %dir %{_qt6_libdir}/cmake/Qt6Xml
 %{_bindir}/androiddeployqt
 %{_bindir}/androiddeployqt6
 %{_bindir}/androidtestrunner
+%{_bindir}/harmonydeployqt
+%{_bindir}/harmonydeployqt6
+%{_bindir}/harmonyostestrunner
+%{_bindir}/wasmdeployqt
+%{_bindir}/wasmdeployqt6
 %{_bindir}/qdbuscpp2xml*
 %{_bindir}/qdbusxml2cpp*
 %{_bindir}/qmake*
@@ -612,6 +618,11 @@ make check -k ||:
 %{_qt6_bindir}/androiddeployqt
 %{_qt6_bindir}/androiddeployqt6
 %{_qt6_bindir}/androidtestrunner
+%{_qt6_bindir}/harmonydeployqt
+%{_qt6_bindir}/harmonydeployqt6
+%{_qt6_bindir}/harmonyostestrunner
+%{_qt6_bindir}/wasmdeployqt
+%{_qt6_bindir}/wasmdeployqt6
 %{_qt6_bindir}/qdbuscpp2xml
 %{_qt6_bindir}/qdbusxml2cpp
 %{_qt6_bindir}/qmake
@@ -629,6 +640,7 @@ make check -k ||:
 %{_qt6_libexecdir}/tracegen
 %{_qt6_libexecdir}/tracepointgen
 %{_qt6_libexecdir}/qlalr
+%{_qt6_libexecdir}/qt_cyclonedx_generator.py
 %{_qt6_libexecdir}/qvkgen
 %{_qt6_libexecdir}/rcc
 %{_qt6_libexecdir}/uic
@@ -643,12 +655,12 @@ make check -k ||:
 %{_qt6_headerdir}/QtPrintSupport/
 %{_qt6_headerdir}/QtSql/
 %{_qt6_headerdir}/QtTest/
-%{_qt6_headerdir}/QtWidgets/
-%{_qt6_headerdir}/QtXcb/
-%{_qt6_headerdir}/QtXml/
 %{_qt6_headerdir}/QtWaylandClient/
 %{_qt6_headerdir}/QtWaylandGlobal/
 %{_qt6_headerdir}/QtWlShellIntegration/
+%{_qt6_headerdir}/QtWidgets/
+%{_qt6_headerdir}/QtXcb/
+%{_qt6_headerdir}/QtXml/
 %{_qt6_libdir}/libQt6Concurrent.prl
 %{_qt6_libdir}/libQt6Concurrent.so
 %{_qt6_libdir}/libQt6Core.prl
@@ -669,33 +681,26 @@ make check -k ||:
 %{_qt6_libdir}/libQt6Sql.so
 %{_qt6_libdir}/libQt6Test.prl
 %{_qt6_libdir}/libQt6Test.so
+%{_qt6_libdir}/libQt6WaylandClient.so
+%{_qt6_libdir}/libQt6WlShellIntegration.so
+%{_qt6_libdir}/libQt6WaylandClient.prl
+%{_qt6_libdir}/libQt6WlShellIntegration.prl
 %{_qt6_libdir}/libQt6Widgets.prl
 %{_qt6_libdir}/libQt6Widgets.so
 %{_qt6_libdir}/libQt6XcbQpa.prl
 %{_qt6_libdir}/libQt6XcbQpa.so
 %{_qt6_libdir}/libQt6Xml.prl
 %{_qt6_libdir}/libQt6Xml.so
-%{_qt6_libdir}/libQt6WaylandClient.prl
-%{_qt6_libdir}/libQt6WaylandClient.so
-%{_qt6_libdir}/libQt6WlShellIntegration.prl
-%{_qt6_libdir}/libQt6WlShellIntegration.so
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/REUSE.toml
 %{_qt6_libdir}/cmake/Qt6/3rdparty/kwin/REUSE.toml
-%{_qt6_libdir}/cmake/Qt6/*.h.in
+%{_qt6_libdir}/cmake/Qt6/*.in
 %{_qt6_libdir}/cmake/Qt6/*.cmake
-%{_qt6_libdir}/cmake/Qt6/*.cmake.in
-%{_qt6_libdir}/cmake/Qt6/PkgConfigLibrary.pc.in
+%{_qt6_libdir}/cmake/Qt6/qt-configure-module-flags.txt
 %{_qt6_libdir}/cmake/Qt6/config.tests/*
 %{_qt6_libdir}/cmake/Qt6/libexec/*
 %{_qt6_libdir}/cmake/Qt6/platforms/*.cmake
 %{_qt6_libdir}/cmake/Qt6/platforms/Platform/*.cmake
 %{_qt6_libdir}/cmake/Qt6/qbatchedtestrunner.in.cpp
-%{_qt6_libdir}/cmake/Qt6/ModuleDescription.json.in
-%{_qt6_libdir}/cmake/Qt6/QtFileConfigure.txt.in
-%{_qt6_libdir}/cmake/Qt6/QtConfigureTimeExecutableCMakeLists.txt.in
-%{_qt6_libdir}/cmake/Qt6/QtSeparateDebugInfo.Info.plist.in
-%{_qt6_libdir}/cmake/Qt6/qt-internal-config.redo.in
-%{_qt6_libdir}/cmake/Qt6/qt-internal-config.redo.bat.in
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/COPYING-CMAKE-SCRIPTS
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules/*.cmake
 %{_qt6_libdir}/cmake/Qt6/3rdparty/extra-cmake-modules/modules/*.cmake
@@ -724,12 +729,14 @@ make check -k ||:
 %{_qt6_libdir}/cmake/Qt6Sql/Qt6Sql*.cmake
 %{_qt6_libdir}/cmake/Qt6Sql/Qt6QSQLiteDriverPlugin*.cmake
 %{_qt6_libdir}/cmake/Qt6Test/*.cmake
+%{_qt6_libdir}/cmake/Qt6WaylandClient/*.cmake
+%{_qt6_libdir}/cmake/Qt6WaylandClientPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6WaylandGlobalPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6WaylandScannerTools/*.cmake
+%{_qt6_libdir}/cmake/Qt6WlShellIntegrationPrivate/
 %{_qt6_libdir}/cmake/Qt6Widgets/*.cmake
 %{_qt6_libdir}/cmake/Qt6WidgetsTools/*.cmake
 %{_qt6_libdir}/cmake/Qt6Xml/*.cmake
-%{_qt6_libdir}/cmake/Qt6TestInternalsPrivate/
-%{_qt6_libdir}/cmake/Qt6WaylandClient/
-%{_qt6_libdir}/cmake/Qt6WaylandScannerTools/
 %{_qt6_descriptionsdir}/Concurrent.json
 %{_qt6_descriptionsdir}/Core.json
 %{_qt6_descriptionsdir}/DBus.json
@@ -740,26 +747,26 @@ make check -k ||:
 %{_qt6_descriptionsdir}/PrintSupport.json
 %{_qt6_descriptionsdir}/Sql.json
 %{_qt6_descriptionsdir}/Test.json
+%{_qt6_descriptionsdir}/WaylandClient.json
+%{_qt6_descriptionsdir}/WaylandGlobalPrivate.json
+%{_qt6_descriptionsdir}/WlShellIntegrationPrivate.json
 %{_qt6_descriptionsdir}/Widgets.json
 %{_qt6_descriptionsdir}/Xml.json
-%{_qt6_descriptionsdir}/TestInternalsPrivate.json
-%{_qt6_descriptionsdir}/WaylandClient.json
-%{_qt6_metatypesdir}/qt6concurrent_*metatypes.json
-%{_qt6_metatypesdir}/qt6core_*metatypes.json
-%{_qt6_metatypesdir}/qt6dbus_*metatypes.json
-%{_qt6_metatypesdir}/qt6gui_*metatypes.json
-%{_qt6_metatypesdir}/qt6network_*metatypes.json
-%{_qt6_metatypesdir}/qt6opengl_*metatypes.json
-%{_qt6_metatypesdir}/qt6openglwidgets_*metatypes.json
-%{_qt6_metatypesdir}/qt6printsupport_*metatypes.json
-%{_qt6_metatypesdir}/qt6sql_*metatypes.json
-%{_qt6_metatypesdir}/qt6test_*metatypes.json
-%{_qt6_metatypesdir}/qt6widgets_*metatypes.json
-%{_qt6_metatypesdir}/qt6xml_*metatypes.json
-%{_qt6_metatypesdir}/qt6waylandclient_metatypes.json
+%{_qt6_metatypesdir}/qt6concurrent_metatypes.json
+%{_qt6_metatypesdir}/qt6core_metatypes.json
+%{_qt6_metatypesdir}/qt6dbus_metatypes.json
+%{_qt6_metatypesdir}/qt6gui_metatypes.json
+%{_qt6_metatypesdir}/qt6network_metatypes.json
+%{_qt6_metatypesdir}/qt6opengl_metatypes.json
+%{_qt6_metatypesdir}/qt6openglwidgets_metatypes.json
+%{_qt6_metatypesdir}/qt6printsupport_metatypes.json
+%{_qt6_metatypesdir}/qt6sql_metatypes.json
+%{_qt6_metatypesdir}/qt6test_metatypes.json
+%{_qt6_metatypesdir}/qt6widgets_metatypes.json
+%{_qt6_metatypesdir}/qt6xml_metatypes.json
 %{_qt6_libdir}/pkgconfig/*.pc
 %{_qt6_mkspecsdir}/*
-%{_qt6_datadir}/wayland/
+%{_qt6_datadir}/json_schema/
 ## private-devel globs
 %exclude %{_qt6_headerdir}/*/%{qt_version}/
 
@@ -767,23 +774,38 @@ make check -k ||:
 %{_qt6_headerdir}/QtEglFSDeviceIntegration
 %{_qt6_headerdir}/QtEglFsKmsGbmSupport
 %{_qt6_headerdir}/QtEglFsKmsSupport
-%{_qt6_libdir}/cmake/Qt6CorePrivate/
-%{_qt6_libdir}/cmake/Qt6DBusPrivate/
-%{_qt6_libdir}/cmake/Qt6GuiPrivate/
-%{_qt6_libdir}/cmake/Qt6NetworkPrivate/
-%{_qt6_libdir}/cmake/Qt6OpenGLPrivate/
-%{_qt6_libdir}/cmake/Qt6PrintSupportPrivate/
-%{_qt6_libdir}/cmake/Qt6SqlPrivate/
-%{_qt6_libdir}/cmake/Qt6TestPrivate/
-%{_qt6_libdir}/cmake/Qt6WidgetsPrivate/
-%{_qt6_libdir}/cmake/Qt6XmlPrivate/
-%{_qt6_libdir}/cmake/Qt6WaylandClientPrivate/
-%{_qt6_libdir}/cmake/Qt6WaylandGlobalPrivate/
-%{_qt6_libdir}/cmake/Qt6WlShellIntegrationPrivate/
-%{_qt6_libdir}/cmake/Qt6EglFSDeviceIntegrationPrivate/
-%{_qt6_libdir}/cmake/Qt6EglFsKmsGbmSupportPrivate/
-%{_qt6_libdir}/cmake/Qt6EglFsKmsSupportPrivate/
-%{_qt6_libdir}/cmake/Qt6XcbQpaPrivate/
+%dir %{_qt6_libdir}/cmake/Qt6CorePrivate
+%dir %{_qt6_libdir}/cmake/Qt6DBusPrivate
+%dir %{_qt6_libdir}/cmake/Qt6GuiPrivate
+%dir %{_qt6_libdir}/cmake/Qt6NetworkPrivate
+%dir %{_qt6_libdir}/cmake/Qt6OpenGLPrivate
+%dir %{_qt6_libdir}/cmake/Qt6PrintSupportPrivate
+%dir %{_qt6_libdir}/cmake/Qt6SqlPrivate
+%dir %{_qt6_libdir}/cmake/Qt6TestInternalsPrivate
+%dir %{_qt6_libdir}/cmake/Qt6TestInternalsPrivate/3rdparty/cmake
+%dir %{_qt6_libdir}/cmake/Qt6TestPrivate
+%dir %{_qt6_libdir}/cmake/Qt6WidgetsPrivate
+%dir %{_qt6_libdir}/cmake/Qt6XmlPrivate
+%dir %{_qt6_libdir}/cmake/Qt6EglFSDeviceIntegrationPrivate
+%dir %{_qt6_libdir}/cmake/Qt6EglFsKmsGbmSupportPrivate
+%dir %{_qt6_libdir}/cmake/Qt6EglFsKmsSupportPrivate
+%dir %{_qt6_libdir}/cmake/Qt6XcbQpaPrivate
+%{_qt6_libdir}/cmake/Qt6CorePrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6DBusPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6GuiPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6NetworkPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6OpenGLPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6PrintSupportPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6SqlPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6TestInternalsPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6TestInternalsPrivate/3rdparty/cmake/*.cmake
+%{_qt6_libdir}/cmake/Qt6TestPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6WidgetsPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6XmlPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6EglFSDeviceIntegrationPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6EglFsKmsGbmSupportPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6EglFsKmsSupportPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6XcbQpaPrivate/*.cmake
 %if 0%{?egl}
 %{_qt6_libdir}/libQt6EglFsKmsSupport.prl
 %{_qt6_libdir}/libQt6EglFsKmsSupport.so
@@ -796,53 +818,44 @@ make check -k ||:
 %{_qt6_descriptionsdir}/EglFsKmsGbmSupportPrivate.json
 %{_qt6_descriptionsdir}/EglFsKmsSupportPrivate.json
 %{_qt6_descriptionsdir}/XcbQpaPrivate.json
-%{_qt6_descriptionsdir}/WaylandGlobalPrivate.json
-%{_qt6_descriptionsdir}/WlShellIntegrationPrivate.json
-%{_qt6_metatypesdir}/qt6eglfsdeviceintegrationprivate_*metatypes.json
-%{_qt6_metatypesdir}/qt6eglfskmsgbmsupportprivate_*metatypes.json
-%{_qt6_metatypesdir}/qt6eglfskmssupportprivate_*metatypes.json
-%{_qt6_metatypesdir}/qt6xcbqpaprivate_*metatypes.json
+%{_qt6_metatypesdir}/qt6eglfsdeviceintegrationprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6eglfskmsgbmsupportprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6eglfskmssupportprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6xcbqpaprivate_metatypes.json
+%{_qt6_metatypesdir}/qt6waylandclient_metatypes.json
 %{_qt6_metatypesdir}/qt6wlshellintegrationprivate_metatypes.json
 %{_qt6_headerdir}/*/%{qt_version}/
+%{_qt6_descriptionsdir}/TestInternalsPrivate.json
 
 %files static
-%dir %{_qt6_libdir}/cmake/Qt6ExampleIconsPrivate
-%{_qt6_libdir}/cmake/Qt6ExampleIconsPrivate/*.cmake
-%{_qt6_headerdir}/QtExampleIcons
-%{_qt6_libdir}/libQt6ExampleIcons.a
-%{_qt6_libdir}/libQt6ExampleIcons.prl
-%{_qt6_descriptionsdir}/ExampleIconsPrivate.json
-%dir %{_qt6_archdatadir}/objects-*
-%{_qt6_archdatadir}/objects-*/ExampleIconsPrivate_resources_1/
 %dir %{_qt6_libdir}/cmake/Qt6DeviceDiscoverySupportPrivate
 %{_qt6_libdir}/cmake/Qt6DeviceDiscoverySupportPrivate/*.cmake
 %{_qt6_headerdir}/QtDeviceDiscoverySupport
 %{_qt6_libdir}/libQt6DeviceDiscoverySupport.*a
 %{_qt6_libdir}/libQt6DeviceDiscoverySupport.prl
 %{_qt6_descriptionsdir}/DeviceDiscoverySupportPrivate.json
+%{_qt6_metatypesdir}/qt6devicediscoverysupportprivate_metatypes.json
 %dir %{_qt6_libdir}/cmake/Qt6FbSupportPrivate
 %{_qt6_libdir}/cmake/Qt6FbSupportPrivate/*.cmake
 %{_qt6_headerdir}/QtFbSupport
 %{_qt6_libdir}/libQt6FbSupport.*a
 %{_qt6_libdir}/libQt6FbSupport.prl
 %{_qt6_descriptionsdir}/FbSupportPrivate.json
+%{_qt6_metatypesdir}/qt6fbsupportprivate_metatypes.json
 %dir %{_qt6_libdir}/cmake/Qt6InputSupportPrivate
 %{_qt6_libdir}/cmake/Qt6InputSupportPrivate/*.cmake
 %{_qt6_headerdir}/QtInputSupport
 %{_qt6_libdir}/libQt6InputSupport.*a
 %{_qt6_libdir}/libQt6InputSupport.prl
 %{_qt6_descriptionsdir}/InputSupportPrivate.json
+%{_qt6_metatypesdir}/qt6inputsupportprivate_metatypes.json
 %dir %{_qt6_libdir}/cmake/Qt6KmsSupportPrivate
 %{_qt6_libdir}/cmake/Qt6KmsSupportPrivate/*.cmake
 %{_qt6_headerdir}/QtKmsSupport
 %{_qt6_libdir}/libQt6KmsSupport.*a
 %{_qt6_libdir}/libQt6KmsSupport.prl
 %{_qt6_descriptionsdir}/KmsSupportPrivate.json
-%{_qt6_metatypesdir}/qt6exampleiconsprivate_*metatypes.json
-%{_qt6_metatypesdir}/qt6devicediscoverysupportprivate_*metatypes.json
-%{_qt6_metatypesdir}/qt6fbsupportprivate_*metatypes.json
-%{_qt6_metatypesdir}/qt6inputsupportprivate_*metatypes.json
-%{_qt6_metatypesdir}/qt6kmssupportprivate_*metatypes.json
+%{_qt6_metatypesdir}/qt6kmssupportprivate_metatypes.json
 
 %if 0%{?examples}
 %files examples
@@ -877,10 +890,10 @@ make check -k ||:
 %{_qt6_libdir}/libQt6OpenGL.so.6*
 %{_qt6_libdir}/libQt6OpenGLWidgets.so.6*
 %{_qt6_libdir}/libQt6PrintSupport.so.6*
-%{_qt6_libdir}/libQt6Widgets.so.6*
-%{_qt6_libdir}/libQt6XcbQpa.so.6*
 %{_qt6_libdir}/libQt6WaylandClient.so.6*
 %{_qt6_libdir}/libQt6WlShellIntegration.so.6*
+%{_qt6_libdir}/libQt6Widgets.so.6*
+%{_qt6_libdir}/libQt6XcbQpa.so.6*
 # Generic
 %{_qt6_plugindir}/generic/libqevdevkeyboardplugin.so
 %{_qt6_plugindir}/generic/libqevdevmouseplugin.so
@@ -917,54 +930,185 @@ make check -k ||:
 %{_qt6_plugindir}/platforms/libqlinuxfb.so
 %{_qt6_plugindir}/platforms/libqminimal.so
 %{_qt6_plugindir}/platforms/libqoffscreen.so
-%{_qt6_plugindir}/platforms/libqxcb.so
 %{_qt6_plugindir}/platforms/libqvnc.so
 %{_qt6_plugindir}/platforms/libqvkkhrdisplay.so
 %{_qt6_plugindir}/platforms/libqwayland.so
+%{_qt6_plugindir}/platforms/libqxcb.so
 %{_qt6_plugindir}/xcbglintegrations/libqxcb-glx-integration.so
 %{_qt6_plugindir}/printsupport/libcupsprintersupport.so
-%{_qt6_plugindir}/wayland-decoration-client/
-%{_qt6_plugindir}/wayland-graphics-integration-client/
-%{_qt6_plugindir}/wayland-shell-integration/
 # Platformthemes
 %{_qt6_plugindir}/platformthemes/libqxdgdesktopportal.so
 %{_qt6_plugindir}/platformthemes/libqgtk3.so
-
+# Wayland plugins and protocols
+%{_qt6_plugindir}/wayland-decoration-client/
+%{_qt6_plugindir}/wayland-graphics-integration-client
+%{_qt6_plugindir}/wayland-shell-integration
+%{_qt6_datadir}/wayland/extensions/
+%{_qt6_datadir}/wayland/protocols/
 
 %changelog
-%{?qt_snapshot_changelog_entry}
-* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
-- new version
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-2
+- add liburing
 
-* Thu Dec 19 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1.1
-- rebuilt
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1
+- Update to 6.12.1
 
-* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
-- new version
+* Mon Oct 19 2026 Jan Grulich <jgrulich@redhat.com> - 6.12.0-1
+- 6.12.0
 
-* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
-- new version
+* Thu Oct 01 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.2-3
+- Upstream backport:
+  Fix crash when fontconfig fallback pattern has no charset
 
-* Mon Oct 21 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-2
+* Tue Aug 25 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.2-2
+- Upstream backport:
+  QIconLoader: don't consider fallbackThemeName() in themeName()
+
+* Thu Aug 20 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.2-1
+- 6.11.2
+
+* Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.11.1-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
+
+* Tue Jun 16 2026 Dmitry Belyavskiy <beldmit@gmail.com> - 6.11.1-4
+- Backport of upstream OpenSSL4 commit
+  https://github.com/qt/qtbase/commit/e806630e694d89f567cffa9c982d1f471089ecd8
+
+* Fri Jun 12 2026 Yaakov Selkowitz <yselkowi@redhat.com> - 6.11.1-3
+- Rebuilt for openssl 4.0
+
+* Wed May 27 2026 František Zatloukal <fzatlouk@redhat.com> - 6.11.1-2
+- Rebuilt for icu 78.3
+
+* Tue May 12 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.1-1
+- Update to 6.11.1
+
+* Mon May 04 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.0-3
+- Upstream backport: freetype: handle failing glyph rendering
+
+* Fri Apr 17 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.0-2
+- Rebuild (openssl)
+
+* Mon Apr 13 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.0-1
+- 6.11.0
+
+* Tue Mar 31 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.3-1
+- 6.10.3
+
+* Sun Feb 15 2026 Yaakov Selkowitz <yselkowi@redhat.com> - 6.10.2-2
+- Add wayland-devel dependencies for cmake(Qt6WaylandClient)
+
+* Mon Feb 09 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.2-1
+- 6.10.2
+
+* Sat Jan 17 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.10.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Mon Dec 22 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.1-3
+- Fix crash in QWaylandShmBackingStore::scroll()
+
+* Mon Dec 08 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.1-2
+- Re-add wayland fixes for mouse scrolling
+
+* Thu Nov 20 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.1-1
+- 6.10.1
+
+* Mon Nov 10 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0-3
+- Backport wayland fixes for mouse scrolling
+
+* Wed Oct 29 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0-2
+- Backport: Wayland - convey preference for server side decorations
+
+* Tue Oct 07 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0-1
+- 6.10.0
+
+* Tue Sep 30 2025 Gwyn Ciesla <gwync@protonmail.com> - 6.10.0~rc-2
+- Firebird 5 rebuild
+
+* Thu Sep 25 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0~rc-1
+- 6.10.0 RC
+
+* Thu Aug 28 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.2-1
+- 6.9.2
+
+* Tue Aug 05 2025 František Zatloukal <fzatlouk@redhat.com> - 6.9.1-4
+- Rebuilt for icu 77.1
+
+* Mon Jul 28 2025 Adam Williamson <awilliam@redhat.com> - 6.9.1-3
+- Adjust for https://fedoraproject.org/wiki/Changes/dropingOfCertPemFile removals
+
+* Fri Jul 25 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.9.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
+
+* Mon Jun 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.1-1
+- 6.9.1
+
+* Mon Apr 28 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0-2
+- Fix possible crash in FontConfig database
+
+* Wed Apr 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0-1
+- 6.9.0
+
+* Fri Mar 21 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0-1
+- 6.9.0 RC
+
+* Thu Feb 13 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-3
+- Fix rendering of combined emojis
+
+* Thu Feb 06 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-2
+- Backport recommended fixes for Qt 6.8.2
+
+* Fri Jan 31 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-1
+- 6.8.2
+
+* Thu Jan 16 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.1-11
+- Backport additional fixes for emoji support
+
+* Mon Jan 13 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.1-10
+- Fix directory ownership for 3rdparty cmake plugins
+
+* Thu Jan 09 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.1-9
+- Fix directory ownership
+  Resolves: rhbz#2292582
+
+* Wed Jan 08 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.1-8
+- Install CMake modules for plugins
+
+* Tue Dec 17 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-7
+- Fix QGnomePlatform obsolets
+
+* Mon Dec 16 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-6
+- Backport additional fixes for emoji support
+
+* Tue Dec 10 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-5
+- Obsolete QGnomePlatform and AdwaitaQt
+
+* Sat Dec 07 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-4
+- Move all mkspecs to -devel
+
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-3
+- Move more stuff into -private-devel
+
+* Tue Dec 03 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Do not install ExamplesAssetDownloader
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
+- 6.8.1
+
+* Mon Oct 21 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-4
+- Backport - a11y atspi: Watch for enabled status change
+
+* Wed Oct 16 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-3
 - QtPrintSupport: make cups optional target
 
-* Wed Oct 09 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.1
-- rebuilt
+* Wed Oct 09 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- Backport fix for QAbstractItemModel (kdebz#493116)
 
-* Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
-- new version
+* Wed Oct 09 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
 
-* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
-- new version
-
-* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
-- new version
-
-* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
-- new version
-
-* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
-- new version
+* Wed Sep 04 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-6
+- Backport - QWidget: store initialScreen as QPointer
 
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild

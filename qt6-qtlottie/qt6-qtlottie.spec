@@ -1,20 +1,16 @@
-%global commit0 0bc15eff36cb0d869c1db20f9d31920962797574
-%global shortcommit0 %{sub %{commit0} 1 7}
-%global bumpver 1
 
 %global qt_module qtlottie
 
 Summary: Qt6 - Lottie Animation
 Name:    qt6-%{qt_module}
-Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
-Release: 1%{?dist}
+Version: 6.12.1
+Release: 1%{?dist}.1
 
 License: GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
 # Generated with ../.copr/Makefile
 Source0: %{qt_module}-everywhere-src-%{version_no_tilde}.tar.xz
 %global majmin %(echo %{version} | cut -d. -f1-2)
-
 
 BuildRequires: cmake
 BuildRequires: gcc-c++
@@ -23,6 +19,8 @@ BuildRequires: qt6-qtbase-devel
 BuildRequires: qt6-qtbase-private-devel
 %{?_qt6:Requires: %{_qt6}%{?_isa} = %{_qt6_version}}
 BuildRequires: qt6-qtdeclarative-devel
+BuildRequires: qt6-qtquicktimeline-devel
+BuildRequires: qt6-qtsvg-devel
 BuildRequires: pkgconfig(xkbcommon)
 BuildRequires: openssl-devel
 
@@ -52,53 +50,119 @@ Requires: qt6-qtbase-devel%{?_isa}
 
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/GPL*
-%{_qt6_libdir}/libQt6Bodymovin.so*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
+%{_qt6_libdir}/libQt6Lottie.so.6*
+%{_qt6_libdir}/libQt6LottieVectorImageHelpers.so.6*
+%{_qt6_libdir}/libQt6LottieVectorImageGenerator.so.6*
+%{_qt6_plugindir}/vectorimageformats/libqlottievectorimage.so
 %{_qt6_qmldir}/Qt/labs/lottieqt/
 
 %files devel
-%dir %{_qt6_libdir}/cmake/Qt6BodymovinPrivate
-%dir %{_qt6_headerdir}/QtBodymovin
-%{_qt6_headerdir}/QtBodymovin
-%{_qt6_libdir}/libQt6Bodymovin.so
-%{_qt6_libdir}/libQt6Bodymovin.prl
-%{_qt6_libdir}/cmake/Qt6BodymovinPrivate/*.cmake
+%{_qt6_bindir}/lottietoqml
+%{_qt6_libdir}/libQt6Lottie.so
+%{_qt6_libdir}/libQt6LottieVectorImageGenerator.so
+%{_qt6_libdir}/libQt6LottieVectorImageHelpers.so
+%{_qt6_libdir}/libQt6Lottie.prl
+%{_qt6_libdir}/libQt6LottieVectorImageGenerator.prl
+%{_qt6_libdir}/libQt6LottieVectorImageHelpers.prl
+%{_qt6_headerdir}/QtLottie
+%{_qt6_headerdir}/QtLottieVectorImageGenerator
+%{_qt6_headerdir}/QtLottieVectorImageHelpers
+%dir %{_qt6_libdir}/cmake/Qt6Lottie
+%dir %{_qt6_libdir}/cmake/Qt6LottiePrivate
+%dir %{_qt6_libdir}/cmake/Qt6LottieTools
+%dir %{_qt6_libdir}/cmake/Qt6LottieVectorImageGeneratorPrivate
+%dir %{_qt6_libdir}/cmake/Qt6LottieVectorImageHelpers
+%dir %{_qt6_libdir}/cmake/Qt6LottieVectorImageHelpersPrivate
 %{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtLottieTestsConfig.cmake
-%{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6lottieqtplugin*.cmake
+%{_qt6_libdir}/cmake/Qt6Lottie/*.cmake
+%{_qt6_libdir}/cmake/Qt6LottiePrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6LottieTools/*.cmake
+%{_qt6_libdir}/cmake/Qt6LottieVectorImageGeneratorPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6LottieVectorImageHelpers/*.cmake
+%{_qt6_libdir}/cmake/Qt6LottieVectorImageHelpersPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
+%{_qt6_libdir}/cmake/Qt6Quick/*.cmake
 %{_qt6_archdatadir}/mkspecs/modules/*
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
+%{_qt6_libdir}/pkgconfig/*.pc
 
+%if 0%{?examples}
+%files examples
+%{_qt6_examplesdir}/
+%endif
 
 %changelog
-%{?qt_snapshot_changelog_entry}
-* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
-- new version
-
-* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
-- new version
-
-* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1.1
 - rebuilt
 
-* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
-- new version
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1
+- Update to 6.12.1
 
-* Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
-- new version
+* Mon Oct 19 2026 Jan Grulich <jgrulich@redhat.com> - 6.12.0-1
+- 6.12.0
 
-* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
-- new version
+* Fri Aug 21 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.2-1
+- 6.11.2
 
-* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
-- new version
+* Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.11.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
 
-* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
-- new version
+* Tue May 12 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.1-1
+- Update to 6.11.1
 
-* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
-- new version
+* Mon Apr 13 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.0-1
+- 6.11.0
+
+* Tue Mar 31 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.3-1
+- 6.10.3
+
+* Mon Feb 09 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.2-1
+- 6.10.2
+
+* Sat Jan 17 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.10.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Thu Nov 20 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.1-1
+- 6.10.1
+
+* Tue Oct 07 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0-1
+- 6.10.0
+
+* Thu Sep 25 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0~rc-1
+- 6.10.0 RC
+
+* Thu Aug 28 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.2-1
+- 6.9.2
+
+* Fri Jul 25 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.9.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
+
+* Mon Jun 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.1-1
+- 6.9.1
+
+* Wed Apr 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0-1
+- 6.9.0
+
+* Mon Mar 24 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0~rc-1
+- 6.9.0 RC
+
+* Fri Jan 31 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-1
+- 6.8.2
+
+* Sat Jan 18 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.8.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
+
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
+- 6.8.1
+
+* Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
 
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild

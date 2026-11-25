@@ -1,7 +1,7 @@
 Name: qt6
 # This version MUST remain in sync with Qt6 versions!
-Version: 6.10.0~1
-Release: 1%{?dist}
+Version: 6.12.1
+Release: 2%{?dist}
 Summary: Qt6 meta package
 License: GPL-3.0-only
 URL:     https://getfedora.org/
@@ -211,44 +211,89 @@ echo "- Qt6 devel meta package" > %{buildroot}%{_docdir}/qt6-devel/README
 
 
 %changelog
-* Sun Aug 31 2025 Pavel Solovev <daron439@gmail.com> - 6.10.0~1-1
-- new version
-
-* Fri May 30 2025 Pavel Solovev <daron439@gmail.com> - 6.9.1~1-1
-- new version
-
-* Tue Apr 08 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0^1-1
-- new version
-
-* Tue Feb 11 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~1-2
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-2
 - rebuilt
 
-* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
-- new version
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1
+- Update to 6.12.1
 
-* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
-- new version
+* Mon Oct 19 2026 Jan Grulich <jgrulich@redhat.com> - 6.12.0-1
+- 6.12.0
 
-* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.3
-- rebuilt
+* Thu Aug 20 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.2-1
+- 6.11.2
 
-* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
-- new version
+* Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.11.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
 
-* Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
-- new version
+* Tue May 12 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.1-1
+- 6.11.1
 
-* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
-- new version
+* Mon Apr 13 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.0-1
+- 6.11.0
 
-* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
-- new version
+* Tue Mar 31 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.3-1
+- 6.10.3
 
-* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
-- new version
+* Mon Feb 09 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.2-1
+- 6.10.2
 
-* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
-- new version
+* Mon Jan 19 2026 Marcin Juszkiewicz <mjuszkiewicz@redhat.com> - 6.10.1-3
+- Add riscv64 support to qt6_qtwebengine_arches macro
+
+* Sat Jan 17 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.10.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Thu Nov 20 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.1-1
+- 6.10.1
+
+* Tue Oct 07 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0-1
+- 6.10.0
+
+* Thu Sep 25 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0~rc-1
+- 6.10.0 RC
+
+* Thu Aug 28 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.2-1
+- 6.9.2
+
+* Fri Jul 25 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.9.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
+
+* Mon Jun 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.1-1
+- 6.9.1
+
+* Tue Apr 15 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0-2
+- Enable configuration summary
+
+* Wed Apr 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0-1
+- 6.9.0
+
+* Fri Mar 21 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0~rc-1
+- 6.9.0 RC
+
+* Mon Feb 17 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-2
+- Add ppc64le support to qt6_qtwebengine_arches macro
+
+* Fri Jan 31 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-1
+- 6.8.2
+
+* Sat Jan 18 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.8.1-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
+
+* Tue Dec 10 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-4
+- Create lib64 directories only on 64bit architectures
+
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-3
+- Fix qt6_metatypesdir macro
+
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Add qt6_metatypesdir and qt6_descriptionsdir macros
+
+* Mon Dec 02 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
+- 6.8.1
+
+* Wed Oct 09 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
 
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild

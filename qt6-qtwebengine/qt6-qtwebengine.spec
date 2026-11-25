@@ -1,6 +1,3 @@
-%global commit0 bc26db5c7ca7a1ef728796dc99e33f63d2dca949
-%global shortcommit0 %{sub %{commit0} 1 7}
-%global bumpver 1
 
 %global _default_patch_fuzz 2
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
@@ -19,7 +16,7 @@
 %global use_system_py_six 1
 %endif
 
-%global use_system_re2 0
+%global use_system_re2 1
 
 # spellchecking dictionary directory
 %global _qtwebengine_dictionaries_dir %{_qt6_datadir}/qtwebengine_dictionaries
@@ -33,8 +30,8 @@
 
 Summary: Qt6 - QtWebEngine components
 Name:    qt6-qtwebengine
-Version: 6.10.0
-Release: 0.%{bumpver}.git%{shortcommit0}%{?dist}
+Version: 6.140.0
+Release: 1%{?dist}
 
 # See LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt, for details
 # See also http://qt-project.org/doc/qt-5.0/qtdoc/licensing.html
@@ -401,8 +398,7 @@ export NINJA_PATH=%{__ninja}
   -DFEATURE_webengine_webrtc:BOOL=ON \
   -DFEATURE_webengine_webrtc_pipewire:BOOL=ON \
   -DQT_BUILD_EXAMPLES:BOOL=%{?examples:ON}%{!?examples:OFF} \
-  -DQT_INSTALL_EXAMPLES_SOURCES=%{?examples:ON}%{!?examples:OFF} \
-  -DQT_GENERATE_SBOM:BOOL=OFF
+  -DQT_INSTALL_EXAMPLES_SOURCES=%{?examples:ON}%{!?examples:OFF}
 
 %cmake_build
 
@@ -454,6 +450,8 @@ done
 
 %files
 %license LICENSE.*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.%{chromium_version}.spdx
+%{_qt6_archdatadir}/sbom/qtpdf-%{qt_version}.%{chromium_version}.spdx
 %{_qt6_libdir}/libQt6WebEngineCore.so.*
 %{_qt6_libdir}/libQt6WebEngineQuick.so.*
 %{_qt6_libdir}/libQt6WebEngineQuickDelegatesQml.so.*
@@ -528,6 +526,7 @@ done
 %lang(zh_TW) %{_qt6_translationdir}/qtwebengine_locales/zh-TW.pak
 
 %files devel
+%{_qt6_libdir}/qt6/libexec/gn
 %{_rpmmacrodir}/macros.qt6-qtwebengine
 %dir %{_qt6_headerdir}/QtWebEngineCore
 %{_qt6_headerdir}/QtWebEngineCore/*
@@ -535,7 +534,6 @@ done
 %{_qt6_headerdir}/QtWebEngineQuick/*
 %dir %{_qt6_headerdir}/QtWebEngineWidgets
 %{_qt6_headerdir}/QtWebEngineWidgets/*
-%{_qt6_libdir}/qt6/libexec/gn
 %{_qt6_libdir}/qt6/metatypes/qt6webengine*.json
 %{_qt6_libdir}/qt6/modules/WebEngine*.json
 %{_qt6_libdir}/libQt6WebEngineCore.so
@@ -546,24 +544,28 @@ done
 %{_qt6_libdir}/libQt6WebEngineQuick.prl
 %{_qt6_libdir}/libQt6WebEngineQuickDelegatesQml.prl
 %{_qt6_libdir}/libQt6WebEngineWidgets.prl
-%{_qt6_libdir}/cmake/Qt6/*.cmake
-%{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtWebEngine*
-%{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6qtwebengine*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6Designer
-%{_qt6_libdir}/cmake/Qt6Designer/Qt6QWebEngine*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6WebEngineQuick
-%{_qt6_libdir}/cmake/Qt6WebEngineQuick/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6WebEngineWidgets
-%{_qt6_libdir}/cmake/Qt6WebEngineWidgets/*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6WebEngineCore
-%{_qt6_libdir}/cmake/Qt6WebEngineCore/*.cmake
+%dir %{_qt6_libdir}/cmake/Qt6WebEngineCorePrivate
 %dir %{_qt6_libdir}/cmake/Qt6WebEngineCoreTools
-%{_qt6_libdir}/cmake/Qt6WebEngineCoreTools/*.cmake
+%dir %{_qt6_libdir}/cmake/Qt6WebEngineQuick
 %dir %{_qt6_libdir}/cmake/Qt6WebEngineQuickDelegatesQml
+%dir %{_qt6_libdir}/cmake/Qt6WebEngineQuickPrivate
+%dir %{_qt6_libdir}/cmake/Qt6WebEngineWidgets
+%dir %{_qt6_libdir}/cmake/Qt6WebEngineWidgetsPrivate
+%{_qt6_libdir}/cmake/Qt6/*.cmake
+%{_qt6_libdir}/cmake/Qt6/ConfigVersionOverrides/WebEngine*/*.cmake
+%{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtWebEngine*
+%{_qt6_libdir}/cmake/Qt6Designer/Qt6QWebEngine*.cmake
+%{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6qtwebengine*.cmake
+%{_qt6_libdir}/cmake/Qt6WebEngineCore/*.cmake
+%{_qt6_libdir}/cmake/Qt6WebEngineCorePrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6WebEngineCoreTools/*.cmake
+%{_qt6_libdir}/cmake/Qt6WebEngineQuick/*.cmake
 %{_qt6_libdir}/cmake/Qt6WebEngineQuickDelegatesQml/*.cmake
-%{_qt6_libdir}/cmake/Qt6WebEngineCorePrivate/
-%{_qt6_libdir}/cmake/Qt6WebEngineQuickPrivate/
-%{_qt6_libdir}/cmake/Qt6WebEngineWidgetsPrivate/
+%{_qt6_libdir}/cmake/Qt6WebEngineQuickPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6WebEngineWidgets/*.cmake
+%{_qt6_libdir}/cmake/Qt6WebEngineWidgetsPrivate/*.cmake
 %{_qt6_libdir}/pkgconfig/Qt6WebEngineCore.pc
 %{_qt6_libdir}/pkgconfig/Qt6WebEngineQuick.pc
 %{_qt6_libdir}/pkgconfig/Qt6WebEngineQuickDelegatesQml.pc
@@ -603,16 +605,20 @@ done
 %{_qt6_libdir}/libQt6Pdf.prl
 %{_qt6_libdir}/libQt6PdfQuick.prl
 %{_qt6_libdir}/libQt6PdfWidgets.prl
-%{_qt6_libdir}/cmake/Qt6Gui/Qt6QPdf*.cmake
 %dir %{_qt6_libdir}/cmake/Qt6Pdf
-%{_qt6_libdir}/cmake/Qt6Pdf/*.cmake
+%dir %{_qt6_libdir}/cmake/Qt6PdfPrivate
 %dir %{_qt6_libdir}/cmake/Qt6PdfQuick
-%{_qt6_libdir}/cmake/Qt6PdfQuick/*.cmake
+%dir %{_qt6_libdir}/cmake/Qt6PdfQuickPrivate
 %dir %{_qt6_libdir}/cmake/Qt6PdfWidgets
+%dir %{_qt6_libdir}/cmake/Qt6PdfWidgetsPrivate
+%{_qt6_libdir}/cmake/Qt6Gui/Qt6QPdf*.cmake
+%{_qt6_libdir}/cmake/Qt6/ConfigVersionOverrides/Pdf*/*.cmake
+%{_qt6_libdir}/cmake/Qt6Pdf/*.cmake
+%{_qt6_libdir}/cmake/Qt6PdfPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6PdfQuick/*.cmake
+%{_qt6_libdir}/cmake/Qt6PdfQuickPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6PdfWidgets/*.cmake
-%{_qt6_libdir}/cmake/Qt6PdfPrivate/
-%{_qt6_libdir}/cmake/Qt6PdfQuickPrivate/
-%{_qt6_libdir}/cmake/Qt6PdfWidgetsPrivate/
+%{_qt6_libdir}/cmake/Qt6PdfWidgetsPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/Qt6Pdf*.cmake
 %{_qt6_libdir}/pkgconfig/Qt6Pdf.pc
 %{_qt6_libdir}/pkgconfig/Qt6PdfQuick.pc
@@ -625,36 +631,139 @@ done
 %endif
 
 %changelog
-%{?qt_snapshot_changelog_entry}
-* Wed Jan 22 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
-- new version
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.140.0-1
+- Update to 6.140.0
 
-* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
-- new version
-
-* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1.1
 - rebuilt
 
-* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
-- new version
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1
+- Update to 6.12.1
 
-* Wed Oct 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.1
-- pick upstream commit
+* Thu Oct 22 2026 Jan Grulich <jgrulich@redhat.com>
+- 6.140.0
 
-* Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
-- new version
+* Thu Sep 10 2026 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 6.11.2-4
+- Rebuilt for libxml-2.5.4
 
-* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
-- new version
+* Thu Sep 03 2026 Dominik Mierzejewski <dominik@greysector.net> - 6.11.2-3
+- Rebuilt for FFmpeg 9
 
-* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
-- new version
+* Tue Aug 25 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.2-2
+- PPC/s390: Codegen - fix signed integer overdlow in Assembler:GrowBuffer
 
-* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
-- new version
+* Mon Aug 24 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.2-1
+- 6.11.2
 
-* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
-- new version
+* Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.11.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
+
+* Mon Jun 08 2026 František Zatloukal <fzatlouk@redhat.com> - 6.11.1-2
+- Rebuilt for icu 78.3
+
+* Wed May 13 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.1-1
+- Update to 6.11.1
+
+* Wed Apr 15 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.0-1
+- 6.11.0
+
+* Thu Apr 02 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.3-1
+- 6.10.3
+
+* Tue Feb 10 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.2-1
+- 6.10.2
+
+* Sat Jan 17 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.10.1-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Tue Jan 13 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.1-5
+- Fix Quick popup window positioning under X11
+
+* Sun Jan 11 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.1-4
+- Apply the "Move GPU info logging into the GPU thread" patch
+
+* Thu Jan 08 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.1-3
+- Move GPU info logging into the GPU thread
+
+* Fri Nov 21 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.1-2
+- Rebuild for Koji infra issue
+
+* Thu Nov 20 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.1-1
+- 6.10.1
+
+* Thu Oct 30 2025 Dominik Mierzejewski <dominik@greysector.net> - 6.10.0-4
+- Rebuilt for FFmpeg 8
+
+* Thu Oct 30 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0-3
+- Fix FTBS in rawhide due to glib and PipeWire updates
+
+* Tue Oct 07 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0-2
+- 6.10.0
+
+* Thu Sep 25 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0~rc-1
+- 6.10.0 RC
+
+* Mon Sep 08 2025 Sandro Mani <manisandro@gmail.com> - 6.9.2-2
+- Revert commit bcee2dbf412cc655c1b467091b581c696d234e3f
+
+* Fri Aug 29 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.2-1
+- 6.9.2
+
+* Wed Aug 06 2025 František Zatloukal <fzatlouk@redhat.com> - 6.9.1-3
+- Rebuilt for icu 77.1
+
+* Fri Jul 25 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.9.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
+
+* Tue Jun 03 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.1-1
+- 6.9.1
+
+* Tue Apr 22 2025 Marie Loise Nolden <loise@kde.org> - 6.9.0-2
+- global define all optional system libs, enable XFA
+- cleanup spec
+
+* Wed Apr 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0-1
+- 6.9.0
+
+* Mon Mar 24 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0-0.1
+- 6.9.0 RC
+
+* Thu Mar 13 2025 Fabio Valentini <decathorpe@gmail.com> - 6.8.2-5
+- Rebuild for noopenh264 2.6.0
+
+* Tue Mar 04 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-4
+- Unbundle libxml and libxslt
+
+* Mon Mar 03 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-3
+- Rework OpenH264 support following Chromium package
+- Backport upstream change for ffmpeg codec selection issues.
+
+* Mon Feb 17 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-2
+- Bump build for ppc64le enablement
+
+* Fri Jan 31 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-1
+- 6.8.2
+
+* Sat Jan 18 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.8.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
+
+* Sun Dec 15 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-3
+- Add optional deps
+
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Tue Dec 03 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
+- 6.8.1
+
+* Mon Oct 14 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
+
+* Mon Sep 23 2024 Fabio Valentini <decathorpe@gmail.com> - 6.7.2-4
+- Rebuild for ffmpeg 7
+
+* Mon Aug 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-3
+- Fix building with system ffmpeg
 
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild

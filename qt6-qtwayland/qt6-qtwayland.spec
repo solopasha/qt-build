@@ -1,6 +1,3 @@
-%global commit0 2c5140675de6587ca7a367d35801d14dcb6322b1
-%global shortcommit0 %{sub %{commit0} 1 7}
-%global bumpver 1
 
 %global qt_module qtwayland
 
@@ -8,8 +5,8 @@
 
 Summary: Qt6 - Wayland platform support and QtCompositor module
 Name:    qt6-%{qt_module}
-Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
-Release: 1%{?dist}
+Version: 6.12.1
+Release: 1%{?dist}.1
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -50,9 +47,6 @@ BuildRequires: pkgconfig(libdrm)
 
 BuildRequires: libXext-devel
 
-Obsoletes:     qadwaitadecorations-qt6
-Provides:      qadwaitadecorations-qt6
-
 %description
 %{summary}.
 
@@ -63,6 +57,12 @@ Requires: qt6-qtbase-devel%{?_isa}
 Requires: qt6-qtdeclarative-devel%{?_isa}
 Requires: wayland-devel%{?_isa}
 %description devel
+%{summary}.
+
+%package adwaita-decoration
+Summary: Qt decoration plugin implementing Adwaita-like client-side decorations
+Supplements: (qt6-qtbase and gnome-shell)
+%description adwaita-decoration
 %{summary}.
 
 %if 0%{?examples}
@@ -105,29 +105,27 @@ popd
 %ldconfig_scriptlets
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %doc README
 %license LICENSES/*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
+%{_qt6_libdir}/libQt6WaylandCompositor.so.6*
 %{_qt6_libdir}/libQt6WaylandCompositor.so.6*
 %{_qt6_libdir}/libQt6WaylandCompositorIviapplication.so.6*
 %{_qt6_libdir}/libQt6WaylandCompositorPresentationTime.so.6*
 %{_qt6_libdir}/libQt6WaylandCompositorWLShell.so.6*
 %{_qt6_libdir}/libQt6WaylandCompositorXdgShell.so.6*
 %{_qt6_libdir}/libQt6WaylandEglCompositorHwIntegration.so.6*
-%{_qt6_plugindir}/wayland-decoration-client/
-%{_qt6_plugindir}/wayland-graphics-integration-server/
-%{_qt6_plugindir}/wayland-shell-integration/
+%{_qt6_plugindir}/wayland-graphics-integration-server
+%{_qt6_plugindir}/wayland-shell-integration
 %{_qt6_qmldir}/QtWayland/
 
 %files devel
-%{_qt6_archdatadir}/mkspecs/modules/*.pri
-%{_qt6_headerdir}/QtWaylandCompositor*/
+%{_qt6_headerdir}/QtWaylandCompositor/
+%{_qt6_headerdir}/QtWaylandCompositorIviapplication/
+%{_qt6_headerdir}/QtWaylandCompositorPresentationTime/
+%{_qt6_headerdir}/QtWaylandCompositorWLShell/
+%{_qt6_headerdir}/QtWaylandCompositorXdgShell/
 %{_qt6_headerdir}/QtWaylandEglCompositorHwIntegration/
-%{_qt6_libdir}/cmake/Qt6/*.cmake
-%{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtWaylandTestsConfig.cmake
-%{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
-%{_qt6_libdir}/cmake/Qt6Wayland*/
-%{_qt6_libdir}/libQt6WaylandCompositor.prl
 %{_qt6_libdir}/libQt6WaylandCompositor.so
 %{_qt6_libdir}/libQt6WaylandCompositorIviapplication.prl
 %{_qt6_libdir}/libQt6WaylandCompositorIviapplication.so
@@ -137,11 +135,48 @@ popd
 %{_qt6_libdir}/libQt6WaylandCompositorWLShell.so
 %{_qt6_libdir}/libQt6WaylandCompositorXdgShell.prl
 %{_qt6_libdir}/libQt6WaylandCompositorXdgShell.so
-%{_qt6_libdir}/libQt6WaylandEglCompositorHwIntegration.prl
 %{_qt6_libdir}/libQt6WaylandEglCompositorHwIntegration.so
-%{_qt6_libdir}/pkgconfig/*.pc
+%{_qt6_libdir}/libQt6WaylandCompositor.prl
+%{_qt6_libdir}/libQt6WaylandEglCompositorHwIntegration.prl
+%{_qt6_libdir}/cmake/Qt6WaylandCompositor/Qt6WaylandCompositorConfig*.cmake
+%{_qt6_archdatadir}/mkspecs/modules/*.pri
+%dir %{_qt6_libdir}/cmake/Qt6WaylandClientFeaturesPrivate/
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositor/
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositorIviapplication/
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositorIviapplicationPrivate
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositorPresentationTime/
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositorPresentationTimePrivate
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositorPrivate
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositorWLShell/
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositorWLShellPrivate
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositorXdgShell/
+%dir %{_qt6_libdir}/cmake/Qt6WaylandCompositorXdgShellPrivate
+%dir %{_qt6_libdir}/cmake/Qt6WaylandEglCompositorHwIntegrationPrivate/
+%{_qt6_libdir}/cmake/Qt6/*.cmake
+%{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtWaylandTestsConfig.cmake
+%{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
+%{_qt6_libdir}/cmake/Qt6Gui/Qt6QWaylandIviShellIntegration*.cmake
+%{_qt6_libdir}/cmake/Qt6Gui/Qt6QWaylandQtShellIntegration*.cmake
+%{_qt6_libdir}/cmake/Qt6WaylandClientFeaturesPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6WaylandCompositor/
+%{_qt6_libdir}/cmake/Qt6WaylandCompositorIviapplication/
+%{_qt6_libdir}/cmake/Qt6WaylandCompositorIviapplicationPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6WaylandCompositorPresentationTime/
+%{_qt6_libdir}/cmake/Qt6WaylandCompositorPresentationTimePrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6WaylandCompositorPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6WaylandCompositorWLShell/
+%{_qt6_libdir}/cmake/Qt6WaylandCompositorWLShellPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6WaylandCompositorXdgShell/
+%{_qt6_libdir}/cmake/Qt6WaylandCompositorXdgShellPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6WaylandEglCompositorHwIntegrationPrivate/
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
+%{_qt6_libdir}/pkgconfig/*.pc
+%exclude %{_qt6_libdir}/cmake/Qt6Gui/Qt6QWaylandAdwaitaDecoration*.cmake
+
+%files adwaita-decoration
+%{_qt6_plugindir}/wayland-decoration-client/libadwaita.so
+%{_qt6_libdir}/cmake/Qt6Gui/Qt6QWaylandAdwaitaDecoration*.cmake
 
 %if 0%{?examples}
 %files examples
@@ -149,42 +184,98 @@ popd
 %endif
 
 %changelog
-%{?qt_snapshot_changelog_entry}
-* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
-- new version
-
-* Sun Jan 12 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-2
-- pick commit
-
-* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
-- new version
-
-* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1.1
 - rebuilt
 
-* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
-- new version
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1
+- Update to 6.12.1
 
-* Wed Oct 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.2
-- Adopt Fedora changes
+* Mon Oct 19 2026 Jan Grulich <jgrulich@redhat.com> - 6.12.0-1
+- 6.12.0
 
-* Wed Oct 09 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1.1
-- rebuilt
+* Fri Aug 21 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.2-1
+- 6.11.2
 
-* Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
-- new version
+* Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.11.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
 
-* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
-- new version
+* Tue May 12 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.1-1
+- Update to 6.11.1
 
-* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
-- new version
+* Mon Apr 13 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.0-1
+- 6.11.0
 
-* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
-- new version
+* Tue Mar 31 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.3-1
+- 6.10.3
 
-* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
-- new version
+* Mon Feb 09 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.2-1
+- 6.10.2
+
+* Sat Jan 17 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.10.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Thu Nov 20 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.1-1
+- 6.10.1
+
+* Fri Oct 10 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0-2
+- Move Qt6WaylandAdwaitaDecoration cmake fiels to its subpackage
+
+* Tue Oct 07 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0-1
+- 6.10.0
+
+* Thu Sep 25 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0~rc-1
+- 6.10.0 RC
+
+* Thu Aug 28 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.2-1
+- 6.9.2
+
+* Fri Jul 25 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.9.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
+
+* Mon Jun 30 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.1-3
+- Disable pointer warp support for now
+
+* Thu Jun 26 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.1-2
+- Add pointer warp support
+
+* Mon Jun 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.1-1
+- 6.9.1
+
+* Tue Apr 22 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0-3
+- Backport upstream fix broken popups
+
+* Mon Apr 14 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0-2
+- Require wayland-devel in the devel package
+
+* Wed Apr 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0-1
+- 6.9.0
+
+* Mon Mar 24 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0~rc-1
+- 6.9.0 RC
+
+* Fri Jan 31 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-1
+- 6.8.2
+
+* Sat Jan 18 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.8.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
+
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
+- 6.8.1
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-3
+- Backport upstream fix for crash when unplugging graphics tablets
+
+* Tue Oct 22 2024 Alessandro Astone <ales.astone@gmail.com> - 6.8.0-2
+- Backport fix for rhbz#2318535
+
+* Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
+
+* Tue Aug 06 2024 Jan Grulich <jgrulich@redhat.com> - 6.7.2-4
+- Backport upstream fixes to avoid crashes on Plasma 6
 
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild

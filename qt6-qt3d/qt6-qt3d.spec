@@ -1,14 +1,11 @@
-%global commit0 dcfac22cfd4bafcbd34314617ab1b227ec893587
-%global shortcommit0 %{sub %{commit0} 1 7}
-%global bumpver 1
 
 %global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 %global qt_module qt3d
 
 Summary: Qt6 - Qt3D QML bindings and C++ APIs
 Name:    qt6-%{qt_module}
-Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
-Release: 1%{?dist}
+Version: 6.12.1
+Release: 1%{?dist}.1
 
 #global examples 1
 
@@ -92,8 +89,8 @@ popd
 %ldconfig_scriptlets
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/GPL* LICENSES/LGPL*
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_libdir}/libQt63DAnimation.so.6*
 %{_qt6_libdir}/libQt63DCore.so.6*
 %{_qt6_libdir}/libQt63DExtras.so.6*
@@ -103,11 +100,11 @@ popd
 %{_qt6_libdir}/libQt63DQuickAnimation.so.6*
 %{_qt6_libdir}/libQt63DQuickExtras.so.6*
 %{_qt6_libdir}/libQt63DQuickInput.so.6*
+%{_qt6_libdir}/libQt63DQuickLogic.so.6*
 %{_qt6_libdir}/libQt63DQuickRender.so.6*
 %{_qt6_libdir}/libQt63DQuickScene2D.so.6*
-%{_qt6_libdir}/libQt63DRender.so.6*
 %{_qt6_libdir}/libQt63DQuickScene3D.so.6*
-%{_qt6_libdir}/libQt63DQuickLogic.so.6*
+%{_qt6_libdir}/libQt63DRender.so.6*
 %{_qt6_plugindir}/geometryloaders/
 %{_qt6_plugindir}/renderers/
 %{_qt6_plugindir}/renderplugins/
@@ -118,64 +115,79 @@ popd
 
 %files devel
 %dir %{_qt6_libdir}/cmake/Qt63DAnimation
+%dir %{_qt6_libdir}/cmake/Qt63DAnimationPrivate/
 %dir %{_qt6_libdir}/cmake/Qt63DCore/
+%dir %{_qt6_libdir}/cmake/Qt63DCorePrivate/
 %dir %{_qt6_libdir}/cmake/Qt63DExtras
+%dir %{_qt6_libdir}/cmake/Qt63DExtrasPrivate/
 %dir %{_qt6_libdir}/cmake/Qt63DInput
+%dir %{_qt6_libdir}/cmake/Qt63DInputPrivate/
 %dir %{_qt6_libdir}/cmake/Qt63DLogic
+%dir %{_qt6_libdir}/cmake/Qt63DLogicPrivate/
 %dir %{_qt6_libdir}/cmake/Qt63DQuick
 %dir %{_qt6_libdir}/cmake/Qt63DQuickAnimation
+%dir %{_qt6_libdir}/cmake/Qt63DQuickAnimationPrivate/
 %dir %{_qt6_libdir}/cmake/Qt63DQuickExtras
+%dir %{_qt6_libdir}/cmake/Qt63DQuickExtrasPrivate/
 %dir %{_qt6_libdir}/cmake/Qt63DQuickInput
+%dir %{_qt6_libdir}/cmake/Qt63DQuickInputPrivate/
+%dir %{_qt6_libdir}/cmake/Qt63DQuickLogic/
+%dir %{_qt6_libdir}/cmake/Qt63DQuickLogicPrivate/
+%dir %{_qt6_libdir}/cmake/Qt63DQuickPrivate/
 %dir %{_qt6_libdir}/cmake/Qt63DQuickRender/
+%dir %{_qt6_libdir}/cmake/Qt63DQuickRenderPrivate/
 %dir %{_qt6_libdir}/cmake/Qt63DQuickScene2D
-%dir %{_qt6_libdir}/cmake/Qt63DRender/
+%dir %{_qt6_libdir}/cmake/Qt63DQuickScene2DPrivate/
 %dir %{_qt6_libdir}/cmake/Qt63DQuickScene3D
+%dir %{_qt6_libdir}/cmake/Qt63DQuickScene3DPrivate/
+%dir %{_qt6_libdir}/cmake/Qt63DRender/
+%dir %{_qt6_libdir}/cmake/Qt63DRenderPrivate/
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
-%{_qt6_includedir}/Qt3DAnimation/
+%{_qt6_includedir}/Qt3DAnimation
 %{_qt6_includedir}/Qt3DCore/
-%{_qt6_includedir}/Qt3DExtras/
+%{_qt6_includedir}/Qt3DExtras
 %{_qt6_includedir}/Qt3DInput/
 %{_qt6_includedir}/Qt3DLogic/
-%{_qt6_includedir}/Qt3DQuick/
-%{_qt6_includedir}/Qt3DQuickAnimation/
-%{_qt6_includedir}/Qt3DQuickExtras/
+%{_qt6_includedir}/Qt3DQuick
+%{_qt6_includedir}/Qt3DQuickAnimation
+%{_qt6_includedir}/Qt3DQuickExtras
 %{_qt6_includedir}/Qt3DQuickInput/
-%{_qt6_includedir}/Qt3DQuickLogic/
+%{_qt6_includedir}/Qt3DQuickLogic
 %{_qt6_includedir}/Qt3DQuickRender/
-%{_qt6_includedir}/Qt3DQuickScene2D/
-%{_qt6_includedir}/Qt3DQuickScene3D/
+%{_qt6_includedir}/Qt3DQuickScene2D
+%{_qt6_includedir}/Qt3DQuickScene3D
 %{_qt6_includedir}/Qt3DRender/
 %{_qt6_libdir}/cmake/Qt6/FindWrapQt3DAssimp.cmake
-%{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/Qt3DTestsConfig.cmake
 %{_qt6_libdir}/cmake/Qt63DAnimation/*.cmake
+%{_qt6_libdir}/cmake/Qt63DAnimationPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt63DCore/*.cmake
+%{_qt6_libdir}/cmake/Qt63DCorePrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt63DExtras/*.cmake
+%{_qt6_libdir}/cmake/Qt63DExtrasPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt63DInput/*.cmake
+%{_qt6_libdir}/cmake/Qt63DInputPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt63DLogic/*.cmake
+%{_qt6_libdir}/cmake/Qt63DLogicPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt63DQuick/*.cmake
 %{_qt6_libdir}/cmake/Qt63DQuickAnimation/*.cmake
+%{_qt6_libdir}/cmake/Qt63DQuickAnimationPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt63DQuickExtras/*.cmake
+%{_qt6_libdir}/cmake/Qt63DQuickExtrasPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt63DQuickInput/*.cmake
+%{_qt6_libdir}/cmake/Qt63DQuickInputPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt63DQuickLogic/*.cmake
+%{_qt6_libdir}/cmake/Qt63DQuickLogicPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt63DQuickPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt63DQuickRender/*.cmake
+%{_qt6_libdir}/cmake/Qt63DQuickRenderPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt63DQuickScene2D/*.cmake
-%{_qt6_libdir}/cmake/Qt63DRender/*.cmake
-%{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
+%{_qt6_libdir}/cmake/Qt63DQuickScene2DPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt63DQuickScene3D/*.cmake
-%{_qt6_libdir}/cmake/Qt63DQuickLogic/
-%{_qt6_libdir}/cmake/Qt63DQuickLogicPrivate/
-%{_qt6_libdir}/cmake/Qt63DAnimationPrivate/
-%{_qt6_libdir}/cmake/Qt63DCorePrivate/
-%{_qt6_libdir}/cmake/Qt63DExtrasPrivate/
-%{_qt6_libdir}/cmake/Qt63DInputPrivate/
-%{_qt6_libdir}/cmake/Qt63DLogicPrivate/
-%{_qt6_libdir}/cmake/Qt63DQuickAnimationPrivate/
-%{_qt6_libdir}/cmake/Qt63DQuickExtrasPrivate/
-%{_qt6_libdir}/cmake/Qt63DQuickInputPrivate/
-%{_qt6_libdir}/cmake/Qt63DQuickPrivate/
-%{_qt6_libdir}/cmake/Qt63DQuickRenderPrivate/
-%{_qt6_libdir}/cmake/Qt63DQuickScene2DPrivate/
-%{_qt6_libdir}/cmake/Qt63DQuickScene3DPrivate/
-%{_qt6_libdir}/cmake/Qt63DRenderPrivate/
+%{_qt6_libdir}/cmake/Qt63DQuickScene3DPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt63DRender/*.cmake
+%{_qt6_libdir}/cmake/Qt63DRenderPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/Qt3DTestsConfig.cmake
+%{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
 %{_qt6_libdir}/libQt63DAnimation.prl
 %{_qt6_libdir}/libQt63DAnimation.so
 %{_qt6_libdir}/libQt63DCore.prl
@@ -194,16 +206,16 @@ popd
 %{_qt6_libdir}/libQt63DQuickExtras.so
 %{_qt6_libdir}/libQt63DQuickInput.prl
 %{_qt6_libdir}/libQt63DQuickInput.so
+%{_qt6_libdir}/libQt63DQuickLogic.prl
+%{_qt6_libdir}/libQt63DQuickLogic.so
 %{_qt6_libdir}/libQt63DQuickRender.prl
 %{_qt6_libdir}/libQt63DQuickRender.so
 %{_qt6_libdir}/libQt63DQuickScene2D.prl
 %{_qt6_libdir}/libQt63DQuickScene2D.so
-%{_qt6_libdir}/libQt63DRender.prl
-%{_qt6_libdir}/libQt63DRender.so
 %{_qt6_libdir}/libQt63DQuickScene3D.prl
 %{_qt6_libdir}/libQt63DQuickScene3D.so
-%{_qt6_libdir}/libQt63DQuickLogic.prl
-%{_qt6_libdir}/libQt63DQuickLogic.so
+%{_qt6_libdir}/libQt63DRender.prl
+%{_qt6_libdir}/libQt63DRender.so
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/pkgconfig/*.pc
@@ -215,36 +227,74 @@ popd
 
 
 %changelog
-%{?qt_snapshot_changelog_entry}
-* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
-- new version
-
-* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
-- new version
-
-* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1.1
 - rebuilt
 
-* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
-- new version
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1
+- Update to 6.12.1
 
-* Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
-- new version
+* Mon Oct 19 2026 Jan Grulich <jgrulich@redhat.com> - 6.12.0-1
+- 6.12.0
 
-* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
-- new version
+* Fri Aug 21 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.2-1
+- 6.11.2
 
-* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
-- new version
+* Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.11.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
 
-* Fri Aug 16 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-2
-- use system assimp
+* Tue May 12 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.1-1
+- Update to 6.11.1
 
-* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
-- new version
+* Mon Apr 13 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.0-1
+- 6.11.0
 
-* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
-- new version
+* Tue Mar 31 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.3-1
+- 6.10.3
+
+* Mon Feb 09 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.2-1
+- 6.10.2
+
+* Sat Jan 17 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.10.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Thu Nov 20 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.1-1
+- 6.10.1
+
+* Tue Oct 07 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0-1
+- 6.10.0
+
+* Thu Sep 25 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0~rc-1
+- 6.10.0 RC
+
+* Thu Aug 28 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.2-1
+- 6.9.2
+
+* Fri Jul 25 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.9.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
+
+* Mon Jun 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.1-1
+- 6.9.1
+
+* Wed Apr 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0-1
+- 6.9.0
+
+* Mon Mar 24 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0~rc-1
+- 6.9.0 RC
+
+* Fri Jan 31 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-1
+- 6.8.2
+
+* Sat Jan 18 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.8.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
+
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
+- 6.8.1
+
+* Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
 
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild

@@ -1,6 +1,3 @@
-%global commit0 d329b7d583a0edbba61a8aaa9693a797f126bd8a
-%global shortcommit0 %{sub %{commit0} 1 7}
-%global bumpver 1
 
 %global qt_module qtgrpc
 
@@ -8,8 +5,8 @@
 
 Summary: Qt6 - Support for using gRPC and Protobuf
 Name:    qt6-%{qt_module}
-Version: 6.10.0%{?bumpver:~%{bumpver}.git%{shortcommit0}}
-Release: 1%{?dist}
+Version: 6.12.1
+Release: 1%{?dist}.1
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -74,27 +71,27 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 
 %files
-%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %license LICENSES/GPL* LICENSES/LGPL*
-%{_qt6_archdatadir}/qml/QtGrpc/
-%{_qt6_archdatadir}/qml/QtProtobuf/
+%{_qt6_archdatadir}/sbom/%{qt_module}-%{qt_version}.spdx
 %{_qt6_libdir}/libQt6Grpc.so.6*
-%{_qt6_libdir}/libQt6GrpcQuick.so.6*
 %{_qt6_libdir}/libQt6Protobuf.so.6*
 %{_qt6_libdir}/libQt6ProtobufQtCoreTypes.so.6*
 %{_qt6_libdir}/libQt6ProtobufQtGuiTypes.so.6*
-%{_qt6_libdir}/libQt6ProtobufQuick.so.6*
 %{_qt6_libdir}/libQt6ProtobufWellKnownTypes.so.6*
+%{_qt6_libdir}/libQt6GrpcQuick.so.6*
+%{_qt6_libdir}/libQt6ProtobufQuick.so.6*
+%{_qt6_archdatadir}/qml/QtGrpc
+%{_qt6_archdatadir}/qml/QtProtobuf
 
 %files devel
 %{_qt6_archdatadir}/mkspecs/modules/*.pri
 %{_qt6_headerdir}/QtGrpc/
-%{_qt6_headerdir}/QtProtobufQuick/
 %{_qt6_headerdir}/QtProtobuf/
 %{_qt6_headerdir}/QtProtobufQtCoreTypes/
 %{_qt6_headerdir}/QtProtobufQtGuiTypes/
 %{_qt6_headerdir}/QtProtobufWellKnownTypes/
-%{_qt6_headerdir}/QtGrpcQuick/
+%{_qt6_headerdir}/QtGrpcQuick
+%{_qt6_headerdir}/QtProtobufQuick
 %{_qt6_libdir}/libQt6Grpc.so
 %{_qt6_libdir}/libQt6Protobuf.so
 %{_qt6_libdir}/libQt6ProtobufQtCoreTypes.so
@@ -107,36 +104,44 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %{_qt6_libdir}/libQt6ProtobufQtGuiTypes.prl
 %{_qt6_libdir}/libQt6GrpcQuick.so
 %{_qt6_libdir}/libQt6GrpcQuick.prl
-%{_qt6_libdir}/libQt6ProtobufQuick.prl
 %{_qt6_libdir}/libQt6ProtobufQuick.so
-%{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtGrpcTestsConfig.cmake
-%{_qt6_libdir}/cmake/Qt6/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6GrpcTools/
-%{_qt6_libdir}/cmake/Qt6GrpcTools/*.cmake
+%{_qt6_libdir}/libQt6ProtobufQuick.prl
 %dir %{_qt6_libdir}/cmake/Qt6Grpc/
-%{_qt6_libdir}/cmake/Qt6Grpc/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6Protobuf/
-%{_qt6_libdir}/cmake/Qt6Protobuf/*.cmake*
-%dir %{_qt6_libdir}/cmake/Qt6ProtobufQtCoreTypes/
-%{_qt6_libdir}/cmake/Qt6ProtobufQtCoreTypes/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6ProtobufQtGuiTypes/
-%{_qt6_libdir}/cmake/Qt6ProtobufQtGuiTypes/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6ProtobufTools/
-%{_qt6_libdir}/cmake/Qt6ProtobufTools/*.cmake
-%dir %{_qt6_libdir}/cmake/Qt6ProtobufWellKnownTypes/
-%{_qt6_libdir}/cmake/Qt6ProtobufWellKnownTypes/*.cmake
+%dir %{_qt6_libdir}/cmake/Qt6GrpcPrivate
 %dir %{_qt6_libdir}/cmake/Qt6GrpcQuick
-%{_qt6_libdir}/cmake/Qt6GrpcQuick/*.cmake
+%dir %{_qt6_libdir}/cmake/Qt6GrpcQuickPrivate
+%dir %{_qt6_libdir}/cmake/Qt6GrpcTools/
+%dir %{_qt6_libdir}/cmake/Qt6Protobuf/
+%dir %{_qt6_libdir}/cmake/Qt6ProtobufPrivate
+%dir %{_qt6_libdir}/cmake/Qt6ProtobufQtCoreTypes/
+%dir %{_qt6_libdir}/cmake/Qt6ProtobufQtCoreTypesPrivate
+%dir %{_qt6_libdir}/cmake/Qt6ProtobufQtGuiTypes/
+%dir %{_qt6_libdir}/cmake/Qt6ProtobufQtGuiTypesPrivate
+%dir %{_qt6_libdir}/cmake/Qt6ProtobufQuick
+%dir %{_qt6_libdir}/cmake/Qt6ProtobufQuickPrivate
+%dir %{_qt6_libdir}/cmake/Qt6ProtobufTools/
+%dir %{_qt6_libdir}/cmake/Qt6ProtobufWellKnownTypes/
+%dir %{_qt6_libdir}/cmake/Qt6ProtobufWellKnownTypesPrivate
 %dir %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins
+%{_qt6_libdir}/cmake/Qt6/*.cmake
+%{_qt6_libdir}/cmake/Qt6BuildInternals/StandaloneTests/QtGrpcTestsConfig.cmake
+%{_qt6_libdir}/cmake/Qt6Grpc/*.cmake
+%{_qt6_libdir}/cmake/Qt6GrpcPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6GrpcQuick/*.cmake
+%{_qt6_libdir}/cmake/Qt6GrpcQuickPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6GrpcTools/*.cmake
+%{_qt6_libdir}/cmake/Qt6Protobuf/*.cmake*
+%{_qt6_libdir}/cmake/Qt6ProtobufPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6ProtobufQtCoreTypes/*.cmake
+%{_qt6_libdir}/cmake/Qt6ProtobufQtCoreTypesPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6ProtobufQtGuiTypes/*.cmake
+%{_qt6_libdir}/cmake/Qt6ProtobufQtGuiTypesPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6ProtobufQuick/*.cmake
+%{_qt6_libdir}/cmake/Qt6ProtobufQuickPrivate/*.cmake
+%{_qt6_libdir}/cmake/Qt6ProtobufTools/*.cmake
+%{_qt6_libdir}/cmake/Qt6ProtobufWellKnownTypes/*.cmake
+%{_qt6_libdir}/cmake/Qt6ProtobufWellKnownTypesPrivate/*.cmake
 %{_qt6_libdir}/cmake/Qt6Qml/QmlPlugins/*.cmake
-%{_qt6_libdir}/cmake/Qt6ProtobufQuick/
-%{_qt6_libdir}/cmake/Qt6GrpcPrivate/
-%{_qt6_libdir}/cmake/Qt6GrpcQuickPrivate/
-%{_qt6_libdir}/cmake/Qt6ProtobufPrivate/
-%{_qt6_libdir}/cmake/Qt6ProtobufQtCoreTypesPrivate/
-%{_qt6_libdir}/cmake/Qt6ProtobufQtGuiTypesPrivate/
-%{_qt6_libdir}/cmake/Qt6ProtobufQuickPrivate/
-%{_qt6_libdir}/cmake/Qt6ProtobufWellKnownTypesPrivate/
 %{_qt6_libdir}/qt6/metatypes/qt6*_metatypes.json
 %{_qt6_libdir}/qt6/modules/*.json
 %{_qt6_libdir}/pkgconfig/*.pc
@@ -149,33 +154,98 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %changelog
-%{?qt_snapshot_changelog_entry}
-* Tue Jan 21 2025 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta2-1
-- new version
-
-* Wed Dec 18 2024 Pavel Solovev <daron439@gmail.com> - 6.9.0~beta1-1
-- new version
-
-* Sat Dec 07 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1.1
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1.1
 - rebuilt
 
-* Mon Dec 02 2024 Pavel Solovev <daron439@gmail.com> - 6.8.1-1
-- new version
+* Wed Nov 25 2026 Pavel Solovev <daron439@gmail.com> - 6.12.1-1
+- Update to 6.12.1
 
-* Tue Oct 08 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0-1
-- new version
+* Thu Nov 05 2026 Neil Hanlon <neil@shrug.pw> - 6.12.0-2
+- Rebuild for grpc 1.75.1
 
-* Wed Sep 25 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~rc-1
-- new version
+* Mon Oct 19 2026 Jan Grulich <jgrulich@redhat.com> - 6.12.0-1
+- 6.12.0
 
-* Fri Aug 30 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta4-1
-- new version
+* Fri Sep 25 2026 Benjamin A. Beasley <code@musicinmybrain.net> - 6.11.2-2
+- Rebuilt for abseil-cpp 20260817.0
 
-* Wed Aug 14 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta3-1
-- new version
+* Fri Aug 21 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.2-1
+- 6.11.2
 
-* Wed Jul 31 2024 Pavel Solovev <daron439@gmail.com> - 6.8.0~beta2-1
-- new version
+* Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.11.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
+
+* Wed Jun 24 2026 Benjamin A. Beasley <code@musicinmybrain.net> - 6.11.1-2
+- Rebuilt for abseil-cpp 20260526.0
+
+* Tue May 12 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.1-1
+- Update to 6.11.1
+
+* Mon Apr 13 2026 Jan Grulich <jgrulich@redhat.com> - 6.11.0-1
+- 6.11.0
+
+* Tue Mar 31 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.3-1
+- 6.10.3
+
+* Mon Feb 09 2026 Jan Grulich <jgrulich@redhat.com> - 6.10.2-1
+- 6.10.2
+
+* Wed Jan 28 2026 Benjamin A. Beasley <code@musicinmybrain.net> - 6.10.1-3
+- Rebuilt for abseil-cpp 20260107.0
+
+* Sat Jan 17 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.10.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Thu Nov 20 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.1-1
+- 6.10.1
+
+* Tue Oct 07 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0-1
+- 6.10.0
+
+* Thu Sep 25 2025 Jan Grulich <jgrulich@redhat.com> - 6.10.0~rc-1
+- 6.10.0 RC
+
+* Mon Sep 08 2025 Benjamin A. Beasley <code@musicinmybrain.net> - 6.9.2-2
+- Rebuilt for abseil-cpp 20250814.0
+
+* Thu Aug 28 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.2-1
+- 6.9.2
+
+* Mon Aug 04 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.1-3
+- Add the missing linking of CorePrivate to GrpcQuick module
+
+* Fri Jul 25 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.9.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
+
+* Mon Jun 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.1-1
+- 6.9.1
+
+* Mon May 26 2025 Benjamin A. Beasley <code@musicinmybrain.net> - 6.9.0-3
+- Rebuilt for abseil-cpp 20250512.0
+
+* Thu May 15 2025 Benjamin A. Beasley <code@musicinmybrain.net> - 6.9.0-2
+- Add direct build dependency on abseil-cpp
+
+* Wed Apr 02 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0-1
+- 6.9.0
+
+* Mon Mar 24 2025 Jan Grulich <jgrulich@redhat.com> - 6.9.0~rc-1
+- 6.9.0 RC
+
+* Fri Jan 31 2025 Jan Grulich <jgrulich@redhat.com> - 6.8.2-1
+- 6.8.2
+
+* Sat Jan 18 2025 Fedora Release Engineering <releng@fedoraproject.org> - 6.8.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
+
+* Thu Dec 05 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-2
+- Move Software Bill of Materials from -devel
+
+* Thu Nov 28 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.1-1
+- 6.8.1
+
+* Fri Oct 11 2024 Jan Grulich <jgrulich@redhat.com> - 6.8.0-1
+- 6.8.0
 
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
@@ -206,4 +276,3 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 * Thu Jan 18 2024 Cajus Pollmeier <pollmeier@gonicus.de> - 6.6.1-1
 - 6.6.1
-

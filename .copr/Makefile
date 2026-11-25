@@ -9,7 +9,7 @@ outdir ?= $(shell pwd)
 
 prepare:
 	dnf distro-sync --nodocs -y --setopt=install_weak_deps=0 --repo=qt6-test \
-				--repofrompath 'qt6-test,https://download.copr.fedorainfracloud.org/results/solopasha/qt6-test/fedora-42-x86_64/devel/' \
+				--repofrompath 'qt6-test,https://download.copr.fedorainfracloud.org/results/solopasha/qt6-test/fedora-45-x86_64/devel/' \
 				--setopt='qt6-test.gpgcheck=1' \
 				--setopt='qt6-test.gpgkey=https://download.copr.fedorainfracloud.org/results/solopasha/qt6-test/pubkey.gpg' \
 				qt6-srpm-macros
@@ -27,8 +27,10 @@ ifneq ($(specfile),qt6-qtwebchannel.spec)
 	find -maxdepth 2 -type d \( -name 'tests' -o -name 'examples' \) -exec rm -rf '{}' \;
 endif
 
+ifneq ($(specfile),qt6.spec)
 %spec: clone
 	XZ_OPT="-T0 -e9" tar --owner 0 --group 0 --numeric-owner --exclude-vcs -cJf $(qt_module)-everywhere-src-$(pkg_ver_no_tilde).tar.xz $(qt_module)-everywhere-src-$(pkg_ver_no_tilde)
+endif
 
 srpm: prepare $(specfile)
 	rpmbuild -bs --define "_sourcedir ${PWD}" --define "_specdir ${PWD}" \
